@@ -200,7 +200,7 @@
     if($('dataVersionLabel')) $('dataVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
     if($('sentenceCountLabel')) $('sentenceCountLabel').textContent=(window.REX_SENTENCES||[]).length + (added?added.length:0);
     if($('contentVersionLabel')) $('contentVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
-    if($('appVersionLabel')) $('appVersionLabel').textContent='v37';
+    if($('appVersionLabel')) $('appVersionLabel').textContent='v38';
   }
 
   function renderDaily(){
@@ -543,6 +543,56 @@
     if($('quickBackupBtn')) $('quickBackupBtn').addEventListener('click',quickBackup);
   }
   function init(){ ensureDay(); bind(); if(RexSpeech.populateVoiceSelects) RexSpeech.populateVoiceSelects(); renderStages(); fillUnits(); updateStats(); resetDeck(); newQ(); renderList(); renderChat(); var ok=$('bootOk'); if(ok) ok.textContent='✅ アプリは読み込まれました。音が出ない場合は「音声スタート」を押してください。'; if(sessionStorage.getItem('rexEnglishMaster.unlocked')!=='1') showLock(); }
+
+
+  // v38 hard fix: replace broken growth labels/icons after all original functions exist
+  function v38GrowthIcon(cls){
+    if(cls==='eggFull') return '<div class="v38icon eggFull"><span class="eggShape"></span></div>';
+    if(cls==='eggCrack') return '<div class="v38icon eggCrack"><span class="eggShape"></span><span class="crackLine"></span></div>';
+    if(cls==='eggPeek') return '<div class="v38icon eggPeek"><span class="eggShape"></span><span class="peekHead"></span></div>';
+    return '<div class="v38icon '+cls+'"><span class="tail"></span><span class="body"></span><span class="belly"></span><span class="head"></span><span class="eye"></span><span class="leg"></span></div>';
+  }
+  function v38JapaneseStages(){
+    RexGame.dinoStages=[
+      {name:'たまご',icon:'🥚',xp:0,cls:'eggFull'},
+      {name:'ひび',icon:'🥚',xp:40,cls:'eggCrack'},
+      {name:'顔を出す',icon:'🐣',xp:100,cls:'eggPeek'},
+      {name:'赤ちゃん',icon:'🧡',xp:200,cls:'rexBaby'},
+      {name:'子ども',icon:'🧡',xp:380,cls:'rexKid'},
+      {name:'青年',icon:'🧡',xp:650,cls:'rexTeen'},
+      {name:'大人',icon:'🧡',xp:1000,cls:'rexAdult'}
+    ];
+  }
+  function v38RenderGrowthHard(){
+    v38JapaneseStages();
+    var wrap=document.getElementById('growth');
+    if(!wrap) return;
+    var cur=RexGame.currentStage(score).index;
+    wrap.innerHTML=RexGame.dinoStages.map(function(s,i){
+      return '<div class="growStep '+(cur===i?'active':'')+'">'+
+        '<div class="v38IconWrap">'+v38GrowthIcon(s.cls)+'</div>'+
+        '<div class="v38Num">'+(i+1)+'</div>'+
+        '<div class="v38Name">'+s.name+'</div>'+
+        '<div class="mini">Lv.'+(i+1)+'</div>'+
+      '</div>';
+    }).join('');
+  }
+  function v38RenderMascotHard(){
+    v38JapaneseStages();
+    var info=RexGame.currentStage(score), s=info.stage;
+    var card=document.getElementById('heroMascotCard');
+    if(card){ card.innerHTML=v38GrowthIcon(s.cls); return; }
+    var d=document.getElementById('dino');
+    if(d){ d.className='rexArt '+s.cls; }
+  }
+  var oldUpdateStats = updateStats;
+  updateStats = function(){
+    oldUpdateStats();
+    v38RenderGrowthHard();
+    v38RenderMascotHard();
+    var rn=document.getElementById('rankName');
+    if(rn){ rn.textContent=RexGame.currentStage(score).stage.name; }
+  };
 
   try{ init(); }
   catch(e){ var box=$('bootError'); if(box){ box.style.display='block'; box.textContent='起動に失敗しました。\n'+(e.message||e); } console.error(e); }

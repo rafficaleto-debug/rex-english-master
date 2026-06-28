@@ -180,7 +180,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @keyframes rexMapBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 
 
-/* v37: simpler home + settings split */
+/* v38: simpler home + settings split */
 .hero .dinoStage{
   display:none!important;
 }
@@ -241,7 +241,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 #voice.hidden{display:none!important}
 
 
-/* v37 fixed from v36: orange Rex growth only, no layout break */
+/* v38 fixed from v36: orange Rex growth only, no layout break */
 .hero .dinoStage{
   display:block!important;
   min-height:96px!important;
@@ -474,3 +474,113 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .growthStageIcon.rexKid{transform:scale(.92)}
 .growthStageIcon.rexTeen{transform:scale(1.0)}
 .growthStageIcon.rexAdult{transform:scale(1.08)}
+
+
+/* v38 hard fix: force Japanese compact growth map and orange icons */
+.growStep{
+  min-width:82px!important;
+  padding:8px 5px!important;
+  overflow:hidden!important;
+}
+.growStep > div:first-child:not(.v38IconWrap){
+  display:none!important;
+}
+.v38IconWrap{
+  height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.v38Num{font-size:11px;color:#1f2b4d;font-weight:900;line-height:1}
+.v38Name{font-size:13px;color:#1f2b4d;font-weight:1000;line-height:1.25;white-space:nowrap}
+.v38icon{
+  width:52px;
+  height:48px;
+  position:relative;
+  display:block;
+  margin:0 auto;
+  filter:drop-shadow(0 4px 4px rgba(80,60,70,.14));
+}
+.v38icon .eggShape{
+  position:absolute;
+  left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  width:30px;height:40px;
+  border-radius:52% 48% 46% 54%;
+  background:linear-gradient(145deg,#fff8df,#ffd990);
+  border:2px solid #f4b45a;
+  box-shadow:inset -5px -6px 0 rgba(255,174,74,.16);
+}
+.v38icon.eggFull .eggShape:after{
+  content:"";
+  position:absolute;
+  left:7px;top:8px;width:7px;height:9px;background:rgba(239,166,80,.25);border-radius:50%;
+  box-shadow:10px 14px 0 rgba(239,166,80,.25),16px 3px 0 rgba(239,166,80,.22);
+}
+.v38icon.eggCrack .crackLine{
+  position:absolute;
+  left:19px;top:12px;
+  width:18px;height:26px;
+  background:
+    linear-gradient(120deg, transparent 0 43%, #d69a4c 44% 49%, transparent 50%),
+    linear-gradient(60deg, transparent 0 43%, #d69a4c 44% 49%, transparent 50%);
+}
+.v38icon.eggPeek .eggShape{top:60%}
+.v38icon.eggPeek .peekHead{
+  position:absolute;
+  left:18px;top:1px;width:29px;height:25px;
+  background:linear-gradient(145deg,#ff9c4a,#ef642d);
+  border-radius:54% 58% 48% 46%;
+  z-index:3;
+}
+.v38icon.eggPeek .peekHead:before{
+  content:"";
+  position:absolute;left:1px;top:14px;width:21px;height:10px;background:#ffa75f;border-radius:46%;
+}
+.v38icon.eggPeek .peekHead:after{
+  content:"";
+  position:absolute;left:21px;top:5px;width:8px;height:10px;background:white;border-radius:50%;
+  box-shadow:inset 3px 2px 0 #241a1a;
+}
+.v38icon .body,.v38icon .belly,.v38icon .head,.v38icon .eye,.v38icon .tail,.v38icon .leg{display:none}
+.v38icon.rexBaby .body,.v38icon.rexKid .body,.v38icon.rexTeen .body,.v38icon.rexAdult .body,
+.v38icon.rexBaby .belly,.v38icon.rexKid .belly,.v38icon.rexTeen .belly,.v38icon.rexAdult .belly,
+.v38icon.rexBaby .head,.v38icon.rexKid .head,.v38icon.rexTeen .head,.v38icon.rexAdult .head,
+.v38icon.rexBaby .eye,.v38icon.rexKid .eye,.v38icon.rexTeen .eye,.v38icon.rexAdult .eye,
+.v38icon.rexBaby .tail,.v38icon.rexKid .tail,.v38icon.rexTeen .tail,.v38icon.rexAdult .tail,
+.v38icon.rexBaby .leg,.v38icon.rexKid .leg,.v38icon.rexTeen .leg,.v38icon.rexAdult .leg{display:block}
+.v38icon .head{
+  position:absolute;left:7px;top:7px;width:34px;height:29px;
+  background:linear-gradient(145deg,#ff9c4a,#ef642d);
+  border-radius:54% 58% 48% 46%;
+}
+.v38icon .head:before{
+  content:"";
+  position:absolute;left:1px;top:16px;width:25px;height:12px;background:#ffa75f;border-radius:46%;
+}
+.v38icon .eye{
+  position:absolute;left:31px;top:13px;width:9px;height:11px;background:white;border-radius:50%;z-index:3;
+}
+.v38icon .eye:after{
+  content:"";position:absolute;left:3px;top:3px;width:4px;height:6px;background:#241a1a;border-radius:50%;
+}
+.v38icon .body{
+  position:absolute;left:25px;bottom:7px;width:28px;height:23px;background:linear-gradient(145deg,#ff963f,#ef642d);border-radius:52%;
+}
+.v38icon .belly{
+  position:absolute;left:34px;bottom:10px;width:11px;height:14px;background:#ffd8a5;border-radius:50%;
+}
+.v38icon .tail{
+  position:absolute;right:0;bottom:15px;width:19px;height:7px;background:#ef642d;border-radius:70% 10% 60% 20%;transform:rotate(18deg);
+}
+.v38icon .leg{
+  position:absolute;left:30px;bottom:1px;width:8px;height:10px;background:#d94f29;border-radius:6px;
+  box-shadow:13px 0 0 #d94f29;
+}
+.v38icon.rexBaby{transform:scale(.82)}
+.v38icon.rexKid{transform:scale(.92)}
+.v38icon.rexTeen{transform:scale(1.0)}
+.v38icon.rexAdult{transform:scale(1.08)}
+#heroMascotCard .v38icon{
+  transform:scale(1.25);
+}
