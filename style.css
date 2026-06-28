@@ -38,7 +38,7 @@ select,input,textarea{border:2px solid #ffd7ab;border-radius:18px;padding:11px;b
 @media(max-width:720px){.dinoWorld{grid-template-columns:1fr}.dinoStage{min-height:300px}.statsGrid{grid-template-columns:repeat(4,1fr)}.big{font-size:25px}.footer button{font-size:10px}.heroPanel{margin-top:4px}}
 
 
-/* v21 daily dashboard and evolution map */
+/* v41 daily dashboard and evolution map */
 .dailyGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .dailyBox{background:linear-gradient(180deg,#fff,#fff8ec);border:2px solid #ffd7ab;border-radius:22px;padding:14px;text-align:center;font-weight:1000}
 .dailyBox b{display:block;font-size:28px;color:#8a3ffc}
@@ -64,7 +64,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:.2}}
 
 
-/* v22 update manager */
+/* v41 update manager */
 #updateGuideText{min-height:180px;margin-top:12px}
 .footer{grid-template-columns:repeat(8,1fr)}
 .footer button{font-size:10px}
@@ -72,13 +72,13 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .parentTip{background:#f5fbff;border:1px solid #bae6fd;border-radius:18px;padding:10px;margin:10px 0}
 
 
-/* v23 voice settings */
+/* v41 voice settings */
 .voiceGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:12px}
 .voiceGrid label{font-size:12px;color:var(--muted);font-weight:900}
 .voiceGrid select{width:100%;margin-top:4px}
 
 
-/* v30 OpenAI voice UI */
+/* v41 OpenAI voice UI */
 .openaiVoiceBox{background:linear-gradient(180deg,#fff,#f7fbff);border:2px solid #bae6fd;border-radius:22px;padding:14px;margin-top:14px}
 .openaiVoiceBox h3{margin:0 0 10px;font-size:17px}
 .openaiVoiceBox input[type="text"], .openaiVoiceBox input:not([type]){width:100%}
@@ -86,12 +86,12 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @media(max-width:720px){.footer{grid-template-columns:repeat(9,1fr)}.footer button{font-size:9px}}
 
 
-/* v31 voice engine switch */
+/* v41 voice engine switch */
 .engineSwitch{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
 .engineSwitch .pill{cursor:pointer}
 
 
-/* v32 private lock */
+/* v41 private lock */
 .appLock{position:fixed;inset:0;z-index:999;background:linear-gradient(160deg,#b9eeff,#fff8bf 50%,#bff4ce);display:flex;align-items:center;justify-content:center;padding:18px}
 .appLock.hidden{display:none!important}
 .lockCard{background:rgba(255,255,255,.96);border:3px solid #ffd7ab;border-radius:30px;padding:22px;max-width:390px;width:100%;box-shadow:0 20px 60px rgba(50,50,90,.22);text-align:center}
@@ -102,7 +102,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @media(max-width:720px){.footer{grid-template-columns:repeat(10,1fr)}.footer button{font-size:9px;padding:9px 1px}}
 
 
-/* v33 lock screen fix + cute orange Rex */
+/* v41 lock screen fix + cute orange Rex */
 .lockCard{position:relative;overflow:visible;padding-top:78px}
 .lockRexArt{
   position:absolute;
@@ -131,14 +131,14 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .lockRex{display:none!important}
 
 
-/* v34 Safari lock button reliability */
+/* v41 Safari lock button reliability */
 .lockCard button{position:relative;z-index:1001;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 #loginPanel,#setupPanel{position:relative;z-index:1000}
 #setupPanel.hidden{display:none!important}
 #loginPanel.hidden{display:none!important}
 
 
-/* v35 settings hub + orange Rex map */
+/* v41 settings hub + orange Rex map */
 .footer{grid-template-columns:repeat(6,1fr)!important}
 .footer button{font-size:11px!important}
 .settingsGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
@@ -180,7 +180,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @keyframes rexMapBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 
 
-/* v40: simpler home + settings split */
+/* v41: simpler home + settings split */
 .hero .dinoStage{
   display:none!important;
 }
@@ -241,16 +241,16 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 #voice.hidden{display:none!important}
 
 
-/* v40 visual exact-style growth map */
+/* v41: actual image sprite version based on approved 7-stage art */
 .hero .dinoStage{display:none!important}
-.currentRexRow.v40{
+.currentRexRow.imageVersion{
   display:grid;
   grid-template-columns:176px 1fr;
   gap:18px;
   align-items:center;
   margin-bottom:18px;
 }
-.currentRexVisual{
+.currentRexVisual.imageVersion{
   min-height:156px;
   border-radius:28px;
   background:#fff;
@@ -258,23 +258,25 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   align-items:center;
   justify-content:center;
   box-shadow:0 12px 28px rgba(80,80,120,.10);
+  overflow:hidden;
 }
-.rexSvg{
-  width:100%;
-  height:100%;
+.rexSprite{
   display:block;
+  object-fit:contain;
+  user-select:none;
+  -webkit-user-select:none;
+  pointer-events:none;
 }
-.rexSvg.hero{
-  width:132px;
-  height:132px;
-  animation:v40Float 2.4s ease-in-out infinite;
+.rexSprite.hero{
+  width:146px;
+  height:146px;
+  animation:v41Float 2.4s ease-in-out infinite;
 }
-.rexSvg.stage{
-  width:74px;
-  height:74px;
+@keyframes v41Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.rexSprite.stage{
+  width:78px;
+  height:78px;
 }
-@keyframes v40Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-
 .growStep{
   min-width:92px!important;
   padding:9px 5px 10px!important;
@@ -288,7 +290,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   background:#fff!important;
 }
 .growStep .icon{
-  height:76px!important;
+  height:82px!important;
   font-size:0!important;
   display:flex!important;
   align-items:center!important;
@@ -303,17 +305,18 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   align-items:center;
   justify-content:center;
   color:white;
+  background:#ff8a00;
   font-weight:1000;
   font-size:15px;
   line-height:1;
 }
-.stageBadge.eggFull{background:#ff6f97}
-.stageBadge.eggCrack{background:#ffb31c}
-.stageBadge.eggPeek{background:#73c84c}
-.stageBadge.rexBaby{background:#55b7e9}
-.stageBadge.rexKid{background:#a96ee6}
-.stageBadge.rexTeen{background:#ff8a00}
-.stageBadge.rexAdult{background:#f55773}
+.growStep:nth-child(1) .stageBadge{background:#ff6f97}
+.growStep:nth-child(2) .stageBadge{background:#ffb31c}
+.growStep:nth-child(3) .stageBadge{background:#73c84c}
+.growStep:nth-child(4) .stageBadge{background:#55b7e9}
+.growStep:nth-child(5) .stageBadge{background:#a96ee6}
+.growStep:nth-child(6) .stageBadge{background:#ff8a00}
+.growStep:nth-child(7) .stageBadge{background:#f55773}
 .growStep .stageName{
   font-size:14px!important;
   font-weight:1000!important;
@@ -324,9 +327,6 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .growStep .mini{
   font-size:12px!important;
   font-weight:1000!important;
-}
-.growthWrap h2, .hero h2, #growthTitle{
-  font-weight:1000;
 }
 #growth{
   gap:7px!important;

@@ -1,7 +1,7 @@
 
 (function(){
-  var APP_VERSION='40.0.0';
-  var STORE_KEY='rexEnglishMaster.profile.v1';
+  var APP_VERSION='41.0.0';
+  var STORE_KEY='rexEnglishMaster.profile.v41';
   var defaultProfile={
     schemaVersion:1, appVersion:APP_VERSION, contentVersion:window.REX_CONTENT_VERSION || 'unknown',
     added:[], weak:[], fav:[], mistakes:[],
@@ -15,12 +15,12 @@
     var p=readJson(STORE_KEY,null);
     if(p && p.schemaVersion){ return p; }
     var migrated=clone(defaultProfile);
-    migrated.added=readJson('added_v8', readJson('added_v7', []));
-    migrated.weak=readJson('weak_v8', readJson('weak_v7', []));
-    migrated.fav=readJson('fav_v8', readJson('fav_v7', []));
-    migrated.mistakes=readJson('mistakes_v8', readJson('mistakes_v7', []));
-    migrated.score=readJson('score_v8', readJson('score_v7', defaultProfile.score));
-    migrated.chats=readJson('chats_v8', []);
+    migrated.added=readJson('added_v41', readJson('added_v41', []));
+    migrated.weak=readJson('weak_v41', readJson('weak_v41', []));
+    migrated.fav=readJson('fav_v41', readJson('fav_v41', []));
+    migrated.mistakes=readJson('mistakes_v41', readJson('mistakes_v41', []));
+    migrated.score=readJson('score_v41', readJson('score_v41', defaultProfile.score));
+    migrated.chats=readJson('chats_v41', []);
     saveProfile(migrated);
     return migrated;
   }

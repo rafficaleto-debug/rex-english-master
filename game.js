@@ -1,13 +1,13 @@
 
 (function(){
   var dinoStages=[
-    {name:'たまご',icon:'🥚',xp:0,cls:'eggFull'},
-    {name:'ひび',icon:'🥚',xp:40,cls:'eggCrack'},
-    {name:'顔を出す',icon:'🐣',xp:100,cls:'eggPeek'},
-    {name:'赤ちゃん',icon:'🧡',xp:200,cls:'rexBaby'},
-    {name:'子ども',icon:'🧡',xp:380,cls:'rexKid'},
-    {name:'青年',icon:'🧡',xp:650,cls:'rexTeen'},
-    {name:'大人',icon:'🧡',xp:1000,cls:'rexAdult'}
+    {name:'たまご',icon:'🥚',xp:0,cls:'stage1',img:'assets/rex-stage-1.png'},
+    {name:'ひび',icon:'🥚',xp:40,cls:'stage2',img:'assets/rex-stage-2.png'},
+    {name:'顔を出す',icon:'🐣',xp:100,cls:'stage3',img:'assets/rex-stage-3.png'},
+    {name:'赤ちゃん',icon:'🧡',xp:200,cls:'stage4',img:'assets/rex-stage-4.png'},
+    {name:'子ども',icon:'🧡',xp:380,cls:'stage5',img:'assets/rex-stage-5.png'},
+    {name:'青年',icon:'🧡',xp:650,cls:'stage6',img:'assets/rex-stage-6.png'},
+    {name:'大人',icon:'🧡',xp:1000,cls:'stage7',img:'assets/rex-stage-7.png'}
   ];
   var lines=[
     ['Hi!','やあ！'],['Good job!','すごい！よくがんばったね！'],['You can do it!','きみならできるよ！'],
