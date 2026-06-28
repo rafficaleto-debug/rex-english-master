@@ -38,7 +38,7 @@ select,input,textarea{border:2px solid #ffd7ab;border-radius:18px;padding:11px;b
 @media(max-width:720px){.dinoWorld{grid-template-columns:1fr}.dinoStage{min-height:300px}.statsGrid{grid-template-columns:repeat(4,1fr)}.big{font-size:25px}.footer button{font-size:10px}.heroPanel{margin-top:4px}}
 
 
-/* v46 daily dashboard and evolution map */
+/* v47 daily dashboard and evolution map */
 .dailyGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .dailyBox{background:linear-gradient(180deg,#fff,#fff8ec);border:2px solid #ffd7ab;border-radius:22px;padding:14px;text-align:center;font-weight:1000}
 .dailyBox b{display:block;font-size:28px;color:#8a3ffc}
@@ -64,7 +64,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:.2}}
 
 
-/* v46 update manager */
+/* v47 update manager */
 #updateGuideText{min-height:180px;margin-top:12px}
 .footer{grid-template-columns:repeat(8,1fr)}
 .footer button{font-size:10px}
@@ -72,13 +72,13 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .parentTip{background:#f5fbff;border:1px solid #bae6fd;border-radius:18px;padding:10px;margin:10px 0}
 
 
-/* v46 voice settings */
+/* v47 voice settings */
 .voiceGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:12px}
 .voiceGrid label{font-size:12px;color:var(--muted);font-weight:900}
 .voiceGrid select{width:100%;margin-top:4px}
 
 
-/* v46 OpenAI voice UI */
+/* v47 OpenAI voice UI */
 .openaiVoiceBox{background:linear-gradient(180deg,#fff,#f7fbff);border:2px solid #bae6fd;border-radius:22px;padding:14px;margin-top:14px}
 .openaiVoiceBox h3{margin:0 0 10px;font-size:17px}
 .openaiVoiceBox input[type="text"], .openaiVoiceBox input:not([type]){width:100%}
@@ -86,12 +86,12 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @media(max-width:720px){.footer{grid-template-columns:repeat(9,1fr)}.footer button{font-size:9px}}
 
 
-/* v46 voice engine switch */
+/* v47 voice engine switch */
 .engineSwitch{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
 .engineSwitch .pill{cursor:pointer}
 
 
-/* v46 private lock */
+/* v47 private lock */
 .appLock{position:fixed;inset:0;z-index:999;background:linear-gradient(160deg,#b9eeff,#fff8bf 50%,#bff4ce);display:flex;align-items:center;justify-content:center;padding:18px}
 .appLock.hidden{display:none!important}
 .lockCard{background:rgba(255,255,255,.96);border:3px solid #ffd7ab;border-radius:30px;padding:22px;max-width:390px;width:100%;box-shadow:0 20px 60px rgba(50,50,90,.22);text-align:center}
@@ -102,7 +102,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @media(max-width:720px){.footer{grid-template-columns:repeat(10,1fr)}.footer button{font-size:9px;padding:9px 1px}}
 
 
-/* v46 lock screen fix + cute orange Rex */
+/* v47 lock screen fix + cute orange Rex */
 .lockCard{position:relative;overflow:visible;padding-top:78px}
 .lockRexArt{
   position:absolute;
@@ -131,14 +131,14 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .lockRex{display:none!important}
 
 
-/* v46 Safari lock button reliability */
+/* v47 Safari lock button reliability */
 .lockCard button{position:relative;z-index:1001;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 #loginPanel,#setupPanel{position:relative;z-index:1000}
 #setupPanel.hidden{display:none!important}
 #loginPanel.hidden{display:none!important}
 
 
-/* v46 settings hub + orange Rex map */
+/* v47 settings hub + orange Rex map */
 .footer{grid-template-columns:repeat(6,1fr)!important}
 .footer button{font-size:11px!important}
 .settingsGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
@@ -180,7 +180,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @keyframes rexMapBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 
 
-/* v46: simpler home + settings split */
+/* v47: simpler home + settings split */
 .hero .dinoStage{
   display:none!important;
 }
@@ -241,7 +241,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 #voice.hidden{display:none!important}
 
 
-/* v46: actual image sprite version based on approved 7-stage art */
+/* v47: actual image sprite version based on approved 7-stage art */
 .hero .dinoStage{display:none!important}
 .currentRexRow.imageVersion{
   display:grid;
@@ -270,9 +270,9 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .rexSprite.hero{
   width:146px;
   height:146px;
-  animation:v46Float 2.4s ease-in-out infinite;
+  animation:v47Float 2.4s ease-in-out infinite;
 }
-@keyframes v46Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes v47Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 .rexSprite.stage{
   width:78px;
   height:78px;
@@ -334,7 +334,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 }
 
 
-/* v46 no-assets: embedded image sprites */
+/* v47 no-assets: embedded image sprites */
 .hero .dinoStage{display:none!important}
 .currentRexRow.imageVersion{
   display:grid;
@@ -363,9 +363,9 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .rexSprite.hero{
   width:146px;
   height:146px;
-  animation:v46Float 2.4s ease-in-out infinite;
+  animation:v47Float 2.4s ease-in-out infinite;
 }
-@keyframes v46Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes v47Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 .rexSprite.stage{
   width:78px;
   height:78px;
@@ -427,7 +427,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 }
 
 
-/* v46: remove strange frame around top egg/Rex, match approved look */
+/* v47: remove strange frame around top egg/Rex, match approved look */
 .hero .dinoStage{display:none!important}
 .currentRexRow.imageVersion{
   display:grid!important;
@@ -454,10 +454,10 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   width:245px!important;
   height:245px!important;
   object-fit:contain!important;
-  animation:v46Float 2.4s ease-in-out infinite!important;
+  animation:v47Float 2.4s ease-in-out infinite!important;
   filter:drop-shadow(0 10px 10px rgba(80,60,70,.13));
 }
-@keyframes v46Float{
+@keyframes v47Float{
   0%,100%{transform:translateY(0) scale(1)}
   50%{transform:translateY(-4px) scale(1)}
 }
@@ -550,7 +550,8 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 }
 
 
-/* v46: restore image display and center egg/Rex without clipping */
+/* v47: root PNG image version to prevent base64 corruption */
+.hero .dinoStage{display:none!important}
 .currentRexRow.imageVersion{
   display:grid!important;
   grid-template-columns:40% 1fr!important;
@@ -559,8 +560,8 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   margin-bottom:18px!important;
 }
 .currentRexVisual.imageVersion{
-  min-height:235px!important;
-  height:235px!important;
+  min-height:230px!important;
+  height:230px!important;
   border-radius:28px!important;
   background:transparent!important;
   box-shadow:none!important;
@@ -572,32 +573,84 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   overflow:visible!important;
   padding:0!important;
 }
+.rexSprite{
+  display:block!important;
+  object-fit:contain!important;
+  user-select:none;
+  -webkit-user-select:none;
+  pointer-events:none;
+}
 .currentRexVisual.imageVersion .rexSprite.hero{
-  width:200px!important;
-  height:200px!important;
+  width:190px!important;
+  height:190px!important;
   max-width:100%!important;
   max-height:100%!important;
-  object-fit:contain!important;
   object-position:center center!important;
-  display:block!important;
-  animation:v46Float 2.4s ease-in-out infinite!important;
+  animation:v47Float 2.4s ease-in-out infinite!important;
   filter:drop-shadow(0 10px 10px rgba(80,60,70,.13));
 }
-@keyframes v46Float{
+@keyframes v47Float{
   0%,100%{transform:translateY(0)}
   50%{transform:translateY(-4px)}
 }
+.rexSprite.stage{
+  width:82px!important;
+  height:82px!important;
+}
+.growStep{
+  min-width:92px!important;
+  padding:9px 5px 10px!important;
+  border-radius:18px!important;
+  background:rgba(255,255,255,.72)!important;
+  border:1px solid rgba(255,186,112,.22)!important;
+}
+.growStep.active{
+  border:2px solid #ff62b2!important;
+  box-shadow:0 0 0 5px rgba(255,98,178,.08)!important;
+  background:#fff!important;
+}
+.growStep .icon{
+  height:86px!important;
+  font-size:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.stageBadge{
+  width:27px;
+  height:27px;
+  margin:2px auto 2px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  background:#ff8a00;
+  font-weight:1000;
+  font-size:15px;
+  line-height:1;
+}
+.growStep:nth-child(1) .stageBadge{background:#ff6f97}
+.growStep:nth-child(2) .stageBadge{background:#ffb31c}
+.growStep:nth-child(3) .stageBadge{background:#73c84c}
+.growStep:nth-child(4) .stageBadge{background:#55b7e9}
+.growStep:nth-child(5) .stageBadge{background:#a96ee6}
+.growStep:nth-child(6) .stageBadge{background:#ff8a00}
+.growStep:nth-child(7) .stageBadge{background:#f55773}
+.growStep .stageName{
+  font-size:14px!important;
+  font-weight:1000!important;
+  color:#25304f!important;
+  line-height:1.15!important;
+  white-space:nowrap!important;
+}
+.growStep .mini{
+  font-size:12px!important;
+  font-weight:1000!important;
+}
+#growth{gap:7px!important;padding:4px 1px 8px!important}
 @media(max-width:480px){
-  .currentRexRow.imageVersion{
-    grid-template-columns:42% 1fr!important;
-    gap:12px!important;
-  }
-  .currentRexVisual.imageVersion{
-    min-height:210px!important;
-    height:210px!important;
-  }
-  .currentRexVisual.imageVersion .rexSprite.hero{
-    width:185px!important;
-    height:185px!important;
-  }
+  .currentRexRow.imageVersion{grid-template-columns:42% 1fr!important;gap:12px!important}
+  .currentRexVisual.imageVersion{min-height:210px!important;height:210px!important}
+  .currentRexVisual.imageVersion .rexSprite.hero{width:180px!important;height:180px!important}
 }
