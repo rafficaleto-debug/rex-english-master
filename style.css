@@ -38,7 +38,7 @@ select,input,textarea{border:2px solid #ffd7ab;border-radius:18px;padding:11px;b
 @media(max-width:720px){.dinoWorld{grid-template-columns:1fr}.dinoStage{min-height:300px}.statsGrid{grid-template-columns:repeat(4,1fr)}.big{font-size:25px}.footer button{font-size:10px}.heroPanel{margin-top:4px}}
 
 
-/* v42 daily dashboard and evolution map */
+/* v43 daily dashboard and evolution map */
 .dailyGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .dailyBox{background:linear-gradient(180deg,#fff,#fff8ec);border:2px solid #ffd7ab;border-radius:22px;padding:14px;text-align:center;font-weight:1000}
 .dailyBox b{display:block;font-size:28px;color:#8a3ffc}
@@ -64,7 +64,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:.2}}
 
 
-/* v42 update manager */
+/* v43 update manager */
 #updateGuideText{min-height:180px;margin-top:12px}
 .footer{grid-template-columns:repeat(8,1fr)}
 .footer button{font-size:10px}
@@ -72,13 +72,13 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .parentTip{background:#f5fbff;border:1px solid #bae6fd;border-radius:18px;padding:10px;margin:10px 0}
 
 
-/* v42 voice settings */
+/* v43 voice settings */
 .voiceGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:12px}
 .voiceGrid label{font-size:12px;color:var(--muted);font-weight:900}
 .voiceGrid select{width:100%;margin-top:4px}
 
 
-/* v42 OpenAI voice UI */
+/* v43 OpenAI voice UI */
 .openaiVoiceBox{background:linear-gradient(180deg,#fff,#f7fbff);border:2px solid #bae6fd;border-radius:22px;padding:14px;margin-top:14px}
 .openaiVoiceBox h3{margin:0 0 10px;font-size:17px}
 .openaiVoiceBox input[type="text"], .openaiVoiceBox input:not([type]){width:100%}
@@ -86,12 +86,12 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @media(max-width:720px){.footer{grid-template-columns:repeat(9,1fr)}.footer button{font-size:9px}}
 
 
-/* v42 voice engine switch */
+/* v43 voice engine switch */
 .engineSwitch{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
 .engineSwitch .pill{cursor:pointer}
 
 
-/* v42 private lock */
+/* v43 private lock */
 .appLock{position:fixed;inset:0;z-index:999;background:linear-gradient(160deg,#b9eeff,#fff8bf 50%,#bff4ce);display:flex;align-items:center;justify-content:center;padding:18px}
 .appLock.hidden{display:none!important}
 .lockCard{background:rgba(255,255,255,.96);border:3px solid #ffd7ab;border-radius:30px;padding:22px;max-width:390px;width:100%;box-shadow:0 20px 60px rgba(50,50,90,.22);text-align:center}
@@ -102,7 +102,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @media(max-width:720px){.footer{grid-template-columns:repeat(10,1fr)}.footer button{font-size:9px;padding:9px 1px}}
 
 
-/* v42 lock screen fix + cute orange Rex */
+/* v43 lock screen fix + cute orange Rex */
 .lockCard{position:relative;overflow:visible;padding-top:78px}
 .lockRexArt{
   position:absolute;
@@ -131,14 +131,14 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .lockRex{display:none!important}
 
 
-/* v42 Safari lock button reliability */
+/* v43 Safari lock button reliability */
 .lockCard button{position:relative;z-index:1001;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 #loginPanel,#setupPanel{position:relative;z-index:1000}
 #setupPanel.hidden{display:none!important}
 #loginPanel.hidden{display:none!important}
 
 
-/* v42 settings hub + orange Rex map */
+/* v43 settings hub + orange Rex map */
 .footer{grid-template-columns:repeat(6,1fr)!important}
 .footer button{font-size:11px!important}
 .settingsGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
@@ -180,7 +180,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @keyframes rexMapBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 
 
-/* v42: simpler home + settings split */
+/* v43: simpler home + settings split */
 .hero .dinoStage{
   display:none!important;
 }
@@ -241,7 +241,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 #voice.hidden{display:none!important}
 
 
-/* v42: actual image sprite version based on approved 7-stage art */
+/* v43: actual image sprite version based on approved 7-stage art */
 .hero .dinoStage{display:none!important}
 .currentRexRow.imageVersion{
   display:grid;
@@ -270,9 +270,9 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .rexSprite.hero{
   width:146px;
   height:146px;
-  animation:v42Float 2.4s ease-in-out infinite;
+  animation:v43Float 2.4s ease-in-out infinite;
 }
-@keyframes v42Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes v43Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 .rexSprite.stage{
   width:78px;
   height:78px;
@@ -334,7 +334,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 }
 
 
-/* v42 no-assets: embedded image sprites */
+/* v43 no-assets: embedded image sprites */
 .hero .dinoStage{display:none!important}
 .currentRexRow.imageVersion{
   display:grid;
@@ -363,9 +363,9 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .rexSprite.hero{
   width:146px;
   height:146px;
-  animation:v42Float 2.4s ease-in-out infinite;
+  animation:v43Float 2.4s ease-in-out infinite;
 }
-@keyframes v42Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes v43Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 .rexSprite.stage{
   width:78px;
   height:78px;
@@ -424,4 +424,68 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 #growth{
   gap:7px!important;
   padding:4px 1px 8px!important;
+}
+
+
+/* v43: top current Rex visual matched to approved mockup */
+.currentRexRow.imageVersion{
+  display:grid!important;
+  grid-template-columns:38% 1fr!important;
+  gap:18px!important;
+  align-items:center!important;
+  margin-bottom:18px!important;
+}
+.currentRexVisual.imageVersion{
+  min-height:170px!important;
+  height:170px!important;
+  border-radius:28px!important;
+  background:rgba(255,255,255,.92)!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  box-shadow:0 12px 28px rgba(80,80,120,.10)!important;
+  overflow:hidden!important;
+  padding:0!important;
+}
+.currentRexVisual.imageVersion .rexSprite.hero{
+  width:168px!important;
+  height:168px!important;
+  object-fit:contain!important;
+  transform:none!important;
+}
+.currentRexVisual.imageVersion .rexSprite.hero[src^="data:image"]{
+  animation:v43Float 2.4s ease-in-out infinite!important;
+}
+@keyframes v43Float{
+  0%,100%{transform:translateY(0) scale(1.08)}
+  50%{transform:translateY(-4px) scale(1.08)}
+}
+
+/* make greeting bubble align like the mockup */
+.currentRexRow.imageVersion #dinoBubble,
+.currentRexRow.imageVersion .bubble{
+  min-height:118px!important;
+  align-self:center!important;
+}
+
+/* stage strip remains compact */
+.rexSprite.stage{
+  width:78px!important;
+  height:78px!important;
+}
+
+/* iPhone narrow tuning */
+@media(max-width:480px){
+  .currentRexRow.imageVersion{
+    grid-template-columns:42% 1fr!important;
+    gap:12px!important;
+  }
+  .currentRexVisual.imageVersion{
+    min-height:162px!important;
+    height:162px!important;
+  }
+  .currentRexVisual.imageVersion .rexSprite.hero{
+    width:160px!important;
+    height:160px!important;
+  }
 }
