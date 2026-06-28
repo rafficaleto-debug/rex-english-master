@@ -180,23 +180,12 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @keyframes rexMapBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 
 
-/* v37: compact top mascot, no big green rex images */
+/* v37: simpler home + settings split */
+.hero .dinoStage{
+  display:none!important;
+}
 .hero .dinoWorld{
   grid-template-columns:1fr!important;
-}
-.hero .dinoStage{
-  min-height:0!important;
-  height:auto!important;
-  background:transparent!important;
-  overflow:visible!important;
-  display:block!important;
-}
-.hero .dinoStage .sun,
-.hero .dinoStage .cloud,
-.hero .dinoStage .volcano,
-.hero .dinoStage .trees,
-.hero .dinoStage .dinoName{
-  display:none!important;
 }
 .hero .heroPanel{
   max-width:720px;
@@ -252,198 +241,236 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 #voice.hidden{display:none!important}
 
 
-/* v37 orange Rex growth system */
+/* v37 fixed from v36: orange Rex growth only, no layout break */
+.hero .dinoStage{
+  display:block!important;
+  min-height:96px!important;
+  height:96px!important;
+  background:transparent!important;
+  overflow:visible!important;
+}
+.hero .dinoStage .sun,
+.hero .dinoStage .cloud,
+.hero .dinoStage .volcano,
+.hero .dinoStage .trees,
+.hero .dinoStage .dinoName{
+  display:none!important;
+}
+.hero .dinoWorld{
+  grid-template-columns:1fr!important;
+}
+.hero .heroPanel{
+  max-width:720px;
+  margin:0 auto;
+}
 .hero .rexArt{
-  position:static!important;
+  position:relative!important;
   left:auto!important;
   bottom:auto!important;
   transform:none!important;
-  width:126px!important;
-  height:112px!important;
-  margin:0 auto 8px;
-  animation:none!important;
+  width:92px!important;
+  height:84px!important;
+  margin:0 0 8px 24px!important;
   filter:drop-shadow(0 8px 8px rgba(80,60,70,.16));
+  animation:none!important;
 }
-.hero .dinoStage{
+
+/* Hide old Rex parts by default for compact mascot */
+.hero .rexArt .rexTail,
+.hero .rexArt .rexBody,
+.hero .rexArt .rexBelly,
+.hero .rexArt .rexHead,
+.hero .rexArt .rexArm,
+.hero .rexArt .rexLeg,
+.hero .rexArt .rexSpot,
+.hero .rexArt .sparkles,
+.hero .rexArt .eggShell{
   display:none!important;
 }
 
-/* remove green dinosaur emoji/icon styling from old evolution map */
-.evoNode .icon{font-size:0!important}
+/* Compact stage icons */
+.hero .rexArt:before{
+  content:"";
+  position:absolute;
+  left:18px; top:8px;
+  width:46px; height:60px;
+  border-radius:52% 48% 46% 54%;
+  background:linear-gradient(145deg,#fff8df,#ffd990);
+  border:3px solid #f4b45a;
+  box-shadow:inset -7px -8px 0 rgba(255,174,74,.16);
+}
+.hero .rexArt:after{
+  content:"";
+  position:absolute;
+  left:28px; top:21px;
+  width:10px; height:13px;
+  background:rgba(239,166,80,.25);
+  border-radius:50%;
+  box-shadow:16px 19px 0 rgba(239,166,80,.25), 22px 5px 0 rgba(239,166,80,.22);
+}
+.hero .rexArt.eggCrack:before{
+  background:
+    linear-gradient(145deg,#fff8df,#ffd990);
+}
+.hero .rexArt.eggCrack:after{
+  content:"";
+  left:29px; top:20px; width:22px; height:32px;
+  background:
+    linear-gradient(120deg, transparent 0 43%, #d69a4c 44% 49%, transparent 50%),
+    linear-gradient(60deg, transparent 0 43%, #d69a4c 44% 49%, transparent 50%);
+  box-shadow:none;
+  opacity:.9;
+}
+.hero .rexArt.eggPeek .rexHead,
+.hero .rexArt.eggPeek .rexSnout,
+.hero .rexArt.eggPeek .rexEye,
+.hero .rexArt.eggPeek .rexMouth,
+.hero .rexArt.eggPeek .rexCheek{
+  display:block!important;
+}
+.hero .rexArt.eggPeek .rexHead{
+  left:32px!important; top:0!important; width:48px!important; height:40px!important; z-index:3!important;
+}
+.hero .rexArt.eggPeek .rexSnout{left:4px!important;top:22px!important;width:34px!important;height:18px!important}
+.hero .rexArt.eggPeek .rexEye{left:32px!important;top:8px!important;width:13px!important;height:16px!important}
+.hero .rexArt.eggPeek .rexEye:before{left:4px!important;top:4px!important;width:6px!important;height:9px!important}
+.hero .rexArt.eggPeek .rexMouth{left:10px!important;top:32px!important;width:26px!important;height:8px!important}
+.hero .rexArt.eggPeek .rexCheek{display:none!important}
+.hero .rexArt.eggPeek:before{top:28px!important}
+
+/* Compact orange Rex for baby/kid/teen/adult */
+.hero .rexArt.rexBaby:before,
+.hero .rexArt.rexKid:before,
+.hero .rexArt.rexTeen:before,
+.hero .rexArt.rexAdult:before,
+.hero .rexArt.rexBaby:after,
+.hero .rexArt.rexKid:after,
+.hero .rexArt.rexTeen:after,
+.hero .rexArt.rexAdult:after{display:none!important}
+.hero .rexArt.rexBaby .rexTail,
+.hero .rexArt.rexKid .rexTail,
+.hero .rexArt.rexTeen .rexTail,
+.hero .rexArt.rexAdult .rexTail,
+.hero .rexArt.rexBaby .rexBody,
+.hero .rexArt.rexKid .rexBody,
+.hero .rexArt.rexTeen .rexBody,
+.hero .rexArt.rexAdult .rexBody,
+.hero .rexArt.rexBaby .rexBelly,
+.hero .rexArt.rexKid .rexBelly,
+.hero .rexArt.rexTeen .rexBelly,
+.hero .rexArt.rexAdult .rexBelly,
+.hero .rexArt.rexBaby .rexHead,
+.hero .rexArt.rexKid .rexHead,
+.hero .rexArt.rexTeen .rexHead,
+.hero .rexArt.rexAdult .rexHead,
+.hero .rexArt.rexBaby .rexArm,
+.hero .rexArt.rexKid .rexArm,
+.hero .rexArt.rexTeen .rexArm,
+.hero .rexArt.rexAdult .rexArm,
+.hero .rexArt.rexBaby .rexLeg,
+.hero .rexArt.rexKid .rexLeg,
+.hero .rexArt.rexTeen .rexLeg,
+.hero .rexArt.rexAdult .rexLeg{
+  display:block!important;
+}
+.hero .rexArt.rexBaby{transform:scale(.76)!important;transform-origin:left top!important}
+.hero .rexArt.rexKid{transform:scale(.86)!important;transform-origin:left top!important}
+.hero .rexArt.rexTeen{transform:scale(.96)!important;transform-origin:left top!important}
+.hero .rexArt.rexAdult{transform:scale(1.06)!important;transform-origin:left top!important}
+
+/* Growth strip: keep the欄 but make all icons cute orange/egg and Japanese-only labels */
 .evoNode{
   min-width:82px!important;
-  padding:9px 6px!important;
+  padding:8px 5px!important;
 }
-.evoMap{
-  gap:7px!important;
+.evoNode .icon{
+  font-size:0!important;
+  height:48px;
 }
 .evoNode .need{
-  display:none;
+  display:none!important;
 }
-
-.rexStageIcon{
-  width:58px;
-  height:54px;
-  margin:0 auto 5px;
+.growthStageIcon{
+  width:52px;
+  height:48px;
+  margin:0 auto 4px;
   position:relative;
-  filter:drop-shadow(0 5px 5px rgba(80,60,70,.15));
 }
-.rexStageIcon.smallHero{
-  width:84px;
-  height:76px;
-  margin:0;
-}
-
-/* egg */
-.rexStageIcon .egg{
+.growthStageIcon.eggFull:before,
+.growthStageIcon.eggCrack:before,
+.growthStageIcon.eggPeek:before{
+  content:"";
   position:absolute;
-  left:50%;top:50%;
+  left:50%; top:50%;
   transform:translate(-50%,-50%);
-  width:34px;height:45px;
+  width:30px; height:40px;
   border-radius:52% 48% 46% 54%;
   background:linear-gradient(145deg,#fff8df,#ffd990);
   border:2px solid #f4b45a;
   box-shadow:inset -5px -6px 0 rgba(255,174,74,.16);
 }
-.rexStageIcon .egg:after{
+.growthStageIcon.eggFull:after{
   content:"";
   position:absolute;
-  left:7px;top:8px;width:8px;height:11px;
+  left:17px; top:13px;
+  width:7px; height:9px;
   background:rgba(239,166,80,.25);
   border-radius:50%;
-  box-shadow:12px 13px 0 rgba(239,166,80,.25), 17px 2px 0 rgba(239,166,80,.22);
+  box-shadow:10px 14px 0 rgba(239,166,80,.25), 16px 3px 0 rgba(239,166,80,.22);
 }
-.rexStageIcon.crack .egg:before{
+.growthStageIcon.eggCrack:after{
   content:"";
   position:absolute;
-  left:9px;top:11px;width:17px;height:24px;
+  left:17px; top:13px;
+  width:18px;height:24px;
   background:
     linear-gradient(120deg, transparent 0 43%, #d69a4c 44% 49%, transparent 50%),
     linear-gradient(60deg, transparent 0 43%, #d69a4c 44% 49%, transparent 50%);
-  opacity:.85;
 }
-.rexStageIcon.peek .egg{
-  top:60%;
-}
-.rexStageIcon.peek .head{
-  display:block;
+.growthStageIcon.eggPeek .peekHead{
   position:absolute;
-  left:17px;top:4px;
-  width:34px;height:30px;
+  left:18px;top:1px;width:28px;height:24px;
+  background:linear-gradient(145deg,#ff9c4a,#ef642d);
+  border-radius:54% 58% 48% 46%;
+  z-index:3;
+}
+.growthStageIcon.eggPeek .peekHead:before{
+  content:"";
+  position:absolute;left:1px;top:13px;width:20px;height:10px;background:#ffa75f;border-radius:46%;
+}
+.growthStageIcon.eggPeek .peekHead:after{
+  content:"";
+  position:absolute;left:20px;top:5px;width:8px;height:10px;background:white;border-radius:50%;
+  box-shadow:inset 3px 2px 0 #241a1a;
+}
+.growthStageIcon.rexBaby:before,
+.growthStageIcon.rexKid:before,
+.growthStageIcon.rexTeen:before,
+.growthStageIcon.rexAdult:before{
+  content:"";
+  position:absolute;left:22px;bottom:6px;width:26px;height:22px;
+  background:linear-gradient(145deg,#ff963f,#ef642d);
+  border-radius:52%;
+}
+.growthStageIcon.rexBaby:after,
+.growthStageIcon.rexKid:after,
+.growthStageIcon.rexTeen:after,
+.growthStageIcon.rexAdult:after{
+  content:"";
+  position:absolute;left:6px;top:8px;width:32px;height:27px;
   background:linear-gradient(145deg,#ff9c4a,#ef642d);
   border-radius:54% 58% 48% 46%;
 }
-.rexStageIcon.peek .snout{
-  display:block;
-  position:absolute;
-  left:15px;top:19px;
-  width:24px;height:12px;
-  background:#ffa75f;
-  border-radius:46%;
+.growthStageIcon .rexEyeMini{
+  position:absolute;left:31px;top:14px;width:9px;height:11px;background:white;border-radius:50%;z-index:4;
 }
-.rexStageIcon.peek .eye{
-  display:block;
-  position:absolute;
-  left:41px;top:11px;
-  width:10px;height:13px;background:white;border-radius:50%;
+.growthStageIcon .rexEyeMini:after{
+  content:"";position:absolute;left:3px;top:3px;width:4px;height:6px;background:#241a1a;border-radius:50%;
 }
-.rexStageIcon.peek .eye:after{
-  content:"";position:absolute;left:3px;top:3px;width:5px;height:7px;background:#241a1a;border-radius:50%;
+.growthStageIcon .rexTailMini{
+  position:absolute;right:0;bottom:14px;width:18px;height:7px;background:#ef642d;border-radius:70% 10% 60% 20%;transform:rotate(18deg);
 }
-
-/* orange rex */
-.rexStageIcon .body,
-.rexStageIcon .belly,
-.rexStageIcon .head,
-.rexStageIcon .snout,
-.rexStageIcon .eye,
-.rexStageIcon .tail,
-.rexStageIcon .leg{
-  display:none;
-}
-.rexStageIcon.rexBaby .body,
-.rexStageIcon.rexKid .body,
-.rexStageIcon.rexTeen .body,
-.rexStageIcon.rexAdult .body,
-.rexStageIcon.rexBaby .belly,
-.rexStageIcon.rexKid .belly,
-.rexStageIcon.rexTeen .belly,
-.rexStageIcon.rexAdult .belly,
-.rexStageIcon.rexBaby .head,
-.rexStageIcon.rexKid .head,
-.rexStageIcon.rexTeen .head,
-.rexStageIcon.rexAdult .head,
-.rexStageIcon.rexBaby .snout,
-.rexStageIcon.rexKid .snout,
-.rexStageIcon.rexTeen .snout,
-.rexStageIcon.rexAdult .snout,
-.rexStageIcon.rexBaby .eye,
-.rexStageIcon.rexKid .eye,
-.rexStageIcon.rexTeen .eye,
-.rexStageIcon.rexAdult .eye,
-.rexStageIcon.rexBaby .tail,
-.rexStageIcon.rexKid .tail,
-.rexStageIcon.rexTeen .tail,
-.rexStageIcon.rexAdult .tail,
-.rexStageIcon.rexBaby .leg,
-.rexStageIcon.rexKid .leg,
-.rexStageIcon.rexTeen .leg,
-.rexStageIcon.rexAdult .leg{
-  display:block;
-}
-.rexStageIcon .head{
-  position:absolute;left:7px;top:7px;width:34px;height:29px;
-  background:linear-gradient(145deg,#ff9c4a,#ef642d);
-  border-radius:54% 58% 48% 46%;
-}
-.rexStageIcon .snout{
-  position:absolute;left:6px;top:20px;width:25px;height:12px;background:#ffa75f;border-radius:46%;
-}
-.rexStageIcon .eye{
-  position:absolute;left:30px;top:12px;width:10px;height:13px;background:white;border-radius:50%;
-}
-.rexStageIcon .eye:after{
-  content:"";position:absolute;left:3px;top:3px;width:5px;height:7px;background:#241a1a;border-radius:50%;
-}
-.rexStageIcon .body{
-  position:absolute;left:25px;bottom:8px;width:29px;height:24px;background:linear-gradient(145deg,#ff963f,#ef642d);border-radius:52%;
-}
-.rexStageIcon .belly{
-  position:absolute;left:34px;bottom:11px;width:12px;height:15px;background:#ffd8a5;border-radius:50%;
-}
-.rexStageIcon .tail{
-  position:absolute;right:0;bottom:17px;width:20px;height:8px;background:#ef642d;border-radius:70% 10% 60% 20%;transform:rotate(18deg);
-}
-.rexStageIcon .leg{
-  position:absolute;left:30px;bottom:2px;width:9px;height:11px;background:#d94f29;border-radius:6px;
-  box-shadow:14px 0 0 #d94f29;
-}
-
-/* size differences */
-.rexStageIcon.rexBaby{transform:scale(.88)}
-.rexStageIcon.rexKid{transform:scale(.98)}
-.rexStageIcon.rexTeen{transform:scale(1.08)}
-.rexStageIcon.rexAdult{transform:scale(1.18)}
-.evoNode.active .rexStageIcon{animation:rexMapBounce 1.6s ease-in-out infinite}
-.evoNode.locked .rexStageIcon{filter:grayscale(.05) opacity(.75) drop-shadow(0 5px 5px rgba(80,60,70,.12))}
-
-/* mini mascot in top bubble */
-.heroMascotRow{
-  display:grid;
-  grid-template-columns:96px 1fr;
-  gap:10px;
-  align-items:center;
-  margin-bottom:12px;
-}
-.heroMascotCard{
-  background:rgba(255,255,255,.76);
-  border-radius:22px;
-  padding:8px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  min-height:88px;
-}
-.heroMascotCard .rexStageIcon{
-  transform:scale(1.34);
-}
+.growthStageIcon.rexBaby{transform:scale(.82)}
+.growthStageIcon.rexKid{transform:scale(.92)}
+.growthStageIcon.rexTeen{transform:scale(1.0)}
+.growthStageIcon.rexAdult{transform:scale(1.08)}

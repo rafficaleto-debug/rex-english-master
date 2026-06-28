@@ -50,27 +50,6 @@
   function currentDino(){ return RexGame.currentStage(score); }
   function updateDino(){
     var info=currentDino(), s=info.stage, next=info.next, xp=score.xp||0;
-
-    var bubble = $('dinoBubble');
-    if(bubble && !document.getElementById('heroMascotWrap')){
-      var panel = bubble.parentElement;
-      if(panel){
-        var row=document.createElement('div');
-        row.id='heroMascotWrap';
-        row.className='heroMascotRow';
-        var card=document.createElement('div');
-        card.id='heroMascotCard';
-        card.className='heroMascotCard';
-        var bubbleHolder=document.createElement('div');
-        bubbleHolder.id='bubbleHolder';
-        panel.insertBefore(row,bubble);
-        row.appendChild(card);
-        row.appendChild(bubble);
-      }
-    }
-    var cardEl=document.getElementById('heroMascotCard');
-    if(cardEl){ cardEl.innerHTML=rexStageIcon(s.cls,'smallHero'); }
-
     $('rankIcon').textContent=s.icon; $('rankName').textContent=s.name; $('level').textContent=info.index+1;
     $('dino').className='rexArt '+s.cls;
     $('dinoName').textContent=score.name||'レックス';
@@ -82,10 +61,18 @@
     else { $('nextXp').textContent=next.xp-xp; $('xpfill').style.width=Math.max(3,Math.min(100,(xp-s.xp)/(next.xp-s.xp)*100))+'%'; }
     renderGrowth();
   }
+
+  function growthIconHtml(cls){
+    if(cls==='eggFull') return '<div class="growthStageIcon eggFull"></div>';
+    if(cls==='eggCrack') return '<div class="growthStageIcon eggCrack"></div>';
+    if(cls==='eggPeek') return '<div class="growthStageIcon eggPeek"><div class="peekHead"></div></div>';
+    return '<div class="growthStageIcon '+cls+'"><div class="rexTailMini"></div><div class="rexEyeMini"></div></div>';
+  }
+
   function renderGrowth(){
     var cur=currentDino().index;
     $('growth').innerHTML=RexGame.dinoStages.map(function(s,i){
-      return '<div class="growStep '+(cur===i?'active':'')+'"><div style="font-size:28px">'+s.icon+'</div><div>'+s.name+'</div><div class="mini">Lv.'+(i+1)+'</div></div>';
+      return '<div class="growStep '+(cur===i?'active':'')+'"><div class="icon">'+growthIconHtml(s.cls)+'</div><div>'+(i+1)+'</div><div>'+s.name+'</div><div class="mini">Lv.'+(i+1)+'</div></div>';
     }).join('');
   }
   function rexHappy(){ var d=$('dino'); d.classList.remove('happy'); void d.offsetWidth; d.classList.add('happy'); }
@@ -216,21 +203,6 @@
     if($('appVersionLabel')) $('appVersionLabel').textContent='v37';
   }
 
-
-  function rexStageIcon(cls, extraClass){
-    var c = (cls || 'eggFull') + (extraClass ? ' '+extraClass : '');
-    if(cls==='eggFull'){
-      return '<div class="rexStageIcon eggFull '+(extraClass||'')+'"><div class="egg"></div></div>';
-    }
-    if(cls==='eggCrack'){
-      return '<div class="rexStageIcon crack '+(extraClass||'')+'"><div class="egg"></div></div>';
-    }
-    if(cls==='eggPeek'){
-      return '<div class="rexStageIcon peek '+(extraClass||'')+'"><div class="egg"></div><div class="head"></div><div class="snout"></div><div class="eye"></div></div>';
-    }
-    return '<div class="rexStageIcon '+c+'"><div class="tail"></div><div class="body"></div><div class="belly"></div><div class="head"><div class="snout"></div><div class="eye"></div></div><div class="leg"></div></div>';
-  }
-
   function renderDaily(){
     if($('todayCount')) $('todayCount').textContent=score.today||0;
     if($('streakCount')) $('streakCount').textContent=score.streak||0;
@@ -244,8 +216,8 @@
     if(!$('evoMap')) return;
     var cur=currentDino().index;
     $('evoMap').innerHTML=RexGame.dinoStages.map(function(s,i){
-      var cls=i<cur?'done':(i===cur?'active':'locked');
-      return '<div class="evoNode '+cls+'"><div class="icon">'+rexStageIcon(s.cls)+'</div><div>'+(i+1)+'</div><div>'+s.name+'</div></div>';
+      var cls=i<cur?'done':(i===cur?'active':'');
+      return '<div class="evoNode '+cls+'"><div class="icon">'+growthIconHtml(s.cls)+'</div><div>'+s.name+'</div><div class="need">'+s.xp+' XP</div></div>';
     }).join('');
   }
   function confetti(){
