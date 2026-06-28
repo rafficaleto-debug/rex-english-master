@@ -192,7 +192,7 @@
     if($('dataVersionLabel')) $('dataVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
     if($('sentenceCountLabel')) $('sentenceCountLabel').textContent=(window.REX_SENTENCES||[]).length + (added?added.length:0);
     if($('contentVersionLabel')) $('contentVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
-    if($('appVersionLabel')) $('appVersionLabel').textContent='v35';
+    if($('appVersionLabel')) $('appVersionLabel').textContent='v36';
   }
 
   function renderDaily(){
@@ -354,11 +354,11 @@
     var pin=($('setupAppPin')&&$('setupAppPin').value||'').trim();
     var parent=($('setupParentPin')&&$('setupParentPin').value||'').trim();
 
-    if(!pin || pin.length<4){
-      if($('lockMsg')) $('lockMsg').textContent='起動パスコードは4桁以上にしてください。';
+    if(!pin || pin.length!==8){
+      if($('lockMsg')) $('lockMsg').textContent='8桁パスコードを入力してください。';
       return;
     }
-    if(!parent) parent=pin;
+    if(parent && parent!==pin){ if(msg) msg.textContent='確認用パスコードが違います。'; return; } parent=pin;
 
     savePrivateSettings({appPin:String(pin),parentPin:String(parent),childName:String(name||'')});
     sessionStorage.setItem('rexEnglishMaster.unlocked','1');
@@ -378,7 +378,7 @@
     var s=privateSettings();
     if(!s.parentPin) return true;
     var v=prompt('保護者PINを入力してください','');
-    return v===s.parentPin;
+    return v===s.appPin || v===s.parentPin;
   }
   function savePrivateFromUI(){
     var s=privateSettings();
@@ -387,8 +387,7 @@
     var parentPin=($('newParentPinInput')&&$('newParentPinInput').value||'').trim();
     if(!requireParentPin()){ showToast('保護者PINが違います'); return; }
     if(name) s.childName=name;
-    if(appPin) s.appPin=appPin;
-    if(parentPin) s.parentPin=parentPin;
+    if(appPin){ if(appPin.length!==8){ showToast('8桁で入力してください'); return; } s.appPin=appPin; s.parentPin=appPin; }
     savePrivateSettings(s);
     if($('newAppPinInput')) $('newAppPinInput').value='';
     if($('newParentPinInput')) $('newParentPinInput').value='';
@@ -414,7 +413,26 @@
     }
   }
 
-  function tab(id){ if((id==='parent'||id==='private'||id==='data'||id==='update'||id==='rexvoice') && !requireParentPin()) { showToast('保護者PINが必要です'); return; } if(id==='private') loadPrivateUI(); ['stage','listen','test','talk','collection','settings','parent','list','rexvoice','update','private','data'].forEach(function(x){ if($(x)) $(x).classList.toggle('hidden',x!==id); }); if(id==='test') newQ(); if(id==='list') renderList(); if(id==='collection') renderBadges(); if(id==='talk') renderChat(); if(id==='listen'){ fillUnits(); resetDeck(); } }
+
+  function parentPasswordOk(){
+    var s=privateSettings();
+    if(!s.appPin){
+      showToast('先に8桁パスコードを設定してください');
+      return false;
+    }
+    var v=prompt('保護者メニュー用の8桁パスコードを入力してください','');
+    return v===s.appPin;
+  }
+  function openParentMenu(){
+    if(parentPasswordOk()){
+      tab('parentmenu');
+      setBubble('Secret base!','ここはおうちの人だけのひみつ基地だよ😊');
+    }else{
+      showToast('8桁パスコードが違います');
+    }
+  }
+
+  function tab(id){ if((id==='parent'||id==='private'||id==='data'||id==='update'||id==='rexvoice') && !parentPasswordOk()) { showToast('8桁パスコードが必要です'); return; } if(id==='private') loadPrivateUI(); ['stage','listen','test','talk','collection','settings','voice','parentmenu','parent','list','rexvoice','update','private','data'].forEach(function(x){ if($(x)) $(x).classList.toggle('hidden',x!==id); }); if(id==='test') newQ(); if(id==='list') renderList(); if(id==='collection') renderBadges(); if(id==='talk') renderChat(); if(id==='listen'){ fillUnits(); resetDeck(); } }
   function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 
 
@@ -453,11 +471,11 @@
     var pin=(document.getElementById('setupAppPin')&&document.getElementById('setupAppPin').value||'').trim();
     var parent=(document.getElementById('setupParentPin')&&document.getElementById('setupParentPin').value||'').trim();
     var msg=document.getElementById('lockMsg');
-    if(!pin || pin.length<4){
-      if(msg) msg.textContent='起動パスコードは4桁以上にしてください。';
+    if(!pin || pin.length!==8){
+      if(msg) msg.textContent='8桁パスコードを入力してください。';
       return;
     }
-    if(!parent) parent=pin;
+    if(parent && parent!==pin){ if(msg) msg.textContent='確認用パスコードが違います。'; return; } parent=pin;
     v34SavePrivateSettings({appPin:String(pin),parentPin:String(parent),childName:String(name||'')});
     sessionStorage.setItem('rexEnglishMaster.unlocked','1');
     v34HideLock();

@@ -178,3 +178,64 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .evoNode.done .rexMapIcon .miBody,.evoNode.done .rexMapIcon .miHead{filter:saturate(1.15)}
 .evoNode.active .rexMapIcon{animation:rexMapBounce 1.6s ease-in-out infinite}
 @keyframes rexMapBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+
+/* v36: simpler home + settings split */
+.hero .dinoStage{
+  display:none!important;
+}
+.hero .dinoWorld{
+  grid-template-columns:1fr!important;
+}
+.hero .heroPanel{
+  max-width:720px;
+  margin:0 auto;
+}
+.simpleSettings{
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+}
+.settingsTile.childOk{
+  border-color:#9ee6b8;
+  background:linear-gradient(180deg,#f0fff7,#ffffff);
+}
+.settingsTile.parentOnly{
+  border-color:#ffd7ab;
+  background:linear-gradient(180deg,#fff8ec,#ffffff);
+}
+.parentHint{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  background:#fffdf7;
+  border:2px dashed #ffca7a;
+  border-radius:20px;
+  padding:12px;
+  margin-top:12px;
+}
+.miniRexInline{
+  flex:0 0 auto;
+  width:56px;
+  height:46px;
+  position:relative;
+  filter:drop-shadow(0 5px 5px rgba(80,60,70,.16));
+}
+.miniRexInline:before{
+  content:"";
+  position:absolute;
+  left:4px;top:4px;
+  width:38px;height:30px;
+  background:linear-gradient(145deg,#ff9c4a,#ef642d);
+  border-radius:55% 58% 48% 46%;
+}
+.miniRexInline:after{
+  content:"";
+  position:absolute;
+  right:0;bottom:12px;
+  width:28px;height:10px;
+  background:#ef642d;
+  border-radius:70% 10% 60% 20%;
+  transform:rotate(18deg);
+}
+.parentHint b{font-weight:1000}
+.parentHint p{margin:3px 0 0}
+#voice.hidden{display:none!important}

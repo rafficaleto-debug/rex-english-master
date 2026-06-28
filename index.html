@@ -9,8 +9,8 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./icon-192.png">
-  <title>レックス英語マスター v35</title>
-  <link rel="stylesheet" href="./style.css?v=35">
+  <title>レックス英語マスター v36</title>
+  <link rel="stylesheet" href="./style.css?v=36">
 </head>
 <body>
 
@@ -35,8 +35,8 @@
 
       <div id="setupPanel" class="hidden">
         <input id="setupChildName" autocomplete="off" placeholder="呼び名 例：ゆいちゃん">
-        <input id="setupAppPin" type="password" inputmode="numeric" maxlength="8" placeholder="起動パスコード 4〜8桁">
-        <input id="setupParentPin" type="password" inputmode="numeric" maxlength="8" placeholder="保護者PIN 4〜8桁">
+        <input id="setupAppPin" type="password" inputmode="numeric" maxlength="8" placeholder="8桁パスコード">
+        <input id="setupParentPin" type="password" inputmode="numeric" maxlength="8" placeholder="確認用：同じ8桁パスコード">
         <div class="row lockBtns">
           <button class="primary" id="saveFirstSetupBtn" type="button" onclick="window.RexPrivateSaveSetup && window.RexPrivateSaveSetup()">保存して始める</button>
           <button id="cancelSetupBtn" type="button" onclick="window.RexPrivateCancelSetup && window.RexPrivateCancelSetup()">戻る</button>
@@ -51,8 +51,8 @@
   <div id="toast" class="toast"></div>
 
   <header>
-    <h1>🦖 レックス英語マスター v35</h1>
-    <div class="sub">v35：進化マップ修正・設定専用画面</div>
+    <h1>🦖 レックス英語マスター v36</h1>
+    <div class="sub">v36：音声設定は子どもOK・保護者メニューは8桁ロック</div>
   </header>
 
   <main>
@@ -124,7 +124,7 @@
       <div id="evoMap" class="evoMap"></div>
     </section>
 
-    <section class="card">
+    <section id="voice" class="card hidden">
       <h2>🔊 音声準備・声の設定</h2>
       <div class="row">
         <button class="primary" id="unlockAudioBtn">音声スタート</button>
@@ -168,7 +168,7 @@
         <p class="small">標準はOpenAI音声です。音声プロキシURLが未設定・失敗時はSafari標準音声へ自動で戻ります。手動でSafari標準音声にも切り替えできます。</p>
       </div>
 
-      <p class="small">iPhone標準音声も使えます。OpenAI音声を設定すると、日本語もかなり自然になります。</p>
+      <p class="small">ここは娘さんも変更OK。好きな声や読み上げ速度を選べます。</p>
     </section>
 
     <section id="stage" class="card">
@@ -311,13 +311,40 @@
 
     <section id="settings" class="card hidden">
       <h2>⚙️ 設定</h2>
-      <p class="small">保護者向け・音声・更新・データ管理はこちらにまとめました。</p>
+      <p class="small">音声は娘さんも変更OK。保護者メニューは、最初に設定した8桁パスコードで開きます。</p>
+      <div class="settingsGrid simpleSettings">
+        <button class="settingsTile childOk" data-tab="voice">
+          <span>🔊</span><b>音声設定</b><small>声・速度・OpenAI/Safari</small>
+        </button>
+        <button class="settingsTile parentOnly" id="openParentMenuBtn" type="button">
+          <span>👨‍👧</span><b>保護者メニュー</b><small>8桁パスコードで開く</small>
+        </button>
+      </div>
+      <div class="parentHint">
+        <div class="miniRexInline"></div>
+        <div>
+          <b>レックスより</b>
+          <p class="small">「音声設定は自由に変えてOK！保護者メニューは、おうちの人だけのひみつ基地だよ😊」</p>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="parentmenu" class="card hidden">
+      <h2>👨‍👧 保護者メニュー</h2>
+      <div class="parentHint">
+        <div class="miniRexInline"></div>
+        <div>
+          <b>ここはおうちの人だけのひみつ基地だよ😊</b>
+          <p class="small">例文追加・バックアップ・パスコード変更など、大切な設定をまとめています。</p>
+        </div>
+      </div>
       <div class="settingsGrid">
-        <button class="settingsTile" data-tab="private"><span>🔐</span><b>専用設定</b><small>パスコード・呼び名</small></button>
-        <button class="settingsTile" data-tab="parent"><span>👨</span><b>例文追加</b><small>保護者用</small></button>
-        <button class="settingsTile" data-tab="rexvoice"><span>🎙️</span><b>レックス音声</b><small>OpenAI / Safari</small></button>
+        <button class="settingsTile" data-tab="parent"><span>📚</span><b>例文追加</b><small>単語・文章を追加</small></button>
+        <button class="settingsTile" data-tab="private"><span>🔐</span><b>専用設定</b><small>呼び名・8桁変更</small></button>
+        <button class="settingsTile" data-tab="rexvoice"><span>🎙️</span><b>OpenAI設定</b><small>Proxy URL等</small></button>
         <button class="settingsTile" data-tab="update"><span>🔄</span><b>アップデート</b><small>更新手順</small></button>
-        <button class="settingsTile" data-tab="data"><span>🛡️</span><b>データ管理</b><small>バックアップ</small></button>
+        <button class="settingsTile" data-tab="data"><span>🛡️</span><b>データ管理</b><small>バックアップ・復元</small></button>
       </div>
     </section>
 
@@ -325,17 +352,17 @@
       <h2>🔐 専用設定</h2>
       <div class="dataBox">
         <b>娘さん専用モード</b>
-        <p class="small">アプリ起動時のパスコード、保護者モードのPIN、レックスが呼ぶ名前を設定できます。</p>
+        <p class="small">最初に設定した8桁パスコード、レックスが呼ぶ名前を変更できます。</p>
       </div>
       <div class="voiceGrid">
         <label>呼び名<br><input id="childNameInput" placeholder="例：〇〇ちゃん"></label>
-        <label>起動パスコード<br><input id="newAppPinInput" type="password" inputmode="numeric" maxlength="8" placeholder="4〜8桁"></label>
-        <label>保護者PIN<br><input id="newParentPinInput" type="password" inputmode="numeric" maxlength="8" placeholder="4〜8桁"></label>
+        <label>8桁パスコード<br><input id="newAppPinInput" type="password" inputmode="numeric" maxlength="8" placeholder="8桁"></label>
+        <label><span style="display:none">保護者PIN<br><input id="newParentPinInput" type="password" inputmode="numeric" maxlength="8" placeholder="8桁"></span></label>
       </div>
       <div class="row">
         <button class="primary" id="savePrivateBtn">専用設定を保存</button>
         <button id="lockNowBtn">今すぐロック</button>
-        <button class="bad" id="resetPinsBtn">PINをリセット</button>
+        <button class="bad" id="resetPinsBtn">8桁をリセット</button>
       </div>
       <p class="small">※これは家族利用向けの簡易ロックです。URL自体を完全非公開にしたい場合はCloudflare Accessが必要です。</p>
     </section>
@@ -343,7 +370,7 @@
     <section id="data" class="card hidden">
       <h2>🛡️ データ管理</h2>
       <div class="row">
-        <span class="versionTag">App v35</span>
+        <span class="versionTag">App v36</span>
         <span class="versionTag">Data <span id="dataVersionLabel">-</span></span>
         <span class="versionTag">例文 <span id="sentenceCountLabel">-</span>文</span>
       </div>
@@ -370,10 +397,10 @@
     <button data-tab="settings">設定</button>
   </div>
 
-  <script src="./data.js?v=35"></script>
-  <script src="./storage.js?v=35"></script>
-  <script src="./speech.js?v=35"></script>
-  <script src="./game.js?v=35"></script>
-  <script src="./app.js?v=35"></script>
+  <script src="./data.js?v=36"></script>
+  <script src="./storage.js?v=36"></script>
+  <script src="./speech.js?v=36"></script>
+  <script src="./game.js?v=36"></script>
+  <script src="./app.js?v=36"></script>
 </body>
 </html>
