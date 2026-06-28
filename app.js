@@ -192,7 +192,7 @@
     if($('dataVersionLabel')) $('dataVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
     if($('sentenceCountLabel')) $('sentenceCountLabel').textContent=(window.REX_SENTENCES||[]).length + (added?added.length:0);
     if($('contentVersionLabel')) $('contentVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
-    if($('appVersionLabel')) $('appVersionLabel').textContent='v32';
+    if($('appVersionLabel')) $('appVersionLabel').textContent='v33';
   }
 
   function renderDaily(){
@@ -311,10 +311,10 @@
     var s=privateSettings();
     if(!s.appPin){
       if($('appLock')) $('appLock').classList.remove('hidden');
-      if($('lockMsg')) $('lockMsg').textContent='はじめて使う場合は「はじめて設定」を押してください。';
+      cancelSetupPanel(); if($('lockMsg')) $('lockMsg').textContent='はじめて使う場合は「はじめて設定」を押してください。';
       return;
     }
-    if($('appLock')) $('appLock').classList.remove('hidden');
+    cancelSetupPanel(); if($('appLock')) $('appLock').classList.remove('hidden');
     setTimeout(function(){ if($('appPinInput')) $('appPinInput').focus(); },300);
   }
   function hideLock(){
@@ -337,16 +337,42 @@
       if($('lockMsg')) $('lockMsg').textContent='パスコードが違います。';
     }
   }
-  function setupFirstPin(){
-    var pin=prompt('起動パスコードを決めてください（4〜8桁がおすすめ）','');
-    if(!pin) return;
-    var parent=prompt('保護者PINを決めてください（起動パスコードと別でもOK）','');
-    var name=prompt('レックスが呼ぶ名前を入力してください（例：ゆいちゃん）','');
-    savePrivateSettings({appPin:String(pin),parentPin:String(parent||pin),childName:String(name||'')});
+  function showSetupPanel(){
+    if($('loginPanel')) $('loginPanel').classList.add('hidden');
+    if($('setupPanel')) $('setupPanel').classList.remove('hidden');
+    if($('lockLead')) $('lockLead').textContent='最初に、呼び名とパスコードを設定してね。';
+    if($('lockMsg')) $('lockMsg').textContent='';
+    setTimeout(function(){ if($('setupChildName')) $('setupChildName').focus(); },200);
+  }
+  function cancelSetupPanel(){
+    if($('setupPanel')) $('setupPanel').classList.add('hidden');
+    if($('loginPanel')) $('loginPanel').classList.remove('hidden');
+    if($('lockLead')) $('lockLead').textContent='パスコードを入れると、レックスに会えるよ。';
+  }
+  function saveFirstSetup(){
+    var name=($('setupChildName')&&$('setupChildName').value||'').trim();
+    var pin=($('setupAppPin')&&$('setupAppPin').value||'').trim();
+    var parent=($('setupParentPin')&&$('setupParentPin').value||'').trim();
+
+    if(!pin || pin.length<4){
+      if($('lockMsg')) $('lockMsg').textContent='起動パスコードは4桁以上にしてください。';
+      return;
+    }
+    if(!parent) parent=pin;
+
+    savePrivateSettings({appPin:String(pin),parentPin:String(parent),childName:String(name||'')});
     sessionStorage.setItem('rexEnglishMaster.unlocked','1');
+
+    if($('setupAppPin')) $('setupAppPin').value='';
+    if($('setupParentPin')) $('setupParentPin').value='';
     hideLock();
+
     if(name) setBubble('Nice to meet you!','これから '+name+' 専用のレックスだよ！');
+    else setBubble('Nice to meet you!','これから一緒に英語をがんばろうね！');
     showToast('専用設定を保存しました');
+  }
+  function setupFirstPin(){
+    showSetupPanel();
   }
   function requireParentPin(){
     var s=privateSettings();

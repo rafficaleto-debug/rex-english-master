@@ -9,21 +9,40 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./icon-192.png">
-  <title>レックス英語マスター v32</title>
-  <link rel="stylesheet" href="./style.css?v=32">
+  <title>レックス英語マスター v33</title>
+  <link rel="stylesheet" href="./style.css?v=33">
 </head>
 <body>
 
   <div id="appLock" class="appLock hidden">
     <div class="lockCard">
-      <div class="lockRex">🦖🔐</div>
-      <h2>レックスのひみつ基地</h2>
-      <p class="small">パスコードを入れると、レックスに会えるよ。</p>
-      <input id="appPinInput" type="password" inputmode="numeric" maxlength="8" placeholder="パスコード">
-      <div class="row lockBtns">
-        <button class="primary" id="unlockAppBtn">入る</button>
-        <button id="setupPinBtn">はじめて設定</button>
+      <div class="lockRexArt" aria-label="レックス">
+        <div class="miniRexTail"></div>
+        <div class="miniRexBody"></div>
+        <div class="miniRexBelly"></div>
+        <div class="miniRexHead"><div class="miniRexSnout"></div><div class="miniRexEye"></div><div class="miniRexMouth"></div></div>
       </div>
+      <h2>レックスのひみつ基地</h2>
+      <p class="small" id="lockLead">パスコードを入れると、レックスに会えるよ。</p>
+
+      <div id="loginPanel">
+        <input id="appPinInput" type="password" inputmode="numeric" maxlength="8" placeholder="パスコード">
+        <div class="row lockBtns">
+          <button class="primary" id="unlockAppBtn" type="button">入る</button>
+          <button id="setupPinBtn" type="button">はじめて設定</button>
+        </div>
+      </div>
+
+      <div id="setupPanel" class="hidden">
+        <input id="setupChildName" autocomplete="off" placeholder="呼び名 例：ゆいちゃん">
+        <input id="setupAppPin" type="password" inputmode="numeric" maxlength="8" placeholder="起動パスコード 4〜8桁">
+        <input id="setupParentPin" type="password" inputmode="numeric" maxlength="8" placeholder="保護者PIN 4〜8桁">
+        <div class="row lockBtns">
+          <button class="primary" id="saveFirstSetupBtn" type="button">保存して始める</button>
+          <button id="cancelSetupBtn" type="button">戻る</button>
+        </div>
+      </div>
+
       <div id="lockMsg" class="small"></div>
     </div>
   </div>
@@ -32,8 +51,8 @@
   <div id="toast" class="toast"></div>
 
   <header>
-    <h1>🦖 レックス英語マスター v32</h1>
-    <div class="sub">v32：娘さん専用ロック・保護者PIN対応</div>
+    <h1>🦖 レックス英語マスター v33</h1>
+    <div class="sub">v33：はじめて設定修正版・レックスロック画面</div>
   </header>
 
   <main>
@@ -311,7 +330,7 @@
     <section id="data" class="card hidden">
       <h2>🛡️ データ管理</h2>
       <div class="row">
-        <span class="versionTag">App v32</span>
+        <span class="versionTag">App v33</span>
         <span class="versionTag">Data <span id="dataVersionLabel">-</span></span>
         <span class="versionTag">例文 <span id="sentenceCountLabel">-</span>文</span>
       </div>
@@ -339,10 +358,10 @@
     <button data-tab="rexvoice">音声</button><button data-tab="update">更新</button><button data-tab="private">専用</button><button data-tab="data">データ</button>
   </div>
 
-  <script src="./data.js?v=32"></script>
-  <script src="./storage.js?v=32"></script>
-  <script src="./speech.js?v=32"></script>
-  <script src="./game.js?v=32"></script>
-  <script src="./app.js?v=32"></script>
+  <script src="./data.js?v=33"></script>
+  <script src="./storage.js?v=33"></script>
+  <script src="./speech.js?v=33"></script>
+  <script src="./game.js?v=33"></script>
+  <script src="./app.js?v=33"></script>
 </body>
 </html>

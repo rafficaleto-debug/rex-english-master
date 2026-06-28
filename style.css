@@ -100,3 +100,32 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .lockBtns{justify-content:center;margin-top:12px}
 .footer{grid-template-columns:repeat(10,1fr)}
 @media(max-width:720px){.footer{grid-template-columns:repeat(10,1fr)}.footer button{font-size:9px;padding:9px 1px}}
+
+
+/* v33 lock screen fix + cute orange Rex */
+.lockCard{position:relative;overflow:visible;padding-top:78px}
+.lockRexArt{
+  position:absolute;
+  left:50%;
+  top:-78px;
+  transform:translateX(-50%);
+  width:165px;
+  height:130px;
+  filter:drop-shadow(0 10px 12px rgba(70,60,90,.18));
+  animation:lockRexFloat 2.2s ease-in-out infinite;
+}
+@keyframes lockRexFloat{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-5px)}}
+.miniRexBody{position:absolute;left:52px;bottom:10px;width:82px;height:66px;background:linear-gradient(145deg,#ff963f,#ef642d);border-radius:52% 48% 48% 52%}
+.miniRexBelly{position:absolute;left:72px;bottom:15px;width:42px;height:48px;background:#ffd8a5;border-radius:50%}
+.miniRexTail{position:absolute;right:5px;bottom:37px;width:70px;height:24px;background:linear-gradient(90deg,#ef642d,#ff963f);border-radius:70% 10% 60% 20%;transform:rotate(20deg);transform-origin:left center;animation:miniTail 1.8s ease-in-out infinite}
+@keyframes miniTail{0%,100%{transform:rotate(15deg)}50%{transform:rotate(28deg)}}
+.miniRexHead{position:absolute;left:18px;top:10px;width:105px;height:78px;background:linear-gradient(145deg,#ff9c4a,#ef642d);border-radius:54% 58% 48% 46%;box-shadow:inset -7px -6px 0 rgba(170,49,31,.14)}
+.miniRexSnout{position:absolute;left:8px;top:36px;width:72px;height:34px;background:#ffa75f;border-radius:46% 40% 46% 48%}
+.miniRexEye{position:absolute;left:72px;top:16px;width:26px;height:32px;background:white;border-radius:50%}
+.miniRexEye:before{content:"";position:absolute;left:8px;top:7px;width:13px;height:18px;background:#241a1a;border-radius:50%}
+.miniRexEye:after{content:"";position:absolute;left:12px;top:10px;width:5px;height:6px;background:white;border-radius:50%}
+.miniRexMouth{position:absolute;left:18px;top:60px;width:54px;height:17px;background:#7d2a1d;border-radius:0 0 26px 26px;overflow:hidden}
+.miniRexMouth:after{content:"";position:absolute;left:23px;top:8px;width:25px;height:8px;background:#ff8fab;border-radius:50%}
+#setupPanel input{margin-top:8px;letter-spacing:normal;font-size:16px;text-align:left;font-weight:800}
+#setupAppPin,#setupParentPin{text-align:center!important;letter-spacing:.18em!important;font-size:20px!important}
+.lockRex{display:none!important}
