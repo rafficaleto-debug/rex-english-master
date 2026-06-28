@@ -36,3 +36,29 @@ select,input,textarea{border:2px solid #ffd7ab;border-radius:18px;padding:11px;b
 .rexArt.eggArt .rexHead,.rexArt.eggArt .rexSnout,.rexArt.eggArt .rexEye,.rexArt.eggArt .rexMouth,.rexArt.eggArt .rexCheek{display:block!important}.rexArt.eggArt .rexHead{left:47px;top:8px;width:92px;height:72px;transform:rotate(4deg);z-index:2}.rexArt.eggArt .rexSnout{left:8px;top:33px;width:66px;height:34px}.rexArt.eggArt .rexEye{left:58px;top:13px;width:25px;height:29px}.rexArt.eggArt .rexEye:before{left:7px;top:7px;width:13px;height:17px}.rexArt.eggArt .rexMouth{left:16px;top:55px;width:50px;height:15px}.rexArt.eggArt .rexCheek{left:4px;top:43px;width:16px;height:11px}.rexArt.eggArt .rexBody,.rexArt.eggArt .rexBelly,.rexArt.eggArt .rexTail,.rexArt.eggArt .rexArm,.rexArt.eggArt .rexLeg,.rexArt.eggArt .rexSpot{display:none!important}
 .rexArt.babyArt{width:170px;height:160px}.rexArt.babyArt .rexBody{left:48px;bottom:14px;transform:scale(.82)}.rexArt.babyArt .rexBelly{left:72px;bottom:22px;transform:scale(.78)}.rexArt.babyArt .rexHead{left:24px;top:14px;transform:scale(.86)}.rexArt.babyArt .rexTail{right:12px;bottom:42px;transform:scale(.75) rotate(18deg)}.rexArt.babyArt .rexArm{left:54px;bottom:66px;transform:scale(.75) rotate(25deg)}.rexArt.babyArt .rexArm.right{left:116px;bottom:62px;transform:scale(.75) rotate(-30deg)}.rexArt.babyArt .rexLeg{left:70px;bottom:6px;transform:scale(.82)}.rexArt.babyArt .rexLeg.right{left:112px}.rexArt.kidArt{width:205px;height:185px}.rexArt.teenArt{width:235px;height:215px}.rexArt.adultArt{width:270px;height:235px}
 @media(max-width:720px){.dinoWorld{grid-template-columns:1fr}.dinoStage{min-height:300px}.statsGrid{grid-template-columns:repeat(4,1fr)}.big{font-size:25px}.footer button{font-size:10px}.heroPanel{margin-top:4px}}
+
+
+/* v21 daily dashboard and evolution map */
+.dailyGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.dailyBox{background:linear-gradient(180deg,#fff,#fff8ec);border:2px solid #ffd7ab;border-radius:22px;padding:14px;text-align:center;font-weight:1000}
+.dailyBox b{display:block;font-size:28px;color:#8a3ffc}
+.dailyBox span{font-size:12px;color:var(--muted)}
+.dailyGoal{background:#fffdf8;border:1px solid #ffd7ab;border-radius:20px;padding:12px;margin-top:12px}
+.evoMap{display:flex;gap:10px;overflow:auto;padding:8px 2px}
+.evoNode{min-width:132px;background:#fff7fc;border:2px solid #ffd4ea;border-radius:24px;padding:12px;text-align:center;font-weight:1000;position:relative}
+.evoNode.active{border-color:#ff74ad;box-shadow:0 0 0 4px rgba(255,116,173,.16);background:#fff}
+.evoNode.done{background:#f0fff7;border-color:#9ee6b8}
+.evoNode .icon{font-size:34px}
+.evoNode .need{font-size:11px;color:var(--muted);margin-top:4px}
+.evoNode:not(:last-child):after{content:"➜";position:absolute;right:-18px;top:44px;color:#ff9c4a;font-size:18px;z-index:2}
+body.night{
+  background:linear-gradient(180deg,#18213d 0%,#2f315f 56%,#1c3b3d 100%);
+}
+body.night header, body.night .footer{background:rgba(24,33,61,.9);color:#fff}
+body.night .card{background:rgba(255,255,255,.9)}
+body.night .hero{background:linear-gradient(160deg,#243b73 0%,#6c5ca8 48%,#2f6f63 100%)}
+body.night .sun{background:#fff6c9;box-shadow:0 0 40px rgba(255,246,201,.9)}
+body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-size:45px}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:55;overflow:hidden}
+.confetti span{position:absolute;top:-20px;font-size:20px;animation:fall 1.6s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:.2}}

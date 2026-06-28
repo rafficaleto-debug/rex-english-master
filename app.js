@@ -78,7 +78,7 @@
     var before=currentDino().index;
     score.xp=(score.xp||0)+n; score.coins=(score.coins||0)+(c||0); score.friend=Math.min(100,(score.friend||0)+(f||0)); score.today=(score.today||0)+1;
     var after=currentDino().index;
-    if(after>before){ showLevelUp(RexGame.dinoStages[after]); setBubble('I grew up!','やった！少し成長したよ！'); rexHappy(); }
+    if(after>before){ showLevelUp(RexGame.dinoStages[after]); setBubble('I grew up!','やった！少し成長したよ！'); rexHappy(); confetti(); }
   }
   function setBubble(en,ja){ $('dinoBubble').innerHTML=en+'<br><small>'+ja+'</small>'; }
   function dinoTalk(audio){
@@ -175,7 +175,7 @@
     } else {
       addXp(2,1,1); weak.add(q.id); mistakes.add(q.id); $('ans').classList.add('wrong'); $('ans').classList.remove('correct'); $('result').textContent='惜しい！ 間違い復習に追加しました。'; $('result').className='result ng'; $('diff').innerHTML='あなた: '+diffHtml(user,q.en)+'<br>正解: <b>'+escapeHtml(q.en)+'</b>'; $('qen').classList.remove('hidden'); setBubble('No worries!','だいじょうぶ！一緒にもう一回やってみよう！');
     }
-    persist(); updateStats(); renderStages();
+    if((score.today||0)===10){ setBubble('Mission complete!','今日の目標達成！すごいよ！'); confetti(); } persist(); updateStats(); renderStages();
   }
   function showAns(){ if(q){ $('qen').classList.remove('hidden'); RexSpeech.speak(q.en,'en-US'); } }
   function speakQ(){ if(q) RexSpeech.speak(q.en,'en-US'); }
@@ -189,7 +189,43 @@
   function renderBadges(){ $('badgeGrid').innerHTML=RexGame.badges.map(function(b){ var on=b.need(score,mistakes.size); return '<div class="collectionBadge '+(on?'':'locked')+'"><div style="font-size:34px">'+b.icon+'</div><div>'+b.name+'</div><div class="mini">'+(on?'GET!':'LOCKED')+'</div></div>'; }).join(''); }
   function renderMissions(){ var m=[['10問チャレンジ',(score.today||0)>=10,Math.min(score.today||0,10)+'/10'],['3問正解',(score.ok||0)>=3,Math.min(score.ok||0,3)+'/3'],['間違い復習を空に',mistakes.size===0,'残り'+mistakes.size]]; $('missionBox').innerHTML=m.map(function(x){return '<div class="mission '+(x[1]?'done':'')+'"><span>'+(x[1]?'✅':'🎁')+' '+x[0]+'</span><b>'+x[2]+'</b></div>';}).join(''); }
   function updateDataLabels(){ $('dataVersionLabel').textContent=window.REX_CONTENT_VERSION || '-'; $('sentenceCountLabel').textContent=(window.REX_SENTENCES||[]).length + (added?added.length:0); }
-  function updateStats(){ $('ok').textContent=score.ok||0; $('total').textContent=score.total||0; $('mistakeCount').textContent=mistakes.size; $('heroOk').textContent=score.ok||0; $('heroTotal').textContent=score.total||0; $('heroMistake').textContent=mistakes.size; updateDino(); renderMissions(); renderBadges(); updateDataLabels(); }
+
+  function renderDaily(){
+    if($('todayCount')) $('todayCount').textContent=score.today||0;
+    if($('streakCount')) $('streakCount').textContent=score.streak||0;
+    var acc=(score.total||0)?Math.round((score.ok||0)/(score.total||1)*100):0;
+    if($('accuracy')) $('accuracy').textContent=acc+'%';
+    var t=Math.min(score.today||0,10);
+    if($('dailyGoalText')) $('dailyGoalText').textContent=t+' / 10';
+    if($('dailyGoalBar')) $('dailyGoalBar').style.width=(t*10)+'%';
+  }
+  function renderEvoMap(){
+    if(!$('evoMap')) return;
+    var cur=currentDino().index;
+    $('evoMap').innerHTML=RexGame.dinoStages.map(function(s,i){
+      var cls=i<cur?'done':(i===cur?'active':'');
+      return '<div class="evoNode '+cls+'"><div class="icon">'+s.icon+'</div><div>'+s.name+'</div><div class="need">'+s.xp+' XP</div></div>';
+    }).join('');
+  }
+  function confetti(){
+    var box=document.createElement('div'); box.className='confetti';
+    var marks=['🎉','✨','⭐','🦖','💗'];
+    for(var i=0;i<24;i++){
+      var sp=document.createElement('span');
+      sp.textContent=marks[Math.floor(Math.random()*marks.length)];
+      sp.style.left=(Math.random()*100)+'%';
+      sp.style.animationDelay=(Math.random()*.35)+'s';
+      box.appendChild(sp);
+    }
+    document.body.appendChild(box);
+    setTimeout(function(){box.remove();},1900);
+  }
+  function toggleNight(){
+    document.body.classList.toggle('night');
+    showToast(document.body.classList.contains('night')?'おやすみモード':'通常モード');
+  }
+
+  function updateStats(){ $('ok').textContent=score.ok||0; $('total').textContent=score.total||0; $('mistakeCount').textContent=mistakes.size; $('heroOk').textContent=score.ok||0; $('heroTotal').textContent=score.total||0; $('heroMistake').textContent=mistakes.size; updateDino(); renderMissions(); renderBadges(); renderDaily(); renderEvoMap(); updateDataLabels(); }
   function exportData(){ $('dataBackup').value=RexStorage.exportProfile(); $('dataMsg').innerHTML='<span class="restoreOk">バックアップを表示しました。</span>'; }
   async function copyBackup(){ if(!$('dataBackup').value) exportData(); try{ await navigator.clipboard.writeText($('dataBackup').value); $('dataMsg').innerHTML='<span class="restoreOk">コピーしました。</span>'; } catch(e){ $('dataMsg').innerHTML='<span class="restoreNg">コピーできない場合は、テキストを長押ししてコピーしてください。</span>'; } }
   function restoreData(){ try{ RexStorage.restoreProfile($('dataBackup').value); $('dataMsg').innerHTML='<span class="restoreOk">復元しました。再読み込みします。</span>'; setTimeout(function(){location.reload();},600); } catch(e){ $('dataMsg').innerHTML='<span class="restoreNg">復元できません。バックアップJSONを確認してください。</span>'; } }
@@ -218,7 +254,7 @@
     $('feedBtn').addEventListener('click',feedDino); $('petBtn').addEventListener('click',petDino); $('talkBtn').addEventListener('click',function(){dinoTalk(true);}); $('renameBtn').addEventListener('click',renameDino);
     document.querySelectorAll('[data-stage-special]').forEach(function(b){ b.addEventListener('click',function(){ selectStage(this.getAttribute('data-stage-special')); }); });
     $('unit').addEventListener('change',resetDeck); $('shuffle').addEventListener('change',resetDeck);
-    $('readBtn').addEventListener('click',function(){ readNow(false); }); $('autoBtn').addEventListener('click',toggleAuto); $('stopBtn').addEventListener('click',stopAuto); $('nextBtn').addEventListener('click',next); $('prevBtn').addEventListener('click',prev); $('favBtn').addEventListener('click',toggleFav); $('weakBtn').addEventListener('click',markWeak); $('clearBtn').addEventListener('click',clearWeak);
+    $('readBtn').addEventListener('click',function(){ readNow(false); }); if($('nightBtn')) $('nightBtn').addEventListener('click',toggleNight); $('autoBtn').addEventListener('click',toggleAuto); $('stopBtn').addEventListener('click',stopAuto); $('nextBtn').addEventListener('click',next); $('prevBtn').addEventListener('click',prev); $('favBtn').addEventListener('click',toggleFav); $('weakBtn').addEventListener('click',markWeak); $('clearBtn').addEventListener('click',clearWeak);
     $('newQBtn').addEventListener('click',newQ); $('speakQBtn').addEventListener('click',speakQ); $('mistakeModeBtn').addEventListener('click',function(){selectStage('mistakes');}); $('checkBtn').addEventListener('click',checkAnswer); $('showAnsBtn').addEventListener('click',showAns); $('manualOkBtn').addEventListener('click',function(){manualJudge(true);}); $('manualNgBtn').addEventListener('click',function(){manualJudge(false);});
     $('ans').addEventListener('keydown',function(e){ if(e.key==='Enter') checkAnswer(); });
     document.querySelectorAll('[data-quick]').forEach(function(b){ b.addEventListener('click',function(){sendQuick(this.getAttribute('data-quick'));}); });

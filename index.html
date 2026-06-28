@@ -9,16 +9,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./icon-192.png">
-  <title>レックス英語マスター v20</title>
-  <link rel="stylesheet" href="./style.css?v=20">
+  <title>レックス英語マスター v21</title>
+  <link rel="stylesheet" href="./style.css?v=21">
 </head>
 <body>
   <div id="levelUp" class="levelUp">🎉 成長したよ！</div>
   <div id="toast" class="toast"></div>
 
   <header>
-    <h1>🦖 レックス英語マスター v20</h1>
-    <div class="sub">完成版1.0：育成×聞き流し×テスト×復習</div>
+    <h1>🦖 レックス英語マスター v21</h1>
+    <div class="sub">v21：毎日ミッション強化・進化マップ・応援演出</div>
   </header>
 
   <main>
@@ -71,6 +71,25 @@
       <div id="missionBox"></div>
     </section>
 
+
+    <section id="daily" class="card">
+      <h2>📅 今日のがんばり</h2>
+      <div class="dailyGrid">
+        <div class="dailyBox"><b id="todayCount">0</b><span>今日の挑戦</span></div>
+        <div class="dailyBox"><b id="streakCount">0</b><span>連続日数</span></div>
+        <div class="dailyBox"><b id="accuracy">0%</b><span>正答率</span></div>
+      </div>
+      <div class="dailyGoal">
+        <div class="row"><b>今日の目標：10問</b><span id="dailyGoalText" class="pill">0 / 10</span></div>
+        <div class="progress"><div id="dailyGoalBar" class="bar"></div></div>
+      </div>
+    </section>
+
+    <section id="map" class="card">
+      <h2>🗺️ レックス進化マップ</h2>
+      <div id="evoMap" class="evoMap"></div>
+    </section>
+
     <section class="card">
       <h2>🔊 音声準備</h2>
       <div class="row">
@@ -117,7 +136,7 @@
       <div class="progress"><div id="bar" class="bar"></div></div>
       <div class="row actionRow">
         <button class="primary" id="readBtn">読む</button>
-        <button class="good" id="autoBtn">連続再生</button>
+        <button class="good" id="autoBtn">連続再生</button><button id="nightBtn">🌙 おやすみ</button>
         <button class="bad" id="stopBtn">停止</button>
         <button id="prevBtn">前へ</button>
         <button id="nextBtn">次へ</button>
@@ -185,7 +204,7 @@
     <section id="data" class="card hidden">
       <h2>🛡️ データ管理</h2>
       <div class="row">
-        <span class="versionTag">App v20</span>
+        <span class="versionTag">App v21</span>
         <span class="versionTag">Data <span id="dataVersionLabel">-</span></span>
         <span class="versionTag">例文 <span id="sentenceCountLabel">-</span>文</span>
       </div>
@@ -213,10 +232,10 @@
     <button data-tab="data">データ</button>
   </div>
 
-  <script src="./data.js?v=20"></script>
-  <script src="./storage.js?v=20"></script>
-  <script src="./speech.js?v=20"></script>
-  <script src="./game.js?v=20"></script>
-  <script src="./app.js?v=20"></script>
+  <script src="./data.js?v=21"></script>
+  <script src="./storage.js?v=21"></script>
+  <script src="./speech.js?v=21"></script>
+  <script src="./game.js?v=21"></script>
+  <script src="./app.js?v=21"></script>
 </body>
 </html>

@@ -14,7 +14,7 @@
     ['You are getting better every day!','毎日うまくなってるよ！'],['Welcome back!','おかえり！'],
     ['I missed you.','会いたかったよ。'],['I am always on your side.','ぼくはいつでも味方だよ。'],
     ['No worries!','間違えてもだいじょうぶ！一緒にやろう！'],['You are my best friend!','きみはぼくの大切な友だちだよ！'],
-    ['Thank you for studying with me.','一緒に勉強してくれてありがとう。'],['I am proud of you!','ぼくはきみを誇りに思うよ！']
+    ['Thank you for studying with me.','一緒に勉強してくれてありがとう。'],['I am proud of you!','ぼくはきみを誇りに思うよ！'],['Small steps every day!','毎日少しずつで大丈夫！'],['You made me smile!','きみのおかげで笑顔になったよ！']
   ];
   var badges=[
     {id:'b1',name:'初正解',icon:'🎯',need:function(s,m){return s.ok>=1;}},
