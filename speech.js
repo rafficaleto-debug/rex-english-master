@@ -167,3 +167,85 @@
     settings:function(){return voiceSettings;}
   };
 })();
+
+
+/* v50: sequential speech fix.
+   Prevents Japanese from being read for a different English word during continuous playback. */
+(function(){
+  var seqToken = 0;
+  function getMeaning(item){
+    if(!item) return '';
+    return item.ja || item.jp || item.meaning || item.mean || item.def || item.translation || '';
+  }
+  function getEnglish(item){
+    if(!item) return '';
+    return item.en || item.word || item.english || item.text || '';
+  }
+  function delay(ms){ return new Promise(function(resolve){ setTimeout(resolve, ms); }); }
+
+  async function speakOneTextV50(text, lang){
+    text = String(text || '').trim();
+    if(!text) return;
+    if(window.RexSpeech && typeof window.RexSpeech.speakText === 'function'){
+      await window.RexSpeech.speakText(text, lang);
+      return;
+    }
+    if(window.speakText && window.speakText !== speakOneTextV50){
+      var r = window.speakText(text, lang);
+      if(r && typeof r.then === 'function') await r;
+      else await delay(350);
+      return;
+    }
+    if('speechSynthesis' in window){
+      await new Promise(function(resolve){
+        var u = new SpeechSynthesisUtterance(text);
+        u.lang = lang || 'en-US';
+        u.onend = resolve;
+        u.onerror = resolve;
+        speechSynthesis.speak(u);
+      });
+    }
+  }
+
+  window.playWordSequenceV50 = async function(items, options){
+    var token = ++seqToken;
+    options = options || {};
+    var interval = Number(options.interval || localStorage.getItem('rexSpeechInterval') || 0.4);
+    var pattern = options.pattern || localStorage.getItem('rexSpeechPattern') || 'en-ja-en-ja';
+
+    // Snapshot the current words first. This prevents index/current-card mutation while playing.
+    var queue = (items || []).map(function(item){
+      return {
+        en: getEnglish(item),
+        ja: getMeaning(item)
+      };
+    }).filter(function(x){ return x.en || x.ja; });
+
+    if('speechSynthesis' in window) speechSynthesis.cancel();
+
+    for(var i=0; i<queue.length; i++){
+      if(token !== seqToken) return;
+      var q = queue[i];
+
+      if(pattern === 'en-ja-en-ja'){
+        await speakOneTextV50(q.en, 'en-US'); if(token !== seqToken) return; await delay(interval*1000);
+        await speakOneTextV50(q.ja, 'ja-JP'); if(token !== seqToken) return; await delay(interval*1000);
+        await speakOneTextV50(q.en, 'en-US'); if(token !== seqToken) return; await delay(interval*1000);
+        await speakOneTextV50(q.ja, 'ja-JP'); if(token !== seqToken) return; await delay(interval*1000);
+      }else if(pattern === 'en-ja'){
+        await speakOneTextV50(q.en, 'en-US'); if(token !== seqToken) return; await delay(interval*1000);
+        await speakOneTextV50(q.ja, 'ja-JP'); if(token !== seqToken) return; await delay(interval*1000);
+      }else{
+        await speakOneTextV50(q.en, 'en-US'); if(token !== seqToken) return; await delay(interval*1000);
+      }
+    }
+  };
+
+  window.stopWordSequenceV50 = function(){
+    seqToken++;
+    if('speechSynthesis' in window) speechSynthesis.cancel();
+  };
+
+  // Compatibility aliases used by app.js variants.
+  window.playContinuousWordsFixed = window.playWordSequenceV50;
+})();

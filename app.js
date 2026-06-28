@@ -210,13 +210,13 @@
     if($('dataVersionLabel')) $('dataVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
     if($('sentenceCountLabel')) $('sentenceCountLabel').textContent=(window.REX_SENTENCES||[]).length + (added?added.length:0);
     if($('contentVersionLabel')) $('contentVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
-    if($('appVersionLabel')) $('appVersionLabel').textContent='v48';
+    if($('appVersionLabel')) $('appVersionLabel').textContent='v50';
   }
 
 
   function rexImageHtml(stage, kind){
     var k = kind || 'stage';
-    return '<img class="rexSprite '+k+'" src="'+stage.img+'?v=48" alt="'+stage.name+'">';
+    return '<img class="rexSprite '+k+'" src="'+stage.img+'?v=50" alt="'+stage.name+'">';
   }
 
   function renderDaily(){
@@ -273,7 +273,7 @@
 
   function showUpdateGuide(){
     var txt=[
-      'v48以降のGitHub更新手順',
+      'v50以降のGitHub更新手順',
       '',
       '1. 新しいZIPをダウンロード',
       '2. iPhoneの「ファイル」アプリでZIPをタップして解凍',
@@ -319,10 +319,10 @@
 
 
   function privateSettings(){
-    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v48')||'{}');}catch(e){return {};}
+    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v50')||'{}');}catch(e){return {};}
   }
   function savePrivateSettings(s){
-    localStorage.setItem('rexEnglishMaster.private.v48',JSON.stringify(s||{}));
+    localStorage.setItem('rexEnglishMaster.private.v50',JSON.stringify(s||{}));
   }
   function showLock(){
     var s=privateSettings();
@@ -423,7 +423,7 @@
   function resetPins(){
     if(!requireParentPin()){ showToast('保護者PINが違います'); return; }
     if(confirm('起動パスコードと保護者PINをリセットしますか？')){
-      localStorage.removeItem('rexEnglishMaster.private.v48');
+      localStorage.removeItem('rexEnglishMaster.private.v50');
       sessionStorage.removeItem('rexEnglishMaster.unlocked');
       showToast('PINをリセットしました');
       showLock();
@@ -453,14 +453,14 @@
   function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 
 
-  // v48 global fallback handlers for Safari
-  function v48PrivateSettings(){
-    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v48')||'{}');}catch(e){return {};}
+  // v50 global fallback handlers for Safari
+  function v50PrivateSettings(){
+    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v50')||'{}');}catch(e){return {};}
   }
-  function v48SavePrivateSettings(s){
-    localStorage.setItem('rexEnglishMaster.private.v48',JSON.stringify(s||{}));
+  function v50SavePrivateSettings(s){
+    localStorage.setItem('rexEnglishMaster.private.v50',JSON.stringify(s||{}));
   }
-  function v48ShowSetup(){
+  function v50ShowSetup(){
     var login=document.getElementById('loginPanel');
     var setup=document.getElementById('setupPanel');
     var lead=document.getElementById('lockLead');
@@ -471,7 +471,7 @@
     if(msg) msg.textContent='';
     setTimeout(function(){ var n=document.getElementById('setupChildName'); if(n) n.focus(); },120);
   }
-  function v48CancelSetup(){
+  function v50CancelSetup(){
     var login=document.getElementById('loginPanel');
     var setup=document.getElementById('setupPanel');
     var lead=document.getElementById('lockLead');
@@ -479,11 +479,11 @@
     if(login) login.classList.remove('hidden');
     if(lead) lead.textContent='パスコードを入れると、レックスに会えるよ。';
   }
-  function v48HideLock(){
+  function v50HideLock(){
     var lock=document.getElementById('appLock');
     if(lock) lock.classList.add('hidden');
   }
-  function v48SaveSetup(){
+  function v50SaveSetup(){
     var name=(document.getElementById('setupChildName')&&document.getElementById('setupChildName').value||'').trim();
     var pin=(document.getElementById('setupAppPin')&&document.getElementById('setupAppPin').value||'').trim();
     var parent=(document.getElementById('setupParentPin')&&document.getElementById('setupParentPin').value||'').trim();
@@ -493,9 +493,9 @@
       return;
     }
     if(!parent || parent.length!==8){ if(msg) msg.textContent='保護者用8桁パスコードを入力してください。'; return; }
-    v48SavePrivateSettings({appPin:String(pin),parentPin:String(parent),childName:String(name||'')});
+    v50SavePrivateSettings({appPin:String(pin),parentPin:String(parent),childName:String(name||'')});
     sessionStorage.setItem('rexEnglishMaster.unlocked','1');
-    v48HideLock();
+    v50HideLock();
     try{
       if(typeof setBubble==='function'){
         if(name) setBubble('Nice to meet you!','これから '+name+' 専用のレックスだよ！');
@@ -504,8 +504,8 @@
       if(typeof showToast==='function') showToast('専用設定を保存しました');
     }catch(e){}
   }
-  function v48Unlock(){
-    var s=v48PrivateSettings();
+  function v50Unlock(){
+    var s=v50PrivateSettings();
     var v=(document.getElementById('appPinInput')&&document.getElementById('appPinInput').value||'').trim();
     var msg=document.getElementById('lockMsg');
     if(!s.appPin){
@@ -514,7 +514,7 @@
     }
     if(v===s.appPin){
       sessionStorage.setItem('rexEnglishMaster.unlocked','1');
-      v48HideLock();
+      v50HideLock();
       try{
         if(typeof setBubble==='function'){
           if(s.childName) setBubble('Welcome back!','おかえり、'+s.childName+'！レックス待ってたよ。');
@@ -525,10 +525,10 @@
       if(msg) msg.textContent='パスコードが違います。';
     }
   }
-  window.RexPrivateShowSetup=v48ShowSetup;
-  window.RexPrivateCancelSetup=v48CancelSetup;
-  window.RexPrivateSaveSetup=v48SaveSetup;
-  window.RexPrivateUnlock=v48Unlock;
+  window.RexPrivateShowSetup=v50ShowSetup;
+  window.RexPrivateCancelSetup=v50CancelSetup;
+  window.RexPrivateSaveSetup=v50SaveSetup;
+  window.RexPrivateUnlock=v50Unlock;
 
   function bind(){
     $('unlockAudioBtn').addEventListener('click',function(){ RexSpeech.unlock().then(function(){ $('status').textContent='音声OK'; }); });
