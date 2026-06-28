@@ -1,0 +1,44 @@
+OpenAI高品質音声の設定手順
+
+A. アプリ本体の更新
+1. rex_english_master_v30_openai_voice.zip を解凍
+2. GitHubの rex-english-master に全ファイルを上書きアップロード
+3. Commit changes
+4. GitHub PagesのURLを開き直す
+
+B. OpenAI音声用Cloudflare Workerを作る
+1. Cloudflare Dashboard → Workers & Pages
+2. Create → Worker
+3. Edit code
+4. openai-tts-worker.js の中身を全部貼り付け
+5. Deploy
+
+C. OpenAI APIキーをSecretに入れる
+1. Workerの Settings
+2. Variables
+3. Secrets
+4. Add secret
+5. Name: OPENAI_API_KEY
+6. Value: OpenAI APIキー
+7. Save
+
+D. アプリで設定
+1. アプリを開く
+2. 音声準備・声の設定
+3. OpenAI音声を使う ON
+4. 音声プロキシURLに以下を入力
+   https://あなたのworker名.workers.dev/tts
+5. 声は marin または cedar がおすすめ
+6. 保存
+7. OpenAI音声テスト
+
+注意:
+- APIキーをGitHubにアップロードしないでください。
+- APIキーをアプリ画面に直接入力しないでください。
+- 音声生成にはOpenAI API料金がかかります。
+
+
+v31補足:
+- アプリ標準はOpenAI音声です。
+- 音声準備・声の設定で「Safari標準音声」を選ぶと、従来のiPhone/Safari音声に切り替わります。
+- OpenAIプロキシURLが未設定、またはOpenAI APIが失敗した場合は、自動でSafari音声に戻ります。

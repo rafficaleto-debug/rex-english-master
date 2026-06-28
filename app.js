@@ -188,7 +188,12 @@
   function renderList(){ all(); var s=($('search').value||'').toLowerCase(); var arr=filteredBase().filter(function(x){return ((x.en||'')+(x.ja||'')+(x.stage||'')+(x.unit||'')).toLowerCase().indexOf(s)>=0;}); $('listbox').innerHTML=arr.map(function(x){ return '<div class="item"><b>'+(fav.has(x.id)?'⭐ ':'')+escapeHtml(x.en)+'</b><br>'+escapeHtml(x.ja)+'<br><span class="small">'+escapeHtml(x.stage||'')+' / '+escapeHtml(x.unit||'')+(weak.has(x.id)?' / 苦手':'')+(mistakes.has(x.id)?' / 間違い':'')+'</span></div>'; }).join('') || '<p class="small">該当なし</p>'; }
   function renderBadges(){ $('badgeGrid').innerHTML=RexGame.badges.map(function(b){ var on=b.need(score,mistakes.size); return '<div class="collectionBadge '+(on?'':'locked')+'"><div style="font-size:34px">'+b.icon+'</div><div>'+b.name+'</div><div class="mini">'+(on?'GET!':'LOCKED')+'</div></div>'; }).join(''); }
   function renderMissions(){ var m=[['10問チャレンジ',(score.today||0)>=10,Math.min(score.today||0,10)+'/10'],['3問正解',(score.ok||0)>=3,Math.min(score.ok||0,3)+'/3'],['間違い復習を空に',mistakes.size===0,'残り'+mistakes.size]]; $('missionBox').innerHTML=m.map(function(x){return '<div class="mission '+(x[1]?'done':'')+'"><span>'+(x[1]?'✅':'🎁')+' '+x[0]+'</span><b>'+x[2]+'</b></div>';}).join(''); }
-  function updateDataLabels(){ $('dataVersionLabel').textContent=window.REX_CONTENT_VERSION || '-'; $('sentenceCountLabel').textContent=(window.REX_SENTENCES||[]).length + (added?added.length:0); }
+  function updateDataLabels(){
+    if($('dataVersionLabel')) $('dataVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
+    if($('sentenceCountLabel')) $('sentenceCountLabel').textContent=(window.REX_SENTENCES||[]).length + (added?added.length:0);
+    if($('contentVersionLabel')) $('contentVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
+    if($('appVersionLabel')) $('appVersionLabel').textContent='v31';
+  }
 
   function renderDaily(){
     if($('todayCount')) $('todayCount').textContent=score.today||0;
@@ -226,6 +231,53 @@
   }
 
   function updateStats(){ $('ok').textContent=score.ok||0; $('total').textContent=score.total||0; $('mistakeCount').textContent=mistakes.size; $('heroOk').textContent=score.ok||0; $('heroTotal').textContent=score.total||0; $('heroMistake').textContent=mistakes.size; updateDino(); renderMissions(); renderBadges(); renderDaily(); renderEvoMap(); updateDataLabels(); }
+
+
+  function showRexVoiceGuide(){
+    var txt=[
+      'OpenAI高品質音声の設定手順',
+      '',
+      '1. Cloudflare Workersで新しいWorkerを作成',
+      '2. このZIPに入っている openai-tts-worker.js の中身を貼り付け',
+      '3. WorkerのSettings → Variables → Secretsで OPENAI_API_KEY を追加',
+      '4. WorkerをDeploy',
+      '5. WorkerのURLの末尾に /tts を付ける',
+      '   例: https://xxxxx.workers.dev/tts',
+      '6. このアプリの「音声準備・声の設定」にURLを入力',
+      '7. 「OpenAI音声を使う」をON',
+      '8. 保存して音声テスト',
+      '',
+      '注意:',
+      'APIキーをGitHubやこのアプリの画面に直接入れないでください。',
+      '音声が失敗した場合は、自動でSafari標準音声に戻ります。'
+    ].join('\\n');
+    $('rexVoiceGuideText').value=txt;
+  }
+
+  function showUpdateGuide(){
+    var txt=[
+      'v22以降のGitHub更新手順',
+      '',
+      '1. 新しいZIPをダウンロード',
+      '2. iPhoneの「ファイル」アプリでZIPをタップして解凍',
+      '3. GitHubの rex-english-master をSafariで開く',
+      '4. Code → Upload files',
+      '5. 解凍したフォルダ内のファイルをすべて選択',
+      '6. Commit changes',
+      '7. 1〜3分後、同じURLを開き直す',
+      '',
+      '重要:',
+      '同じURLなら学習データは残ります。',
+      'URLを変える時だけ、先に「データ」タブでバックアップしてください。'
+    ].join('\\n');
+    $('updateGuideText').value=txt;
+  }
+  function quickBackup(){
+    var backup=RexStorage.exportProfile();
+    if($('updateGuideText')) $('updateGuideText').value=backup;
+    showToast('バックアップを表示しました');
+  }
+
   function exportData(){ $('dataBackup').value=RexStorage.exportProfile(); $('dataMsg').innerHTML='<span class="restoreOk">バックアップを表示しました。</span>'; }
   async function copyBackup(){ if(!$('dataBackup').value) exportData(); try{ await navigator.clipboard.writeText($('dataBackup').value); $('dataMsg').innerHTML='<span class="restoreOk">コピーしました。</span>'; } catch(e){ $('dataMsg').innerHTML='<span class="restoreNg">コピーできない場合は、テキストを長押ししてコピーしてください。</span>'; } }
   function restoreData(){ try{ RexStorage.restoreProfile($('dataBackup').value); $('dataMsg').innerHTML='<span class="restoreOk">復元しました。再読み込みします。</span>'; setTimeout(function(){location.reload();},600); } catch(e){ $('dataMsg').innerHTML='<span class="restoreNg">復元できません。バックアップJSONを確認してください。</span>'; } }
@@ -242,15 +294,18 @@
     });
     $('bulkAdd').value=''; persist(); renderStages(); fillUnits(); resetDeck(); updateStats(); showToast(n+'文を追加しました');
   }
-  function exportAdded(){ $('addedExport').value=JSON.stringify(added,null,2); }
+  function exportAdded(){
+    var lines=added.map(function(x){return [x.en,x.ja,x.stage,x.unit].join(' | ');}).join('\n');
+    $('addedExport').value=lines || JSON.stringify(added,null,2);
+  }
   function clearAdded(){ if(confirm('追加した例文を消しますか？')){ added=[]; persist(); renderStages(); fillUnits(); resetDeck(); updateStats(); showToast('追加例文をリセットしました'); } }
 
-  function tab(id){ ['stage','listen','test','talk','collection','parent','list','data'].forEach(function(x){ if($(x)) $(x).classList.toggle('hidden',x!==id); }); if(id==='test') newQ(); if(id==='list') renderList(); if(id==='collection') renderBadges(); if(id==='talk') renderChat(); if(id==='listen'){ fillUnits(); resetDeck(); } }
+  function tab(id){ ['stage','listen','test','talk','collection','parent','list','rexvoice','update','data'].forEach(function(x){ if($(x)) $(x).classList.toggle('hidden',x!==id); }); if(id==='test') newQ(); if(id==='list') renderList(); if(id==='collection') renderBadges(); if(id==='talk') renderChat(); if(id==='listen'){ fillUnits(); resetDeck(); } }
   function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 
   function bind(){
     $('unlockAudioBtn').addEventListener('click',function(){ RexSpeech.unlock().then(function(){ $('status').textContent='音声OK'; }); });
-    $('voiceTestBtn').addEventListener('click',function(){ RexSpeech.cancel(); RexSpeech.speak('I am Japanese.','en-US').then(function(){ return RexSpeech.speak('私はにほんじんです。','ja-JP'); }); });
+    $('voiceTestBtn').addEventListener('click',function(){ RexSpeech.cancel(); RexSpeech.saveFromUI && RexSpeech.saveFromUI(); RexSpeech.speak('Great job! Let\'s try one more sentence.','en-US').then(function(){ return RexSpeech.speak('今日もよくがんばったね。あと一文だけ、一緒にやってみよう。','ja-JP'); }); }); if($('voiceSaveBtn')) $('voiceSaveBtn').addEventListener('click',function(){ RexSpeech.saveFromUI && RexSpeech.saveFromUI(); showToast('声の設定を保存しました'); });
     $('feedBtn').addEventListener('click',feedDino); $('petBtn').addEventListener('click',petDino); $('talkBtn').addEventListener('click',function(){dinoTalk(true);}); $('renameBtn').addEventListener('click',renameDino);
     document.querySelectorAll('[data-stage-special]').forEach(function(b){ b.addEventListener('click',function(){ selectStage(this.getAttribute('data-stage-special')); }); });
     $('unit').addEventListener('change',resetDeck); $('shuffle').addEventListener('change',resetDeck);
@@ -261,8 +316,15 @@
     document.querySelectorAll('[data-tab]').forEach(function(b){ b.addEventListener('click',function(){tab(this.getAttribute('data-tab'));}); });
     $('search').addEventListener('input',renderList); $('exportBtn').addEventListener('click',exportData); $('copyBtn').addEventListener('click',copyBackup); $('restoreBtn').addEventListener('click',restoreData);
     $('addBulkBtn').addEventListener('click',addBulkSentences); $('exportCsvBtn').addEventListener('click',exportAdded); $('clearAddedBtn').addEventListener('click',clearAdded);
+    
+    if($('openAiVoiceSaveBtn')) $('openAiVoiceSaveBtn').addEventListener('click',function(){ RexSpeech.saveFromUI && RexSpeech.saveFromUI(); showToast('音声エンジン設定を保存しました'); });
+    if($('openAiVoiceTestBtn')) $('openAiVoiceTestBtn').addEventListener('click',function(){ RexSpeech.saveFromUI && RexSpeech.saveFromUI(); RexSpeech.speak('Hello! I am Rex. I am always on your side.','en-US').then(function(){ return RexSpeech.speak('こんにちは、レックスだよ。ぼくはいつでも味方だよ。一緒に英語をがんばろう。','ja-JP'); }); });
+    if($('rexVoiceGuideBtn')) $('rexVoiceGuideBtn').addEventListener('click',showRexVoiceGuide);
+
+    if($('showUpdateGuideBtn')) $('showUpdateGuideBtn').addEventListener('click',showUpdateGuide);
+    if($('quickBackupBtn')) $('quickBackupBtn').addEventListener('click',quickBackup);
   }
-  function init(){ ensureDay(); bind(); renderStages(); fillUnits(); updateStats(); resetDeck(); newQ(); renderList(); renderChat(); var ok=$('bootOk'); if(ok) ok.textContent='✅ アプリは読み込まれました。音が出ない場合は「音声スタート」を押してください。'; }
+  function init(){ ensureDay(); bind(); if(RexSpeech.populateVoiceSelects) RexSpeech.populateVoiceSelects(); renderStages(); fillUnits(); updateStats(); resetDeck(); newQ(); renderList(); renderChat(); var ok=$('bootOk'); if(ok) ok.textContent='✅ アプリは読み込まれました。音が出ない場合は「音声スタート」を押してください。'; }
 
   try{ init(); }
   catch(e){ var box=$('bootError'); if(box){ box.style.display='block'; box.textContent='起動に失敗しました。\n'+(e.message||e); } console.error(e); }

@@ -1,38 +1,169 @@
 
 (function(){
   var ready=false;
+  var voiceSettings={
+    enVoiceURI:'',jaVoiceURI:'',enRate:0.92,jaRate:0.92,enPitch:1.12,jaPitch:1.05,
+    openAiEnabled:true,voiceEngine:'openai',openAiProxyUrl:'',openAiVoice:'marin'
+  };
+
+  function readSettings(){
+    try{
+      var saved=JSON.parse(localStorage.getItem('rexEnglishMaster.voice.v30')||localStorage.getItem('rexEnglishMaster.voice.v23')||'{}');
+      voiceSettings=Object.assign(voiceSettings,saved||{});
+    }catch(e){}
+  }
+  function saveSettings(next){
+    voiceSettings=Object.assign(voiceSettings,next||{});
+    localStorage.setItem('rexEnglishMaster.voice.v30',JSON.stringify(voiceSettings));
+  }
+  readSettings();
+  if(!voiceSettings.voiceEngine){
+    voiceSettings.voiceEngine = voiceSettings.openAiEnabled === false ? 'safari' : 'openai';
+  }
+  voiceSettings.openAiEnabled = voiceSettings.voiceEngine !== 'safari';
+
+  function voices(){ return window.speechSynthesis && speechSynthesis.getVoices ? speechSynthesis.getVoices() : []; }
+  function isJapaneseVoice(v){ return (v.lang||'').toLowerCase().indexOf('ja')===0 || /japanese|kyoko|otoya|siri/i.test(v.name||''); }
+  function isEnglishVoice(v){ return (v.lang||'').toLowerCase().indexOf('en')===0 || /english|samantha|karen|tessa|moira|aria/i.test(v.name||''); }
+  function byURI(uri){ if(!uri) return null; var vs=voices(); for(var i=0;i<vs.length;i++){ if(vs[i].voiceURI===uri) return vs[i]; } return null; }
+
   function pickVoice(lang){
-    var voices = window.speechSynthesis && speechSynthesis.getVoices ? speechSynthesis.getVoices() : [];
-    var prefix = lang.toLowerCase().slice(0,2);
-    var list = voices.filter(function(v){ return (v.lang || '').toLowerCase().indexOf(prefix)===0; });
-    var prefs = lang==='ja-JP' ? ['Kyoko','Otoya','Siri','Google 日本語','Japanese'] : ['Samantha','Karen','Tessa','Moira','Google US English','Microsoft Aria','English'];
-    for(var i=0;i<prefs.length;i++){
+    var selected = lang==='ja-JP' ? byURI(voiceSettings.jaVoiceURI) : byURI(voiceSettings.enVoiceURI);
+    if(selected) return selected;
+    var vs=voices();
+    var list=vs.filter(function(v){ return lang==='ja-JP' ? isJapaneseVoice(v) : isEnglishVoice(v); });
+    var prefs = lang==='ja-JP'
+      ? ['Kyoko','Siri','Otoya','Japanese','Google 日本語','Microsoft Nanami','Microsoft Haruka']
+      : ['Samantha','Karen','Tessa','Moira','Ava','Google US English','Microsoft Aria','English'];
+    for(var p=0;p<prefs.length;p++){
       for(var j=0;j<list.length;j++){
-        if((list[j].name || '').toLowerCase().indexOf(prefs[i].toLowerCase())>=0) return list[j];
+        if((list[j].name||'').toLowerCase().indexOf(prefs[p].toLowerCase())>=0) return list[j];
       }
     }
     return list[0] || null;
   }
-  if('speechSynthesis' in window){ speechSynthesis.onvoiceschanged=function(){ speechSynthesis.getVoices(); }; }
-  function speak(text, lang){
+
+  function browserSpeak(text, lang){
     return new Promise(function(resolve){
       if(!text || !('speechSynthesis' in window)){ resolve(); return; }
       var u = new SpeechSynthesisUtterance(text);
-      u.lang=lang; u.voice=pickVoice(lang);
-      u.pitch=lang==='ja-JP'?1.28:1.22;
-      u.rate=lang==='ja-JP'?1.04:.92;
+      u.lang=lang;
+      u.voice=pickVoice(lang);
+      if(lang==='ja-JP'){ u.pitch=Number(voiceSettings.jaPitch||1.05); u.rate=Number(voiceSettings.jaRate||0.92); }
+      else { u.pitch=Number(voiceSettings.enPitch||1.12); u.rate=Number(voiceSettings.enRate||0.92); }
       u.volume=1;
       u.onend=resolve; u.onerror=resolve;
       speechSynthesis.speak(u);
-      setTimeout(resolve, Math.max(1650, text.length*125));
+      setTimeout(resolve, Math.max(1650, String(text).length*135));
     });
   }
+
+  async function openAiSpeak(text, lang){
+    if(!voiceSettings.openAiEnabled || !voiceSettings.openAiProxyUrl) throw new Error('OpenAI voice not configured');
+    var instructions = lang==='ja-JP'
+      ? '明るく、やさしく、自然な日本語で話してください。中学生を応援するかわいい恐竜レックスの相棒らしい声。怒らず、前向き。'
+      : 'Speak in a bright, friendly, encouraging voice like Rex, a cute dinosaur learning buddy. Clear pronunciation for a junior high school student.';
+    var res = await fetch(voiceSettings.openAiProxyUrl, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({text:text, lang:lang, voice:voiceSettings.openAiVoice||'marin', instructions:instructions})
+    });
+    if(!res.ok) throw new Error('OpenAI voice proxy error: '+res.status);
+    var blob=await res.blob();
+    var url=URL.createObjectURL(blob);
+    await new Promise(function(resolve,reject){
+      var audio=new Audio(url);
+      audio.onended=function(){ URL.revokeObjectURL(url); resolve(); };
+      audio.onerror=function(){ URL.revokeObjectURL(url); reject(new Error('audio playback error')); };
+      audio.play().catch(reject);
+    });
+  }
+
+  async function speak(text, lang){
+    if(voiceSettings.openAiEnabled && voiceSettings.openAiProxyUrl){
+      try{ await openAiSpeak(text, lang); return; }
+      catch(e){ console.warn(e); }
+    }
+    return browserSpeak(text, lang);
+  }
+
   function unlock(){
-    if(!('speechSynthesis' in window)){ return Promise.resolve(false); }
-    speechSynthesis.cancel();
+    if(!('speechSynthesis' in window) && !voiceSettings.openAiEnabled){ return Promise.resolve(false); }
+    if('speechSynthesis' in window) speechSynthesis.cancel();
     return speak('Ready','en-US').then(function(){ ready=true; return true; });
   }
   function isReady(){ return ready; }
   function cancel(){ if('speechSynthesis' in window) speechSynthesis.cancel(); }
-  window.RexSpeech={speak:speak, unlock:unlock, cancel:cancel, isReady:isReady};
+
+  function populateVoiceSelects(){
+    var enSel=document.getElementById('enVoiceSelect');
+    var jaSel=document.getElementById('jaVoiceSelect');
+    if(enSel && jaSel){
+      var vs=voices();
+      var en=vs.filter(isEnglishVoice);
+      var ja=vs.filter(isJapaneseVoice);
+      function fill(sel, arr, selectedURI, fallbackLabel){
+        sel.innerHTML='';
+        var auto=document.createElement('option'); auto.value=''; auto.textContent='自動選択（おすすめ）'; sel.appendChild(auto);
+        if(!arr.length){ var opt=document.createElement('option'); opt.value=''; opt.textContent=fallbackLabel; sel.appendChild(opt); }
+        else { arr.forEach(function(v){ var opt=document.createElement('option'); opt.value=v.voiceURI; opt.textContent=v.name+' / '+v.lang; sel.appendChild(opt); }); }
+        sel.value=selectedURI||'';
+      }
+      fill(enSel,en,voiceSettings.enVoiceURI,'英語音声が見つかりません');
+      fill(jaSel,ja,voiceSettings.jaVoiceURI,'日本語音声が見つかりません');
+      var er=document.getElementById('enRateSelect'), jr=document.getElementById('jaRateSelect');
+      if(er) er.value=String(voiceSettings.enRate||0.92);
+      if(jr) jr.value=String(voiceSettings.jaRate||0.92);
+    }
+
+    var chk=document.getElementById('openAiVoiceEnabled');
+    var openRadio=document.getElementById('voiceEngineOpenAI');
+    var safariRadio=document.getElementById('voiceEngineSafari');
+    var proxy=document.getElementById('openAiProxyUrl');
+    var ovoice=document.getElementById('openAiVoiceSelect');
+    if(openRadio) openRadio.checked=(voiceSettings.voiceEngine||'openai')==='openai';
+    if(safariRadio) safariRadio.checked=(voiceSettings.voiceEngine||'openai')==='safari';
+    if(chk) chk.checked=(voiceSettings.voiceEngine||'openai')==='openai';
+    if(proxy) proxy.value=voiceSettings.openAiProxyUrl||'';
+    if(ovoice) ovoice.value=voiceSettings.openAiVoice||'marin';
+    if(openRadio) openRadio.onchange=function(){ if(chk) chk.checked=true; };
+    if(safariRadio) safariRadio.onchange=function(){ if(chk) chk.checked=false; };
+  }
+
+  function saveFromUI(){
+    var enSel=document.getElementById('enVoiceSelect');
+    var jaSel=document.getElementById('jaVoiceSelect');
+    var er=document.getElementById('enRateSelect');
+    var jr=document.getElementById('jaRateSelect');
+    var chk=document.getElementById('openAiVoiceEnabled');
+    var openRadio=document.getElementById('voiceEngineOpenAI');
+    var safariRadio=document.getElementById('voiceEngineSafari');
+    var proxy=document.getElementById('openAiProxyUrl');
+    var ovoice=document.getElementById('openAiVoiceSelect');
+    var engine = safariRadio && safariRadio.checked ? 'safari' : 'openai';
+    saveSettings({
+      enVoiceURI: enSel ? enSel.value : '',
+      jaVoiceURI: jaSel ? jaSel.value : '',
+      enRate: er ? Number(er.value) : 0.92,
+      jaRate: jr ? Number(jr.value) : 0.92,
+      voiceEngine: engine,
+      openAiEnabled: engine === 'openai',
+      openAiProxyUrl: proxy ? proxy.value.trim() : '',
+      openAiVoice: ovoice ? ovoice.value : 'marin'
+    });
+  }
+
+  if('speechSynthesis' in window){
+    speechSynthesis.onvoiceschanged=function(){ populateVoiceSelects(); };
+    setTimeout(populateVoiceSelects,300);
+    setTimeout(populateVoiceSelects,1200);
+  } else {
+    setTimeout(populateVoiceSelects,300);
+  }
+
+  window.RexSpeech={
+    speak:speak, unlock:unlock, cancel:cancel, isReady:isReady,
+    populateVoiceSelects:populateVoiceSelects, saveFromUI:saveFromUI,
+    settings:function(){return voiceSettings;}
+  };
 })();

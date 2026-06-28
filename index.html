@@ -9,16 +9,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./icon-192.png">
-  <title>レックス英語マスター v21</title>
-  <link rel="stylesheet" href="./style.css?v=21">
+  <title>レックス英語マスター v31</title>
+  <link rel="stylesheet" href="./style.css?v=31">
 </head>
 <body>
   <div id="levelUp" class="levelUp">🎉 成長したよ！</div>
   <div id="toast" class="toast"></div>
 
   <header>
-    <h1>🦖 レックス英語マスター v21</h1>
-    <div class="sub">v21：毎日ミッション強化・進化マップ・応援演出</div>
+    <h1>🦖 レックス英語マスター v31</h1>
+    <div class="sub">v31：OpenAI音声標準・Safari音声切替対応</div>
   </header>
 
   <main>
@@ -91,13 +91,50 @@
     </section>
 
     <section class="card">
-      <h2>🔊 音声準備</h2>
+      <h2>🔊 音声準備・声の設定</h2>
       <div class="row">
         <button class="primary" id="unlockAudioBtn">音声スタート</button>
         <button id="voiceTestBtn">音声テスト</button>
+        <button id="voiceSaveBtn">声を保存</button>
         <span id="status" class="pill">未準備</span>
       </div>
-      <p class="small">読み上げは「英語→日本語→英語→日本語」、間隔0.4秒がデフォルト。音が出ない時は、最初に「音声スタート」を押してください。</p>
+      <div class="voiceGrid">
+        <label>英語の声<br><select id="enVoiceSelect"></select></label>
+        <label>日本語の声<br><select id="jaVoiceSelect"></select></label>
+        <label>英語速度<br><select id="enRateSelect"><option value="0.82">ゆっくり</option><option value="0.92" selected>おすすめ</option><option value="1.0">普通</option></select></label>
+        <label>日本語速度<br><select id="jaRateSelect"><option value="0.82">ゆっくり</option><option value="0.92" selected>聞きやすい</option><option value="1.0">普通</option></select></label>
+      </div>
+
+      <div class="openaiVoiceBox">
+        <h3>🦖 OpenAI高品質音声</h3>
+        <div class="engineSwitch">
+          <label class="pill"><input type="radio" name="voiceEngine" id="voiceEngineOpenAI" value="openai" checked> OpenAI音声</label>
+          <label class="pill"><input type="radio" name="voiceEngine" id="voiceEngineSafari" value="safari"> Safari標準音声</label>
+        </div>
+        <input type="checkbox" id="openAiVoiceEnabled" checked class="hidden">
+        <div class="voiceGrid">
+          <label>音声プロキシURL<br><input id="openAiProxyUrl" placeholder="https://xxxxx.workers.dev/tts"></label>
+          <label>レックスの声<br>
+            <select id="openAiVoiceSelect">
+              <option value="marin" selected>marin（おすすめ）</option>
+              <option value="cedar">cedar（おすすめ）</option>
+              <option value="coral">coral</option>
+              <option value="nova">nova</option>
+              <option value="shimmer">shimmer</option>
+              <option value="fable">fable</option>
+              <option value="sage">sage</option>
+              <option value="alloy">alloy</option>
+            </select>
+          </label>
+        </div>
+        <div class="row">
+          <button id="openAiVoiceSaveBtn">OpenAI音声設定を保存</button>
+          <button id="openAiVoiceTestBtn">OpenAI音声テスト</button>
+        </div>
+        <p class="small">標準はOpenAI音声です。音声プロキシURLが未設定・失敗時はSafari標準音声へ自動で戻ります。手動でSafari標準音声にも切り替えできます。</p>
+      </div>
+
+      <p class="small">iPhone標準音声も使えます。OpenAI音声を設定すると、日本語もかなり自然になります。</p>
     </section>
 
     <section id="stage" class="card">
@@ -201,10 +238,45 @@
       <div id="listbox"></div>
     </section>
 
+
+
+    <section id="rexvoice" class="card hidden">
+      <h2>🎙️ レックスボイス設定</h2>
+      <div class="dataBox">
+        <b>OpenAI高品質音声について</b>
+        <p class="small">OpenAI音声を使うと、英語と日本語を同じレックス風の声で読み上げられます。APIキーはGitHub Pagesには置かず、Cloudflare WorkerのSecretに保存します。</p>
+      </div>
+      <div class="dataBox">
+        <b>おすすめ設定</b>
+        <p class="small">Voice: marin または cedar<br>Style: 明るく、優しく、中学生を応援する相棒のレックス。失敗しても怒らず、前向きに励ます。</p>
+      </div>
+      <div class="row">
+        <button class="primary" id="rexVoiceGuideBtn">設定手順を表示</button>
+      </div>
+      <textarea id="rexVoiceGuideText" readonly></textarea>
+    </section>
+
+    <section id="update" class="card hidden">
+      <h2>🔄 アップデート管理</h2>
+      <div class="dataBox">
+        <b>現在のバージョン</b>
+        <p class="small">App: <span id="appVersionLabel">v22</span><br>Data: <span id="contentVersionLabel">-</span><br>保存キー: rexEnglishMaster.profile.v1</p>
+      </div>
+      <div class="dataBox">
+        <b>GitHubで更新するとき</b>
+        <p class="small">v22以降は、同じGitHubリポジトリへファイルを上書きアップロードするだけで更新できます。URLが同じなら、レックス・XP・コイン・苦手問題は基本的に残ります。</p>
+      </div>
+      <div class="row">
+        <button class="primary" id="showUpdateGuideBtn">更新手順を表示</button>
+        <button id="quickBackupBtn">今すぐバックアップ</button>
+      </div>
+      <textarea id="updateGuideText" readonly></textarea>
+    </section>
+
     <section id="data" class="card hidden">
       <h2>🛡️ データ管理</h2>
       <div class="row">
-        <span class="versionTag">App v21</span>
+        <span class="versionTag">App v31</span>
         <span class="versionTag">Data <span id="dataVersionLabel">-</span></span>
         <span class="versionTag">例文 <span id="sentenceCountLabel">-</span>文</span>
       </div>
@@ -229,13 +301,13 @@
     <button data-tab="talk">会話</button>
     <button data-tab="collection">バッジ</button>
     <button data-tab="parent">追加</button>
-    <button data-tab="data">データ</button>
+    <button data-tab="rexvoice">音声</button><button data-tab="update">更新</button><button data-tab="data">データ</button>
   </div>
 
-  <script src="./data.js?v=21"></script>
-  <script src="./storage.js?v=21"></script>
-  <script src="./speech.js?v=21"></script>
-  <script src="./game.js?v=21"></script>
-  <script src="./app.js?v=21"></script>
+  <script src="./data.js?v=31"></script>
+  <script src="./storage.js?v=31"></script>
+  <script src="./speech.js?v=31"></script>
+  <script src="./game.js?v=31"></script>
+  <script src="./app.js?v=31"></script>
 </body>
 </html>
