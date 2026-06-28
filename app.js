@@ -44,7 +44,7 @@
     var t=todayStr();
     if(score.lastDay!==t){
       score.today=0; score.lastDay=t; score.streak=(score.streak||0)+1; score.coins=(score.coins||0)+20; persist();
-      setBubble('Welcome back!','おかえり！また会えてうれしいよ。');
+      var ps=privateSettings(); setBubble('Welcome back!', ps.childName ? 'おかえり、'+ps.childName+'！また会えてうれしいよ。' : 'おかえり！また会えてうれしいよ。');
     }
   }
   function currentDino(){ return RexGame.currentStage(score); }
@@ -192,7 +192,7 @@
     if($('dataVersionLabel')) $('dataVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
     if($('sentenceCountLabel')) $('sentenceCountLabel').textContent=(window.REX_SENTENCES||[]).length + (added?added.length:0);
     if($('contentVersionLabel')) $('contentVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
-    if($('appVersionLabel')) $('appVersionLabel').textContent='v31';
+    if($('appVersionLabel')) $('appVersionLabel').textContent='v32';
   }
 
   function renderDaily(){
@@ -300,7 +300,95 @@
   }
   function clearAdded(){ if(confirm('追加した例文を消しますか？')){ added=[]; persist(); renderStages(); fillUnits(); resetDeck(); updateStats(); showToast('追加例文をリセットしました'); } }
 
-  function tab(id){ ['stage','listen','test','talk','collection','parent','list','rexvoice','update','data'].forEach(function(x){ if($(x)) $(x).classList.toggle('hidden',x!==id); }); if(id==='test') newQ(); if(id==='list') renderList(); if(id==='collection') renderBadges(); if(id==='talk') renderChat(); if(id==='listen'){ fillUnits(); resetDeck(); } }
+
+  function privateSettings(){
+    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v32')||'{}');}catch(e){return {};}
+  }
+  function savePrivateSettings(s){
+    localStorage.setItem('rexEnglishMaster.private.v32',JSON.stringify(s||{}));
+  }
+  function showLock(){
+    var s=privateSettings();
+    if(!s.appPin){
+      if($('appLock')) $('appLock').classList.remove('hidden');
+      if($('lockMsg')) $('lockMsg').textContent='はじめて使う場合は「はじめて設定」を押してください。';
+      return;
+    }
+    if($('appLock')) $('appLock').classList.remove('hidden');
+    setTimeout(function(){ if($('appPinInput')) $('appPinInput').focus(); },300);
+  }
+  function hideLock(){
+    if($('appLock')) $('appLock').classList.add('hidden');
+  }
+  function unlockApp(){
+    var s=privateSettings();
+    var v=($('appPinInput')&&$('appPinInput').value||'').trim();
+    if(!s.appPin){
+      if($('lockMsg')) $('lockMsg').textContent='先に「はじめて設定」でパスコードを決めてください。';
+      return;
+    }
+    if(v===s.appPin){
+      sessionStorage.setItem('rexEnglishMaster.unlocked','1');
+      hideLock();
+      var name=s.childName||'';
+      if(name){ setBubble('Welcome back!','おかえり、'+name+'！レックス待ってたよ。'); }
+      else { setBubble('Welcome back!','おかえり！レックス待ってたよ。'); }
+    }else{
+      if($('lockMsg')) $('lockMsg').textContent='パスコードが違います。';
+    }
+  }
+  function setupFirstPin(){
+    var pin=prompt('起動パスコードを決めてください（4〜8桁がおすすめ）','');
+    if(!pin) return;
+    var parent=prompt('保護者PINを決めてください（起動パスコードと別でもOK）','');
+    var name=prompt('レックスが呼ぶ名前を入力してください（例：ゆいちゃん）','');
+    savePrivateSettings({appPin:String(pin),parentPin:String(parent||pin),childName:String(name||'')});
+    sessionStorage.setItem('rexEnglishMaster.unlocked','1');
+    hideLock();
+    if(name) setBubble('Nice to meet you!','これから '+name+' 専用のレックスだよ！');
+    showToast('専用設定を保存しました');
+  }
+  function requireParentPin(){
+    var s=privateSettings();
+    if(!s.parentPin) return true;
+    var v=prompt('保護者PINを入力してください','');
+    return v===s.parentPin;
+  }
+  function savePrivateFromUI(){
+    var s=privateSettings();
+    var name=($('childNameInput')&&$('childNameInput').value||'').trim();
+    var appPin=($('newAppPinInput')&&$('newAppPinInput').value||'').trim();
+    var parentPin=($('newParentPinInput')&&$('newParentPinInput').value||'').trim();
+    if(!requireParentPin()){ showToast('保護者PINが違います'); return; }
+    if(name) s.childName=name;
+    if(appPin) s.appPin=appPin;
+    if(parentPin) s.parentPin=parentPin;
+    savePrivateSettings(s);
+    if($('newAppPinInput')) $('newAppPinInput').value='';
+    if($('newParentPinInput')) $('newParentPinInput').value='';
+    showToast('専用設定を保存しました');
+    if(s.childName) setBubble('Saved!','これから '+s.childName+' って呼ぶね。');
+  }
+  function loadPrivateUI(){
+    var s=privateSettings();
+    if($('childNameInput')) $('childNameInput').value=s.childName||'';
+  }
+  function lockNow(){
+    sessionStorage.removeItem('rexEnglishMaster.unlocked');
+    if($('appPinInput')) $('appPinInput').value='';
+    showLock();
+  }
+  function resetPins(){
+    if(!requireParentPin()){ showToast('保護者PINが違います'); return; }
+    if(confirm('起動パスコードと保護者PINをリセットしますか？')){
+      localStorage.removeItem('rexEnglishMaster.private.v32');
+      sessionStorage.removeItem('rexEnglishMaster.unlocked');
+      showToast('PINをリセットしました');
+      showLock();
+    }
+  }
+
+  function tab(id){ if((id==='parent'||id==='private'||id==='data'||id==='update') && !requireParentPin()) { showToast('保護者PINが必要です'); return; } if(id==='private') loadPrivateUI(); ['stage','listen','test','talk','collection','parent','list','rexvoice','update','private','data'].forEach(function(x){ if($(x)) $(x).classList.toggle('hidden',x!==id); }); if(id==='test') newQ(); if(id==='list') renderList(); if(id==='collection') renderBadges(); if(id==='talk') renderChat(); if(id==='listen'){ fillUnits(); resetDeck(); } }
   function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 
   function bind(){
@@ -324,7 +412,7 @@
     if($('showUpdateGuideBtn')) $('showUpdateGuideBtn').addEventListener('click',showUpdateGuide);
     if($('quickBackupBtn')) $('quickBackupBtn').addEventListener('click',quickBackup);
   }
-  function init(){ ensureDay(); bind(); if(RexSpeech.populateVoiceSelects) RexSpeech.populateVoiceSelects(); renderStages(); fillUnits(); updateStats(); resetDeck(); newQ(); renderList(); renderChat(); var ok=$('bootOk'); if(ok) ok.textContent='✅ アプリは読み込まれました。音が出ない場合は「音声スタート」を押してください。'; }
+  function init(){ ensureDay(); bind(); if(RexSpeech.populateVoiceSelects) RexSpeech.populateVoiceSelects(); renderStages(); fillUnits(); updateStats(); resetDeck(); newQ(); renderList(); renderChat(); var ok=$('bootOk'); if(ok) ok.textContent='✅ アプリは読み込まれました。音が出ない場合は「音声スタート」を押してください。'; if(sessionStorage.getItem('rexEnglishMaster.unlocked')!=='1') showLock(); }
 
   try{ init(); }
   catch(e){ var box=$('bootError'); if(box){ box.style.display='block'; box.textContent='起動に失敗しました。\n'+(e.message||e); } console.error(e); }

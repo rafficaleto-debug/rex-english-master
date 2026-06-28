@@ -9,16 +9,31 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./icon-192.png">
-  <title>レックス英語マスター v31</title>
-  <link rel="stylesheet" href="./style.css?v=31">
+  <title>レックス英語マスター v32</title>
+  <link rel="stylesheet" href="./style.css?v=32">
 </head>
 <body>
+
+  <div id="appLock" class="appLock hidden">
+    <div class="lockCard">
+      <div class="lockRex">🦖🔐</div>
+      <h2>レックスのひみつ基地</h2>
+      <p class="small">パスコードを入れると、レックスに会えるよ。</p>
+      <input id="appPinInput" type="password" inputmode="numeric" maxlength="8" placeholder="パスコード">
+      <div class="row lockBtns">
+        <button class="primary" id="unlockAppBtn">入る</button>
+        <button id="setupPinBtn">はじめて設定</button>
+      </div>
+      <div id="lockMsg" class="small"></div>
+    </div>
+  </div>
+
   <div id="levelUp" class="levelUp">🎉 成長したよ！</div>
   <div id="toast" class="toast"></div>
 
   <header>
-    <h1>🦖 レックス英語マスター v31</h1>
-    <div class="sub">v31：OpenAI音声標準・Safari音声切替対応</div>
+    <h1>🦖 レックス英語マスター v32</h1>
+    <div class="sub">v32：娘さん専用ロック・保護者PIN対応</div>
   </header>
 
   <main>
@@ -273,10 +288,30 @@
       <textarea id="updateGuideText" readonly></textarea>
     </section>
 
+
+    <section id="private" class="card hidden">
+      <h2>🔐 専用設定</h2>
+      <div class="dataBox">
+        <b>娘さん専用モード</b>
+        <p class="small">アプリ起動時のパスコード、保護者モードのPIN、レックスが呼ぶ名前を設定できます。</p>
+      </div>
+      <div class="voiceGrid">
+        <label>呼び名<br><input id="childNameInput" placeholder="例：〇〇ちゃん"></label>
+        <label>起動パスコード<br><input id="newAppPinInput" type="password" inputmode="numeric" maxlength="8" placeholder="4〜8桁"></label>
+        <label>保護者PIN<br><input id="newParentPinInput" type="password" inputmode="numeric" maxlength="8" placeholder="4〜8桁"></label>
+      </div>
+      <div class="row">
+        <button class="primary" id="savePrivateBtn">専用設定を保存</button>
+        <button id="lockNowBtn">今すぐロック</button>
+        <button class="bad" id="resetPinsBtn">PINをリセット</button>
+      </div>
+      <p class="small">※これは家族利用向けの簡易ロックです。URL自体を完全非公開にしたい場合はCloudflare Accessが必要です。</p>
+    </section>
+
     <section id="data" class="card hidden">
       <h2>🛡️ データ管理</h2>
       <div class="row">
-        <span class="versionTag">App v31</span>
+        <span class="versionTag">App v32</span>
         <span class="versionTag">Data <span id="dataVersionLabel">-</span></span>
         <span class="versionTag">例文 <span id="sentenceCountLabel">-</span>文</span>
       </div>
@@ -301,13 +336,13 @@
     <button data-tab="talk">会話</button>
     <button data-tab="collection">バッジ</button>
     <button data-tab="parent">追加</button>
-    <button data-tab="rexvoice">音声</button><button data-tab="update">更新</button><button data-tab="data">データ</button>
+    <button data-tab="rexvoice">音声</button><button data-tab="update">更新</button><button data-tab="private">専用</button><button data-tab="data">データ</button>
   </div>
 
-  <script src="./data.js?v=31"></script>
-  <script src="./storage.js?v=31"></script>
-  <script src="./speech.js?v=31"></script>
-  <script src="./game.js?v=31"></script>
-  <script src="./app.js?v=31"></script>
+  <script src="./data.js?v=32"></script>
+  <script src="./storage.js?v=32"></script>
+  <script src="./speech.js?v=32"></script>
+  <script src="./game.js?v=32"></script>
+  <script src="./app.js?v=32"></script>
 </body>
 </html>

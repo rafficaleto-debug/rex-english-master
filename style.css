@@ -89,3 +89,14 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 /* v31 voice engine switch */
 .engineSwitch{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
 .engineSwitch .pill{cursor:pointer}
+
+
+/* v32 private lock */
+.appLock{position:fixed;inset:0;z-index:999;background:linear-gradient(160deg,#b9eeff,#fff8bf 50%,#bff4ce);display:flex;align-items:center;justify-content:center;padding:18px}
+.appLock.hidden{display:none!important}
+.lockCard{background:rgba(255,255,255,.96);border:3px solid #ffd7ab;border-radius:30px;padding:22px;max-width:390px;width:100%;box-shadow:0 20px 60px rgba(50,50,90,.22);text-align:center}
+.lockRex{font-size:54px;margin-bottom:8px}
+.lockCard input{width:100%;text-align:center;font-size:22px;letter-spacing:.18em;font-weight:1000}
+.lockBtns{justify-content:center;margin-top:12px}
+.footer{grid-template-columns:repeat(10,1fr)}
+@media(max-width:720px){.footer{grid-template-columns:repeat(10,1fr)}.footer button{font-size:9px;padding:9px 1px}}
