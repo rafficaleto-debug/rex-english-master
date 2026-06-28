@@ -9,8 +9,8 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./icon-192.png">
-  <title>レックス英語マスター v44</title>
-  <link rel="stylesheet" href="./style.css?v=44">
+  <title>レックス英語マスター v45</title>
+  <link rel="stylesheet" href="./style.css?v=45">
 </head>
 <body>
 
@@ -26,7 +26,7 @@
       <p class="small" id="lockLead">パスコードを入れると、レックスに会えるよ。</p>
 
       <div id="loginPanel">
-        <input id="appPinInput" type="password" inputmode="numeric" maxlength="8" placeholder="パスコード">
+        <input id="appPinInput" type="password" inputmode="numeric" maxlength="4" placeholder="4桁パスコード">
         <div class="row lockBtns">
           <button class="primary" id="unlockAppBtn" type="button" onclick="window.RexPrivateUnlock && window.RexPrivateUnlock()">入る</button>
           <button id="setupPinBtn" type="button" onclick="window.RexPrivateShowSetup && window.RexPrivateShowSetup()">はじめて設定</button>
@@ -35,8 +35,8 @@
 
       <div id="setupPanel" class="hidden">
         <input id="setupChildName" autocomplete="off" placeholder="呼び名 例：ゆいちゃん">
-        <input id="setupAppPin" type="password" inputmode="numeric" maxlength="8" placeholder="8桁パスコード">
-        <input id="setupParentPin" type="password" inputmode="numeric" maxlength="8" placeholder="確認用：同じ8桁パスコード">
+        <input id="setupAppPin" type="password" inputmode="numeric" maxlength="8" placeholder="娘さん用4桁パスコード">
+        <input id="setupParentPin" type="password" inputmode="numeric" maxlength="8" placeholder="確認用：同じ娘さん用4桁パスコード">
         <div class="row lockBtns">
           <button class="primary" id="saveFirstSetupBtn" type="button" onclick="window.RexPrivateSaveSetup && window.RexPrivateSaveSetup()">保存して始める</button>
           <button id="cancelSetupBtn" type="button" onclick="window.RexPrivateCancelSetup && window.RexPrivateCancelSetup()">戻る</button>
@@ -51,8 +51,8 @@
   <div id="toast" class="toast"></div>
 
   <header>
-    <h1>🧡 レックス英語マスター v44</h1>
-    <div class="sub">v44：音声設定は子どもOK・保護者メニューは8桁ロック</div>
+    <h1>🧡 レックス英語マスター v45</h1>
+    <div class="sub">v45：音声設定は子どもOK・保護者メニューは8桁ロック</div>
   </header>
 
   <main>
@@ -289,11 +289,11 @@
       <h2>🔄 アップデート管理</h2>
       <div class="dataBox">
         <b>現在のバージョン</b>
-        <p class="small">App: <span id="appVersionLabel">v44</span><br>Data: <span id="contentVersionLabel">-</span><br>保存キー: rexEnglishMaster.profile.v44</p>
+        <p class="small">App: <span id="appVersionLabel">v45</span><br>Data: <span id="contentVersionLabel">-</span><br>保存キー: rexEnglishMaster.profile.v45</p>
       </div>
       <div class="dataBox">
         <b>GitHubで更新するとき</b>
-        <p class="small">v44以降は、同じGitHubリポジトリへファイルを上書きアップロードするだけで更新できます。URLが同じなら、レックス・XP・コイン・苦手問題は基本的に残ります。</p>
+        <p class="small">v45以降は、同じGitHubリポジトリへファイルを上書きアップロードするだけで更新できます。URLが同じなら、レックス・XP・コイン・苦手問題は基本的に残ります。</p>
       </div>
       <div class="row">
         <button class="primary" id="showUpdateGuideBtn">更新手順を表示</button>
@@ -306,13 +306,13 @@
 
     <section id="settings" class="card hidden">
       <h2>⚙️ 設定</h2>
-      <p class="small">音声は娘さんも変更OK。保護者メニューは、最初に設定した8桁パスコードで開きます。</p>
+      <p class="small">音声は娘さんも変更OK。保護者メニューは、最初に設定した娘さん用4桁パスコードで開きます。</p>
       <div class="settingsGrid simpleSettings">
         <button class="settingsTile childOk" data-tab="voice">
           <span>🔊</span><b>音声設定</b><small>声・速度・OpenAI/Safari</small>
         </button>
         <button class="settingsTile parentOnly" id="openParentMenuBtn" type="button">
-          <span>👨‍👧</span><b>保護者メニュー</b><small>8桁パスコードで開く</small>
+          <span>👨‍👧</span><b>保護者メニュー</b><small>娘さん用4桁パスコードで開く</small>
         </button>
       </div>
       <div class="parentHint">
@@ -347,11 +347,11 @@
       <h2>🔐 専用設定</h2>
       <div class="dataBox">
         <b>娘さん専用モード</b>
-        <p class="small">最初に設定した8桁パスコード、レックスが呼ぶ名前を変更できます。</p>
+        <p class="small">最初に設定した娘さん用4桁パスコード、レックスが呼ぶ名前を変更できます。</p>
       </div>
       <div class="voiceGrid">
         <label>呼び名<br><input id="childNameInput" placeholder="例：〇〇ちゃん"></label>
-        <label>8桁パスコード<br><input id="newAppPinInput" type="password" inputmode="numeric" maxlength="8" placeholder="8桁"></label>
+        <label>娘さん用4桁パスコード<br><input id="newAppPinInput" type="password" inputmode="numeric" maxlength="4" placeholder="4桁"></label>
         <label><span style="display:none">保護者PIN<br><input id="newParentPinInput" type="password" inputmode="numeric" maxlength="8" placeholder="8桁"></span></label>
       </div>
       <div class="row">
@@ -365,7 +365,7 @@
     <section id="data" class="card hidden">
       <h2>🛡️ データ管理</h2>
       <div class="row">
-        <span class="versionTag">App v44</span>
+        <span class="versionTag">App v45</span>
         <span class="versionTag">Data <span id="dataVersionLabel">-</span></span>
         <span class="versionTag">例文 <span id="sentenceCountLabel">-</span>文</span>
       </div>
@@ -392,10 +392,10 @@
     <button data-tab="settings">設定</button>
   </div>
 
-  <script src="./data.js?v=44"></script>
-  <script src="./storage.js?v=44"></script>
-  <script src="./speech.js?v=44"></script>
-  <script src="./game.js?v=44"></script>
-  <script src="./app.js?v=44"></script>
+  <script src="./data.js?v=45"></script>
+  <script src="./storage.js?v=45"></script>
+  <script src="./speech.js?v=45"></script>
+  <script src="./game.js?v=45"></script>
+  <script src="./app.js?v=45"></script>
 </body>
 </html>
