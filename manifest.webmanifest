@@ -1,0 +1,20 @@
+{
+  "name": "レックス英語マスター",
+  "short_name": "レックス英語",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fff8e8",
+  "theme_color": "#ff8ab7",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
