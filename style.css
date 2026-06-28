@@ -180,7 +180,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @keyframes rexMapBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 
 
-/* v39: simpler home + settings split */
+/* v40: simpler home + settings split */
 .hero .dinoStage{
   display:none!important;
 }
@@ -241,217 +241,94 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 #voice.hidden{display:none!important}
 
 
-/* v39 stable Rex visuals: no green icons, 7 stages, light animations */
-.hero .dinoStage{
-  display:none!important;
-}
-.currentRexRow{
+/* v40 visual exact-style growth map */
+.hero .dinoStage{display:none!important}
+.currentRexRow.v40{
   display:grid;
-  grid-template-columns:118px 1fr;
-  gap:12px;
+  grid-template-columns:176px 1fr;
+  gap:18px;
   align-items:center;
-  margin-bottom:12px;
+  margin-bottom:18px;
 }
 .currentRexVisual{
-  min-height:96px;
-  border-radius:24px;
-  background:rgba(255,255,255,.62);
+  min-height:156px;
+  border-radius:28px;
+  background:#fff;
   display:flex;
   align-items:center;
   justify-content:center;
-  box-shadow:0 8px 20px rgba(80,80,120,.08);
+  box-shadow:0 12px 28px rgba(80,80,120,.10);
 }
-
-/* main reusable Rex drawing */
-.rexV{
-  position:relative;
+.rexSvg{
+  width:100%;
+  height:100%;
   display:block;
-  width:72px;
-  height:70px;
-  margin:0 auto;
-  filter:drop-shadow(0 6px 6px rgba(80,60,70,.14));
 }
-.rexV.hero{
-  width:88px;
-  height:86px;
-  transform:scale(1.05);
+.rexSvg.hero{
+  width:132px;
+  height:132px;
+  animation:v40Float 2.4s ease-in-out infinite;
 }
-.rexV.stage{
-  width:58px;
-  height:56px;
+.rexSvg.stage{
+  width:74px;
+  height:74px;
 }
+@keyframes v40Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 
-/* egg base */
-.rexV .eggCore{
-  position:absolute;
-  left:50%;top:50%;
-  transform:translate(-50%,-50%);
-  width:42px;height:56px;
-  border-radius:52% 48% 46% 54%;
-  background:linear-gradient(145deg,#fff8df,#ffd990);
-  border:3px solid #f4b45a;
-  box-shadow:inset -7px -8px 0 rgba(255,174,74,.16);
-}
-.rexV.stage .eggCore{width:32px;height:42px;border-width:2px}
-.rexV .eggCore:after{
-  content:"";
-  position:absolute;
-  left:9px;top:10px;width:9px;height:12px;
-  background:rgba(239,166,80,.25);
-  border-radius:50%;
-  box-shadow:14px 18px 0 rgba(239,166,80,.25), 21px 5px 0 rgba(239,166,80,.22), 5px 30px 0 rgba(239,166,80,.18);
-}
-.rexV.eggFull{animation:eggWiggle 2.4s ease-in-out infinite}
-@keyframes eggWiggle{0%,100%{transform:rotate(0deg)}45%{transform:rotate(-2deg)}55%{transform:rotate(2deg)}}
-
-/* cracked egg */
-.rexV.eggCrack .crack{
-  position:absolute;
-  left:50%;top:49%;
-  transform:translate(-50%,-50%);
-  width:30px;height:34px;
-  background:
-    linear-gradient(120deg, transparent 0 43%, #d69a4c 44% 49%, transparent 50%),
-    linear-gradient(60deg, transparent 0 43%, #d69a4c 44% 49%, transparent 50%);
-  z-index:2;
-}
-.rexV.eggCrack{animation:eggShake 1.8s ease-in-out infinite}
-@keyframes eggShake{0%,100%{transform:translateX(0)}50%{transform:translateX(2px)}}
-
-/* peek stage */
-.rexV.eggPeek .eggCore{top:59%}
-.rexV.eggPeek .peekHead{
-  position:absolute;
-  left:50%;top:3px;
-  transform:translateX(-50%);
-  width:42px;height:36px;
-  background:linear-gradient(145deg,#ff9c4a,#ef642d);
-  border-radius:54% 58% 48% 46%;
-  z-index:3;
-  animation:peekBob 1.9s ease-in-out infinite;
-}
-.rexV.stage.eggPeek .peekHead{width:32px;height:28px}
-@keyframes peekBob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-3px)}}
-.rexV.eggPeek .peekHead .snout{
-  position:absolute;left:2px;top:20px;width:29px;height:14px;background:#ffa75f;border-radius:46%;
-}
-.rexV.stage.eggPeek .peekHead .snout{top:16px;width:24px;height:11px}
-.rexV.eggPeek .peekHead .eye{
-  position:absolute;left:29px;top:8px;width:11px;height:14px;background:white;border-radius:50%;
-}
-.rexV.eggPeek .peekHead .eye:after{
-  content:"";position:absolute;left:4px;top:4px;width:5px;height:8px;background:#241a1a;border-radius:50%;
-}
-.rexV.eggPeek .peekHead .mouth{
-  position:absolute;left:9px;top:29px;width:22px;height:7px;background:#7d2a1d;border-radius:0 0 12px 12px;
-}
-.rexV.stage.eggPeek .peekHead .mouth{display:none}
-
-/* Rex body pieces */
-.rexV .tail,.rexV .body,.rexV .belly,.rexV .head,.rexV .snout,.rexV .eye,.rexV .mouth,.rexV .arm,.rexV .leg,.rexV .horn,.rexV .spikes{display:none}
-.rexV.rexBaby .tail,.rexV.rexKid .tail,.rexV.rexTeen .tail,.rexV.rexAdult .tail,
-.rexV.rexBaby .body,.rexV.rexKid .body,.rexV.rexTeen .body,.rexV.rexAdult .body,
-.rexV.rexBaby .belly,.rexV.rexKid .belly,.rexV.rexTeen .belly,.rexV.rexAdult .belly,
-.rexV.rexBaby .head,.rexV.rexKid .head,.rexV.rexTeen .head,.rexV.rexAdult .head,
-.rexV.rexBaby .snout,.rexV.rexKid .snout,.rexV.rexTeen .snout,.rexV.rexAdult .snout,
-.rexV.rexBaby .eye,.rexV.rexKid .eye,.rexV.rexTeen .eye,.rexV.rexAdult .eye,
-.rexV.rexBaby .mouth,.rexV.rexKid .mouth,.rexV.rexTeen .mouth,.rexV.rexAdult .mouth,
-.rexV.rexBaby .arm,.rexV.rexKid .arm,.rexV.rexTeen .arm,.rexV.rexAdult .arm,
-.rexV.rexBaby .leg,.rexV.rexKid .leg,.rexV.rexTeen .leg,.rexV.rexAdult .leg,
-.rexV.rexKid .spikes,.rexV.rexTeen .spikes,.rexV.rexAdult .spikes,
-.rexV.rexAdult .horn{display:block}
-
-.rexV .body{
-  position:absolute;left:31px;bottom:12px;width:36px;height:30px;
-  background:linear-gradient(145deg,#ff963f,#ef642d);
-  border-radius:52%;
-}
-.rexV .belly{
-  position:absolute;left:42px;bottom:16px;width:15px;height:19px;background:#ffd8a5;border-radius:50%;
-}
-.rexV .tail{
-  position:absolute;right:0;bottom:23px;width:28px;height:10px;background:#ef642d;border-radius:70% 10% 60% 20%;transform:rotate(18deg);
-  transform-origin:left center;
-  animation:tailWag 1.9s ease-in-out infinite;
-}
-@keyframes tailWag{0%,100%{transform:rotate(13deg)}50%{transform:rotate(24deg)}}
-.rexV .head{
-  position:absolute;left:9px;top:9px;width:42px;height:36px;
-  background:linear-gradient(145deg,#ff9c4a,#ef642d);
-  border-radius:54% 58% 48% 46%;
-}
-.rexV .snout{
-  position:absolute;left:9px;top:30px;width:31px;height:15px;background:#ffa75f;border-radius:46%;
-}
-.rexV .eye{
-  position:absolute;left:39px;top:17px;width:12px;height:15px;background:white;border-radius:50%;z-index:3;
-  animation:blink 4.5s infinite;
-}
-@keyframes blink{0%,95%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
-.rexV .eye:after{
-  content:"";position:absolute;left:4px;top:4px;width:5px;height:8px;background:#241a1a;border-radius:50%;
-}
-.rexV .mouth{
-  position:absolute;left:17px;top:41px;width:23px;height:7px;background:#7d2a1d;border-radius:0 0 12px 12px;
-}
-.rexV .arm{
-  position:absolute;left:35px;top:44px;width:8px;height:12px;background:#ef642d;border-radius:8px;transform:rotate(-20deg);
-}
-.rexV .leg{
-  position:absolute;bottom:3px;width:9px;height:13px;background:#d94f29;border-radius:7px;
-}
-.rexV .legA{left:35px}
-.rexV .legB{left:51px}
-.rexV .spikes{
-  position:absolute;left:27px;top:4px;width:8px;height:8px;background:#ef642d;border-radius:50% 50% 0 0;
-  box-shadow:9px -1px 0 #ef642d,18px 3px 0 #ef642d;
-}
-.rexV .horn{
-  position:absolute;top:4px;width:10px;height:18px;background:#fff5dc;border:1px solid #dca65a;border-radius:80% 80% 40% 40%;z-index:4;
-}
-.rexV .hornA{left:15px;transform:rotate(-24deg)}
-.rexV .hornB{left:35px;transform:rotate(22deg)}
-
-/* size differentiation */
-.rexV.rexBaby{transform:scale(.78)}
-.rexV.rexKid{transform:scale(.88)}
-.rexV.rexTeen{transform:scale(.98)}
-.rexV.rexAdult{transform:scale(1.08)}
-.rexV.hero.rexBaby{transform:scale(.95)}
-.rexV.hero.rexKid{transform:scale(1.05)}
-.rexV.hero.rexTeen{transform:scale(1.15)}
-.rexV.hero.rexAdult{transform:scale(1.22)}
-.rexV.rexBaby,.rexV.rexKid,.rexV.rexTeen,.rexV.rexAdult{animation:rexBreathe 2.2s ease-in-out infinite}
-@keyframes rexBreathe{0%,100%{translate:0 0}50%{translate:0 -2px}}
-
-/* Growth strip polish */
 .growStep{
-  min-width:82px!important;
-  padding:8px 5px!important;
+  min-width:92px!important;
+  padding:9px 5px 10px!important;
+  border-radius:18px!important;
+  background:rgba(255,255,255,.72)!important;
+  border:1px solid rgba(255,186,112,.22)!important;
+}
+.growStep.active{
+  border:2px solid #ff62b2!important;
+  box-shadow:0 0 0 5px rgba(255,98,178,.08)!important;
+  background:#fff!important;
 }
 .growStep .icon{
-  height:62px!important;
+  height:76px!important;
   font-size:0!important;
   display:flex!important;
   align-items:center!important;
   justify-content:center!important;
 }
-.growStep .stageNum{
-  font-size:11px!important;
-  font-weight:1000!important;
-  color:#25304f!important;
-  line-height:1!important;
+.stageBadge{
+  width:27px;
+  height:27px;
+  margin:2px auto 2px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-weight:1000;
+  font-size:15px;
+  line-height:1;
 }
+.stageBadge.eggFull{background:#ff6f97}
+.stageBadge.eggCrack{background:#ffb31c}
+.stageBadge.eggPeek{background:#73c84c}
+.stageBadge.rexBaby{background:#55b7e9}
+.stageBadge.rexKid{background:#a96ee6}
+.stageBadge.rexTeen{background:#ff8a00}
+.stageBadge.rexAdult{background:#f55773}
 .growStep .stageName{
-  font-size:13px!important;
+  font-size:14px!important;
   font-weight:1000!important;
   color:#25304f!important;
   line-height:1.15!important;
   white-space:nowrap!important;
 }
 .growStep .mini{
-  font-size:11px!important;
+  font-size:12px!important;
+  font-weight:1000!important;
 }
-.growStep.active .rexV{
-  animation:rexBreathe 1.5s ease-in-out infinite;
+.growthWrap h2, .hero h2, #growthTitle{
+  font-weight:1000;
+}
+#growth{
+  gap:7px!important;
+  padding:4px 1px 8px!important;
 }

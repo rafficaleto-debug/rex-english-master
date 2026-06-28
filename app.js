@@ -56,7 +56,7 @@
       var bubble=$('dinoBubble');
       if(bubble && bubble.parentElement){
         var row=document.createElement('div');
-        row.className='currentRexRow';
+        row.className='currentRexRow v40';
         var card=document.createElement('div');
         card.id='currentRexVisual';
         card.className='currentRexVisual';
@@ -66,7 +66,7 @@
       }
     }
     var cv=document.getElementById('currentRexVisual');
-    if(cv){ cv.innerHTML=rexVisual(s.cls,'hero'); }
+    if(cv){ cv.innerHTML=rexImg(s.cls,'hero'); }
 
     $('rankIcon').textContent=s.icon; $('rankName').textContent=s.name; $('level').textContent=info.index+1;
     $('dino').className='rexArt '+s.cls;
@@ -82,7 +82,7 @@
   function renderGrowth(){
     var cur=currentDino().index;
     $('growth').innerHTML=RexGame.dinoStages.map(function(s,i){
-      return '<div class="growStep '+(cur===i?'active':'')+'"><div class="icon">'+rexVisual(s.cls,'stage')+'</div><div class="stageNum">'+(i+1)+'</div><div class="stageName">'+s.name+'</div><div class="mini">Lv.'+(i+1)+'</div></div>';
+      return '<div class="growStep '+(cur===i?'active':'')+'"><div class="icon">'+rexImg(s.cls,'stage')+'</div><div class="stageBadge '+s.cls+'">'+(i+1)+'</div><div class="stageName">'+s.name+'</div><div class="mini">Lv.'+(i+1)+'</div></div>';
     }).join('');
   }
   function rexHappy(){ var d=$('dino'); d.classList.remove('happy'); void d.offsetWidth; d.classList.add('happy'); }
@@ -210,22 +210,28 @@
     if($('dataVersionLabel')) $('dataVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
     if($('sentenceCountLabel')) $('sentenceCountLabel').textContent=(window.REX_SENTENCES||[]).length + (added?added.length:0);
     if($('contentVersionLabel')) $('contentVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
-    if($('appVersionLabel')) $('appVersionLabel').textContent='v39';
+    if($('appVersionLabel')) $('appVersionLabel').textContent='v40';
   }
 
 
-  function rexVisual(cls, size){
-    var sz = size || '';
-    if(cls==='eggFull'){
-      return '<div class="rexV '+sz+' eggFull"><div class="eggCore"></div></div>';
-    }
-    if(cls==='eggCrack'){
-      return '<div class="rexV '+sz+' eggCrack"><div class="eggCore"></div><div class="crack"></div></div>';
-    }
-    if(cls==='eggPeek'){
-      return '<div class="rexV '+sz+' eggPeek"><div class="eggCore"></div><div class="peekHead"><span class="snout"></span><span class="eye"></span><span class="mouth"></span></div></div>';
-    }
-    return '<div class="rexV '+sz+' '+cls+'"><span class="tail"></span><span class="body"></span><span class="belly"></span><span class="head"></span><span class="snout"></span><span class="eye"></span><span class="mouth"></span><span class="arm"></span><span class="leg legA"></span><span class="leg legB"></span><span class="horn hornA"></span><span class="horn hornB"></span><span class="spikes"></span></div>';
+  function rexImg(cls, size){
+    var s=size||'stage';
+    var parts={
+      eggFull:'<svg viewBox="0 0 120 120" class="rexSvg '+s+'"><defs><radialGradient id="eg" cx="35%" cy="28%" r="70%"><stop offset="0" stop-color="#fff8e2"/><stop offset="1" stop-color="#ffd27a"/></radialGradient></defs><ellipse cx="60" cy="63" rx="34" ry="48" fill="url(#eg)" stroke="#f4ad4e" stroke-width="4"/><ellipse cx="48" cy="41" rx="7" ry="10" fill="#efaa55" opacity=".28"/><ellipse cx="70" cy="50" rx="9" ry="13" fill="#efaa55" opacity=".28"/><ellipse cx="46" cy="75" rx="11" ry="14" fill="#efaa55" opacity=".25"/><ellipse cx="78" cy="84" rx="6" ry="8" fill="#efaa55" opacity=".24"/></svg>',
+      eggCrack:'<svg viewBox="0 0 120 120" class="rexSvg '+s+'"><defs><radialGradient id="eg2" cx="35%" cy="28%" r="70%"><stop offset="0" stop-color="#fff8e2"/><stop offset="1" stop-color="#ffd27a"/></radialGradient></defs><ellipse cx="60" cy="64" rx="34" ry="48" fill="url(#eg2)" stroke="#f4ad4e" stroke-width="4"/><path d="M29 61 L43 55 L54 63 L67 55 L80 63 L91 58" fill="none" stroke="#c98632" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="48" cy="43" rx="7" ry="10" fill="#efaa55" opacity=".24"/><ellipse cx="76" cy="80" rx="7" ry="9" fill="#efaa55" opacity=".24"/></svg>',
+      eggPeek:'<svg viewBox="0 0 120 120" class="rexSvg '+s+'"><defs><radialGradient id="eg3" cx="35%" cy="28%" r="70%"><stop offset="0" stop-color="#fff8e2"/><stop offset="1" stop-color="#ffd27a"/></radialGradient><radialGradient id="or3" cx="35%" cy="28%" r="80%"><stop offset="0" stop-color="#ffbe3d"/><stop offset="1" stop-color="#f46a25"/></radialGradient></defs><ellipse cx="60" cy="75" rx="34" ry="38" fill="url(#eg3)" stroke="#f4ad4e" stroke-width="4"/><path d="M30 60 L43 54 L55 62 L68 54 L81 62 L90 57" fill="none" stroke="#c98632" stroke-width="5" stroke-linecap="round"/><circle cx="60" cy="43" r="29" fill="url(#or3)"/><ellipse cx="50" cy="54" rx="22" ry="12" fill="#ffa866"/><circle cx="72" cy="35" r="11" fill="#fff"/><circle cx="74" cy="36" r="5" fill="#1f1b1b"/><path d="M44 55 Q58 70 74 55" fill="#7d2a1d"/><ellipse cx="63" cy="62" rx="9" ry="4" fill="#ff91a7"/><circle cx="42" cy="30" r="6" fill="#ffbe3d"/></svg>',
+      rexBaby:'rex',
+      rexKid:'rex',
+      rexTeen:'rex',
+      rexAdult:'rex'
+    };
+    if(cls==='eggFull'||cls==='eggCrack'||cls==='eggPeek') return parts[cls];
+    var scale = cls==='rexBaby' ? .78 : cls==='rexKid' ? .9 : cls==='rexTeen' ? 1.02 : 1.12;
+    var horns = cls==='rexAdult' ? '<path d="M36 27 C31 10 38 5 43 24" fill="#fff1d2" stroke="#c98d43" stroke-width="2"/><path d="M73 28 C79 10 86 7 80 27" fill="#fff1d2" stroke="#c98d43" stroke-width="2"/>' : '';
+    var spikes = cls==='rexBaby' ? '' : '<path d="M48 21 L54 9 L60 22 Z" fill="#f17324"/><path d="M62 23 L69 10 L73 26 Z" fill="#f17324"/><path d="M75 31 L87 23 L84 37 Z" fill="#f17324"/>';
+    var shell = cls==='rexKid' ? '<path d="M47 83 Q60 92 74 82 L78 99 Q59 110 42 98 Z" fill="#fff4d0" opacity=".9"/>' : '';
+    var adultFrill = cls==='rexAdult' ? '<path d="M80 32 C103 30 108 58 88 76 C94 57 94 44 80 32" fill="#ff9a2f" stroke="#e66b24" stroke-width="2"/><path d="M88 38 L104 30 L99 48 L112 53 L96 61 L102 78 L86 68" fill="#ff7a20" opacity=".85"/>' : '';
+    return '<svg viewBox="0 0 120 120" class="rexSvg '+s+'" style="--sc:'+scale+'"><defs><radialGradient id="or" cx="35%" cy="25%" r="80%"><stop offset="0" stop-color="#ffc84b"/><stop offset="1" stop-color="#f06b22"/></radialGradient></defs><g transform="translate(60 60) scale(var(--sc)) translate(-60 -60)">'+adultFrill+'<path d="M84 70 C106 70 108 80 83 83" fill="#f36b22"/><ellipse cx="66" cy="74" rx="31" ry="27" fill="url(#or)"/><ellipse cx="61" cy="78" rx="16" ry="21" fill="#ffe0a6"/><circle cx="48" cy="45" r="30" fill="url(#or)"/>'+horns+spikes+'<ellipse cx="40" cy="54" rx="25" ry="13" fill="#ffa866"/><circle cx="66" cy="36" r="12" fill="#fff"/><circle cx="69" cy="37" r="6" fill="#1f1b1b"/><circle cx="71" cy="34" r="2.5" fill="#fff"/><path d="M29 61 Q45 73 62 61" fill="#7d2a1d"/><ellipse cx="49" cy="67" rx="10" ry="4" fill="#ff91a7"/><circle cx="24" cy="48" r="3" fill="#472115"/><circle cx="34" cy="48" r="2.6" fill="#472115"/><path d="M45 78 C35 82 33 90 40 94" stroke="#dc5a22" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M72 79 C83 82 85 90 78 94" stroke="#dc5a22" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M46 98 C43 111 54 111 55 100" fill="#d95420"/><path d="M72 98 C69 111 81 111 82 100" fill="#d95420"/><circle cx="47" cy="108" r="2.8" fill="#fff4d0"/><circle cx="53" cy="108" r="2.8" fill="#fff4d0"/><circle cx="73" cy="108" r="2.8" fill="#fff4d0"/><circle cx="79" cy="108" r="2.8" fill="#fff4d0"/>'+shell+'</g></svg>';
   }
 
   function renderDaily(){
@@ -237,9 +243,7 @@
     if($('dailyGoalText')) $('dailyGoalText').textContent=t+' / 10';
     if($('dailyGoalBar')) $('dailyGoalBar').style.width=(t*10)+'%';
   }
-  function renderEvoMap(){
-    if($('evoMap')) $('evoMap').innerHTML='';
-  }
+  function renderEvoMap(){ if($('evoMap')) $('evoMap').innerHTML=''; }
   function confetti(){
     var box=document.createElement('div'); box.className='confetti';
     var marks=['🎉','✨','⭐','🦖','💗'];
