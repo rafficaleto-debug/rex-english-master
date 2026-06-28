@@ -192,7 +192,7 @@
     if($('dataVersionLabel')) $('dataVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
     if($('sentenceCountLabel')) $('sentenceCountLabel').textContent=(window.REX_SENTENCES||[]).length + (added?added.length:0);
     if($('contentVersionLabel')) $('contentVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
-    if($('appVersionLabel')) $('appVersionLabel').textContent='v33';
+    if($('appVersionLabel')) $('appVersionLabel').textContent='v34';
   }
 
   function renderDaily(){
@@ -416,6 +416,84 @@
 
   function tab(id){ if((id==='parent'||id==='private'||id==='data'||id==='update') && !requireParentPin()) { showToast('保護者PINが必要です'); return; } if(id==='private') loadPrivateUI(); ['stage','listen','test','talk','collection','parent','list','rexvoice','update','private','data'].forEach(function(x){ if($(x)) $(x).classList.toggle('hidden',x!==id); }); if(id==='test') newQ(); if(id==='list') renderList(); if(id==='collection') renderBadges(); if(id==='talk') renderChat(); if(id==='listen'){ fillUnits(); resetDeck(); } }
   function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
+
+
+  // v34 global fallback handlers for Safari
+  function v34PrivateSettings(){
+    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v32')||'{}');}catch(e){return {};}
+  }
+  function v34SavePrivateSettings(s){
+    localStorage.setItem('rexEnglishMaster.private.v32',JSON.stringify(s||{}));
+  }
+  function v34ShowSetup(){
+    var login=document.getElementById('loginPanel');
+    var setup=document.getElementById('setupPanel');
+    var lead=document.getElementById('lockLead');
+    var msg=document.getElementById('lockMsg');
+    if(login) login.classList.add('hidden');
+    if(setup) setup.classList.remove('hidden');
+    if(lead) lead.textContent='最初に、呼び名とパスコードを設定してね。';
+    if(msg) msg.textContent='';
+    setTimeout(function(){ var n=document.getElementById('setupChildName'); if(n) n.focus(); },120);
+  }
+  function v34CancelSetup(){
+    var login=document.getElementById('loginPanel');
+    var setup=document.getElementById('setupPanel');
+    var lead=document.getElementById('lockLead');
+    if(setup) setup.classList.add('hidden');
+    if(login) login.classList.remove('hidden');
+    if(lead) lead.textContent='パスコードを入れると、レックスに会えるよ。';
+  }
+  function v34HideLock(){
+    var lock=document.getElementById('appLock');
+    if(lock) lock.classList.add('hidden');
+  }
+  function v34SaveSetup(){
+    var name=(document.getElementById('setupChildName')&&document.getElementById('setupChildName').value||'').trim();
+    var pin=(document.getElementById('setupAppPin')&&document.getElementById('setupAppPin').value||'').trim();
+    var parent=(document.getElementById('setupParentPin')&&document.getElementById('setupParentPin').value||'').trim();
+    var msg=document.getElementById('lockMsg');
+    if(!pin || pin.length<4){
+      if(msg) msg.textContent='起動パスコードは4桁以上にしてください。';
+      return;
+    }
+    if(!parent) parent=pin;
+    v34SavePrivateSettings({appPin:String(pin),parentPin:String(parent),childName:String(name||'')});
+    sessionStorage.setItem('rexEnglishMaster.unlocked','1');
+    v34HideLock();
+    try{
+      if(typeof setBubble==='function'){
+        if(name) setBubble('Nice to meet you!','これから '+name+' 専用のレックスだよ！');
+        else setBubble('Nice to meet you!','これから一緒に英語をがんばろうね！');
+      }
+      if(typeof showToast==='function') showToast('専用設定を保存しました');
+    }catch(e){}
+  }
+  function v34Unlock(){
+    var s=v34PrivateSettings();
+    var v=(document.getElementById('appPinInput')&&document.getElementById('appPinInput').value||'').trim();
+    var msg=document.getElementById('lockMsg');
+    if(!s.appPin){
+      if(msg) msg.textContent='先に「はじめて設定」でパスコードを決めてください。';
+      return;
+    }
+    if(v===s.appPin){
+      sessionStorage.setItem('rexEnglishMaster.unlocked','1');
+      v34HideLock();
+      try{
+        if(typeof setBubble==='function'){
+          if(s.childName) setBubble('Welcome back!','おかえり、'+s.childName+'！レックス待ってたよ。');
+          else setBubble('Welcome back!','おかえり！レックス待ってたよ。');
+        }
+      }catch(e){}
+    }else{
+      if(msg) msg.textContent='パスコードが違います。';
+    }
+  }
+  window.RexPrivateShowSetup=v34ShowSetup;
+  window.RexPrivateCancelSetup=v34CancelSetup;
+  window.RexPrivateSaveSetup=v34SaveSetup;
+  window.RexPrivateUnlock=v34Unlock;
 
   function bind(){
     $('unlockAudioBtn').addEventListener('click',function(){ RexSpeech.unlock().then(function(){ $('status').textContent='音声OK'; }); });

@@ -129,3 +129,10 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 #setupPanel input{margin-top:8px;letter-spacing:normal;font-size:16px;text-align:left;font-weight:800}
 #setupAppPin,#setupParentPin{text-align:center!important;letter-spacing:.18em!important;font-size:20px!important}
 .lockRex{display:none!important}
+
+
+/* v34 Safari lock button reliability */
+.lockCard button{position:relative;z-index:1001;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#loginPanel,#setupPanel{position:relative;z-index:1000}
+#setupPanel.hidden{display:none!important}
+#loginPanel.hidden{display:none!important}
