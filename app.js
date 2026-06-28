@@ -192,7 +192,7 @@
     if($('dataVersionLabel')) $('dataVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
     if($('sentenceCountLabel')) $('sentenceCountLabel').textContent=(window.REX_SENTENCES||[]).length + (added?added.length:0);
     if($('contentVersionLabel')) $('contentVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
-    if($('appVersionLabel')) $('appVersionLabel').textContent='v34';
+    if($('appVersionLabel')) $('appVersionLabel').textContent='v35';
   }
 
   function renderDaily(){
@@ -209,7 +209,7 @@
     var cur=currentDino().index;
     $('evoMap').innerHTML=RexGame.dinoStages.map(function(s,i){
       var cls=i<cur?'done':(i===cur?'active':'');
-      return '<div class="evoNode '+cls+'"><div class="icon">'+s.icon+'</div><div>'+s.name+'</div><div class="need">'+s.xp+' XP</div></div>';
+      return '<div class="evoNode '+cls+'"><div class="icon"><div class="rexMapIcon '+(i>cur?'locked':'')+'"><div class="miTail"></div><div class="miBody"></div><div class="miBelly"></div><div class="miHead"><div class="miSnout"></div><div class="miEye"></div></div></div></div><div>'+s.name+'</div><div class="need">'+s.xp+' XP</div></div>';
     }).join('');
   }
   function confetti(){
@@ -414,7 +414,7 @@
     }
   }
 
-  function tab(id){ if((id==='parent'||id==='private'||id==='data'||id==='update') && !requireParentPin()) { showToast('保護者PINが必要です'); return; } if(id==='private') loadPrivateUI(); ['stage','listen','test','talk','collection','parent','list','rexvoice','update','private','data'].forEach(function(x){ if($(x)) $(x).classList.toggle('hidden',x!==id); }); if(id==='test') newQ(); if(id==='list') renderList(); if(id==='collection') renderBadges(); if(id==='talk') renderChat(); if(id==='listen'){ fillUnits(); resetDeck(); } }
+  function tab(id){ if((id==='parent'||id==='private'||id==='data'||id==='update'||id==='rexvoice') && !requireParentPin()) { showToast('保護者PINが必要です'); return; } if(id==='private') loadPrivateUI(); ['stage','listen','test','talk','collection','settings','parent','list','rexvoice','update','private','data'].forEach(function(x){ if($(x)) $(x).classList.toggle('hidden',x!==id); }); if(id==='test') newQ(); if(id==='list') renderList(); if(id==='collection') renderBadges(); if(id==='talk') renderChat(); if(id==='listen'){ fillUnits(); resetDeck(); } }
   function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 
 

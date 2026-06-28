@@ -136,3 +136,45 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 #loginPanel,#setupPanel{position:relative;z-index:1000}
 #setupPanel.hidden{display:none!important}
 #loginPanel.hidden{display:none!important}
+
+
+/* v35 settings hub + orange Rex map */
+.footer{grid-template-columns:repeat(6,1fr)!important}
+.footer button{font-size:11px!important}
+.settingsGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
+.settingsTile{
+  border:2px solid #ffd7ab;
+  border-radius:22px;
+  background:linear-gradient(180deg,#fff,#fff8ec);
+  color:var(--ink);
+  text-align:center;
+  min-height:112px;
+  padding:12px 8px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+}
+.settingsTile span{font-size:28px}
+.settingsTile b{font-size:15px}
+.settingsTile small{font-size:11px;color:var(--muted)}
+.rexMapIcon{
+  width:54px;
+  height:42px;
+  margin:0 auto 4px;
+  position:relative;
+  filter:drop-shadow(0 5px 5px rgba(80,60,70,.16));
+}
+.rexMapIcon .miBody{position:absolute;left:20px;bottom:2px;width:34px;height:25px;background:linear-gradient(145deg,#ff963f,#ef642d);border-radius:52%}
+.rexMapIcon .miBelly{position:absolute;left:30px;bottom:5px;width:15px;height:17px;background:#ffd8a5;border-radius:50%}
+.rexMapIcon .miHead{position:absolute;left:2px;top:2px;width:37px;height:29px;background:linear-gradient(145deg,#ff9c4a,#ef642d);border-radius:55% 58% 48% 46%}
+.rexMapIcon .miSnout{position:absolute;left:1px;top:15px;width:27px;height:13px;background:#ffa75f;border-radius:46%}
+.rexMapIcon .miEye{position:absolute;left:25px;top:6px;width:10px;height:13px;background:white;border-radius:50%}
+.rexMapIcon .miEye:after{content:"";position:absolute;left:3px;top:3px;width:5px;height:7px;background:#241a1a;border-radius:50%}
+.rexMapIcon .miTail{position:absolute;right:-3px;bottom:12px;width:24px;height:9px;background:#ef642d;border-radius:70% 10% 60% 20%;transform:rotate(18deg)}
+.rexMapIcon.locked{filter:grayscale(.25) opacity(.45)}
+.evoNode .icon{font-size:0!important}
+.evoNode.done .rexMapIcon .miBody,.evoNode.done .rexMapIcon .miHead{filter:saturate(1.15)}
+.evoNode.active .rexMapIcon{animation:rexMapBounce 1.6s ease-in-out infinite}
+@keyframes rexMapBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
