@@ -180,12 +180,23 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @keyframes rexMapBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 
 
-/* v36: simpler home + settings split */
-.hero .dinoStage{
-  display:none!important;
-}
+/* v37: compact top mascot, no big green rex images */
 .hero .dinoWorld{
   grid-template-columns:1fr!important;
+}
+.hero .dinoStage{
+  min-height:0!important;
+  height:auto!important;
+  background:transparent!important;
+  overflow:visible!important;
+  display:block!important;
+}
+.hero .dinoStage .sun,
+.hero .dinoStage .cloud,
+.hero .dinoStage .volcano,
+.hero .dinoStage .trees,
+.hero .dinoStage .dinoName{
+  display:none!important;
 }
 .hero .heroPanel{
   max-width:720px;
@@ -239,3 +250,200 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .parentHint b{font-weight:1000}
 .parentHint p{margin:3px 0 0}
 #voice.hidden{display:none!important}
+
+
+/* v37 orange Rex growth system */
+.hero .rexArt{
+  position:static!important;
+  left:auto!important;
+  bottom:auto!important;
+  transform:none!important;
+  width:126px!important;
+  height:112px!important;
+  margin:0 auto 8px;
+  animation:none!important;
+  filter:drop-shadow(0 8px 8px rgba(80,60,70,.16));
+}
+.hero .dinoStage{
+  display:none!important;
+}
+
+/* remove green dinosaur emoji/icon styling from old evolution map */
+.evoNode .icon{font-size:0!important}
+.evoNode{
+  min-width:82px!important;
+  padding:9px 6px!important;
+}
+.evoMap{
+  gap:7px!important;
+}
+.evoNode .need{
+  display:none;
+}
+
+.rexStageIcon{
+  width:58px;
+  height:54px;
+  margin:0 auto 5px;
+  position:relative;
+  filter:drop-shadow(0 5px 5px rgba(80,60,70,.15));
+}
+.rexStageIcon.smallHero{
+  width:84px;
+  height:76px;
+  margin:0;
+}
+
+/* egg */
+.rexStageIcon .egg{
+  position:absolute;
+  left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  width:34px;height:45px;
+  border-radius:52% 48% 46% 54%;
+  background:linear-gradient(145deg,#fff8df,#ffd990);
+  border:2px solid #f4b45a;
+  box-shadow:inset -5px -6px 0 rgba(255,174,74,.16);
+}
+.rexStageIcon .egg:after{
+  content:"";
+  position:absolute;
+  left:7px;top:8px;width:8px;height:11px;
+  background:rgba(239,166,80,.25);
+  border-radius:50%;
+  box-shadow:12px 13px 0 rgba(239,166,80,.25), 17px 2px 0 rgba(239,166,80,.22);
+}
+.rexStageIcon.crack .egg:before{
+  content:"";
+  position:absolute;
+  left:9px;top:11px;width:17px;height:24px;
+  background:
+    linear-gradient(120deg, transparent 0 43%, #d69a4c 44% 49%, transparent 50%),
+    linear-gradient(60deg, transparent 0 43%, #d69a4c 44% 49%, transparent 50%);
+  opacity:.85;
+}
+.rexStageIcon.peek .egg{
+  top:60%;
+}
+.rexStageIcon.peek .head{
+  display:block;
+  position:absolute;
+  left:17px;top:4px;
+  width:34px;height:30px;
+  background:linear-gradient(145deg,#ff9c4a,#ef642d);
+  border-radius:54% 58% 48% 46%;
+}
+.rexStageIcon.peek .snout{
+  display:block;
+  position:absolute;
+  left:15px;top:19px;
+  width:24px;height:12px;
+  background:#ffa75f;
+  border-radius:46%;
+}
+.rexStageIcon.peek .eye{
+  display:block;
+  position:absolute;
+  left:41px;top:11px;
+  width:10px;height:13px;background:white;border-radius:50%;
+}
+.rexStageIcon.peek .eye:after{
+  content:"";position:absolute;left:3px;top:3px;width:5px;height:7px;background:#241a1a;border-radius:50%;
+}
+
+/* orange rex */
+.rexStageIcon .body,
+.rexStageIcon .belly,
+.rexStageIcon .head,
+.rexStageIcon .snout,
+.rexStageIcon .eye,
+.rexStageIcon .tail,
+.rexStageIcon .leg{
+  display:none;
+}
+.rexStageIcon.rexBaby .body,
+.rexStageIcon.rexKid .body,
+.rexStageIcon.rexTeen .body,
+.rexStageIcon.rexAdult .body,
+.rexStageIcon.rexBaby .belly,
+.rexStageIcon.rexKid .belly,
+.rexStageIcon.rexTeen .belly,
+.rexStageIcon.rexAdult .belly,
+.rexStageIcon.rexBaby .head,
+.rexStageIcon.rexKid .head,
+.rexStageIcon.rexTeen .head,
+.rexStageIcon.rexAdult .head,
+.rexStageIcon.rexBaby .snout,
+.rexStageIcon.rexKid .snout,
+.rexStageIcon.rexTeen .snout,
+.rexStageIcon.rexAdult .snout,
+.rexStageIcon.rexBaby .eye,
+.rexStageIcon.rexKid .eye,
+.rexStageIcon.rexTeen .eye,
+.rexStageIcon.rexAdult .eye,
+.rexStageIcon.rexBaby .tail,
+.rexStageIcon.rexKid .tail,
+.rexStageIcon.rexTeen .tail,
+.rexStageIcon.rexAdult .tail,
+.rexStageIcon.rexBaby .leg,
+.rexStageIcon.rexKid .leg,
+.rexStageIcon.rexTeen .leg,
+.rexStageIcon.rexAdult .leg{
+  display:block;
+}
+.rexStageIcon .head{
+  position:absolute;left:7px;top:7px;width:34px;height:29px;
+  background:linear-gradient(145deg,#ff9c4a,#ef642d);
+  border-radius:54% 58% 48% 46%;
+}
+.rexStageIcon .snout{
+  position:absolute;left:6px;top:20px;width:25px;height:12px;background:#ffa75f;border-radius:46%;
+}
+.rexStageIcon .eye{
+  position:absolute;left:30px;top:12px;width:10px;height:13px;background:white;border-radius:50%;
+}
+.rexStageIcon .eye:after{
+  content:"";position:absolute;left:3px;top:3px;width:5px;height:7px;background:#241a1a;border-radius:50%;
+}
+.rexStageIcon .body{
+  position:absolute;left:25px;bottom:8px;width:29px;height:24px;background:linear-gradient(145deg,#ff963f,#ef642d);border-radius:52%;
+}
+.rexStageIcon .belly{
+  position:absolute;left:34px;bottom:11px;width:12px;height:15px;background:#ffd8a5;border-radius:50%;
+}
+.rexStageIcon .tail{
+  position:absolute;right:0;bottom:17px;width:20px;height:8px;background:#ef642d;border-radius:70% 10% 60% 20%;transform:rotate(18deg);
+}
+.rexStageIcon .leg{
+  position:absolute;left:30px;bottom:2px;width:9px;height:11px;background:#d94f29;border-radius:6px;
+  box-shadow:14px 0 0 #d94f29;
+}
+
+/* size differences */
+.rexStageIcon.rexBaby{transform:scale(.88)}
+.rexStageIcon.rexKid{transform:scale(.98)}
+.rexStageIcon.rexTeen{transform:scale(1.08)}
+.rexStageIcon.rexAdult{transform:scale(1.18)}
+.evoNode.active .rexStageIcon{animation:rexMapBounce 1.6s ease-in-out infinite}
+.evoNode.locked .rexStageIcon{filter:grayscale(.05) opacity(.75) drop-shadow(0 5px 5px rgba(80,60,70,.12))}
+
+/* mini mascot in top bubble */
+.heroMascotRow{
+  display:grid;
+  grid-template-columns:96px 1fr;
+  gap:10px;
+  align-items:center;
+  margin-bottom:12px;
+}
+.heroMascotCard{
+  background:rgba(255,255,255,.76);
+  border-radius:22px;
+  padding:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:88px;
+}
+.heroMascotCard .rexStageIcon{
+  transform:scale(1.34);
+}

@@ -1,12 +1,13 @@
 
 (function(){
   var dinoStages=[
-    {name:'たまご',icon:'🥚',xp:0,cls:'eggArt'},
-    {name:'赤ちゃん',icon:'🦖',xp:50,cls:'babyArt'},
-    {name:'こども',icon:'🦖',xp:180,cls:'kidArt'},
-    {name:'青年期',icon:'🦖',xp:420,cls:'teenArt'},
-    {name:'おとな',icon:'🦖',xp:800,cls:'adultArt'},
-    {name:'伝説の恐竜',icon:'🦖✨',xp:1400,cls:'adultArt'}
+    {name:'たまご',icon:'egg',xp:0,cls:'eggFull'},
+    {name:'ひび',icon:'crack',xp:40,cls:'eggCrack'},
+    {name:'顔を出す',icon:'peek',xp:100,cls:'eggPeek'},
+    {name:'赤ちゃん',icon:'baby',xp:200,cls:'rexBaby'},
+    {name:'子ども',icon:'kid',xp:380,cls:'rexKid'},
+    {name:'青年',icon:'teen',xp:650,cls:'rexTeen'},
+    {name:'大人',icon:'adult',xp:1000,cls:'rexAdult'}
   ];
   var lines=[
     ['Hi!','やあ！'],['Good job!','すごい！よくがんばったね！'],['You can do it!','きみならできるよ！'],

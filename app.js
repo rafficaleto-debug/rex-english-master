@@ -50,6 +50,27 @@
   function currentDino(){ return RexGame.currentStage(score); }
   function updateDino(){
     var info=currentDino(), s=info.stage, next=info.next, xp=score.xp||0;
+
+    var bubble = $('dinoBubble');
+    if(bubble && !document.getElementById('heroMascotWrap')){
+      var panel = bubble.parentElement;
+      if(panel){
+        var row=document.createElement('div');
+        row.id='heroMascotWrap';
+        row.className='heroMascotRow';
+        var card=document.createElement('div');
+        card.id='heroMascotCard';
+        card.className='heroMascotCard';
+        var bubbleHolder=document.createElement('div');
+        bubbleHolder.id='bubbleHolder';
+        panel.insertBefore(row,bubble);
+        row.appendChild(card);
+        row.appendChild(bubble);
+      }
+    }
+    var cardEl=document.getElementById('heroMascotCard');
+    if(cardEl){ cardEl.innerHTML=rexStageIcon(s.cls,'smallHero'); }
+
     $('rankIcon').textContent=s.icon; $('rankName').textContent=s.name; $('level').textContent=info.index+1;
     $('dino').className='rexArt '+s.cls;
     $('dinoName').textContent=score.name||'レックス';
@@ -192,7 +213,22 @@
     if($('dataVersionLabel')) $('dataVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
     if($('sentenceCountLabel')) $('sentenceCountLabel').textContent=(window.REX_SENTENCES||[]).length + (added?added.length:0);
     if($('contentVersionLabel')) $('contentVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
-    if($('appVersionLabel')) $('appVersionLabel').textContent='v36';
+    if($('appVersionLabel')) $('appVersionLabel').textContent='v37';
+  }
+
+
+  function rexStageIcon(cls, extraClass){
+    var c = (cls || 'eggFull') + (extraClass ? ' '+extraClass : '');
+    if(cls==='eggFull'){
+      return '<div class="rexStageIcon eggFull '+(extraClass||'')+'"><div class="egg"></div></div>';
+    }
+    if(cls==='eggCrack'){
+      return '<div class="rexStageIcon crack '+(extraClass||'')+'"><div class="egg"></div></div>';
+    }
+    if(cls==='eggPeek'){
+      return '<div class="rexStageIcon peek '+(extraClass||'')+'"><div class="egg"></div><div class="head"></div><div class="snout"></div><div class="eye"></div></div>';
+    }
+    return '<div class="rexStageIcon '+c+'"><div class="tail"></div><div class="body"></div><div class="belly"></div><div class="head"><div class="snout"></div><div class="eye"></div></div><div class="leg"></div></div>';
   }
 
   function renderDaily(){
@@ -208,8 +244,8 @@
     if(!$('evoMap')) return;
     var cur=currentDino().index;
     $('evoMap').innerHTML=RexGame.dinoStages.map(function(s,i){
-      var cls=i<cur?'done':(i===cur?'active':'');
-      return '<div class="evoNode '+cls+'"><div class="icon"><div class="rexMapIcon '+(i>cur?'locked':'')+'"><div class="miTail"></div><div class="miBody"></div><div class="miBelly"></div><div class="miHead"><div class="miSnout"></div><div class="miEye"></div></div></div></div><div>'+s.name+'</div><div class="need">'+s.xp+' XP</div></div>';
+      var cls=i<cur?'done':(i===cur?'active':'locked');
+      return '<div class="evoNode '+cls+'"><div class="icon">'+rexStageIcon(s.cls)+'</div><div>'+(i+1)+'</div><div>'+s.name+'</div></div>';
     }).join('');
   }
   function confetti(){

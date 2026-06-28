@@ -1,6 +1,6 @@
 
 (function(){
-  var APP_VERSION='36.0.0';
+  var APP_VERSION='37.0.0';
   var STORE_KEY='rexEnglishMaster.profile.v1';
   var defaultProfile={
     schemaVersion:1, appVersion:APP_VERSION, contentVersion:window.REX_CONTENT_VERSION || 'unknown',
