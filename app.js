@@ -154,7 +154,7 @@
     if(!RexSpeech.isReady()) await RexSpeech.unlock();
     await wait(160);
 
-    // v57: 必ずこの時点の単語ペアを固定して読む。
+    // v58: 必ずこの時点の単語ペアを固定して読む。
     // 連続再生中にidxやdeckが変わっても、日本語だけ別単語になる事故を防ぐ。
     var current = Object.assign({}, deck[idx]);
     var enText = current.en || current.word || '';
@@ -226,13 +226,13 @@
     if($('dataVersionLabel')) $('dataVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
     if($('sentenceCountLabel')) $('sentenceCountLabel').textContent=(window.REX_SENTENCES||[]).length + (added?added.length:0);
     if($('contentVersionLabel')) $('contentVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
-    if($('appVersionLabel')) $('appVersionLabel').textContent='v57';
+    if($('appVersionLabel')) $('appVersionLabel').textContent='v58';
   }
 
 
   function rexImageHtml(stage, kind){
     var k = kind || 'stage';
-    return '<img class="rexSprite '+k+'" src="'+stage.img+'?v=57" alt="'+stage.name+'">';
+    return '<img class="rexSprite '+k+'" src="'+stage.img+'?v=58" alt="'+stage.name+'">';
   }
 
   function renderDaily(){
@@ -289,7 +289,7 @@
 
   function showUpdateGuide(){
     var txt=[
-      'v57以降のGitHub更新手順',
+      'v58以降のGitHub更新手順',
       '',
       '1. 新しいZIPをダウンロード',
       '2. iPhoneの「ファイル」アプリでZIPをタップして解凍',
@@ -335,10 +335,10 @@
 
 
   function privateSettings(){
-    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v57')||'{}');}catch(e){return {};}
+    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v58')||'{}');}catch(e){return {};}
   }
   function savePrivateSettings(s){
-    localStorage.setItem('rexEnglishMaster.private.v57',JSON.stringify(s||{}));
+    localStorage.setItem('rexEnglishMaster.private.v58',JSON.stringify(s||{}));
   }
   function showLock(){
     var s=privateSettings();
@@ -439,7 +439,7 @@
   function resetPins(){
     if(!requireParentPin()){ showToast('保護者PINが違います'); return; }
     if(confirm('起動パスコードと保護者PINをリセットしますか？')){
-      localStorage.removeItem('rexEnglishMaster.private.v57');
+      localStorage.removeItem('rexEnglishMaster.private.v58');
       sessionStorage.removeItem('rexEnglishMaster.unlocked');
       showToast('PINをリセットしました');
       showLock();
@@ -469,14 +469,14 @@
   function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 
 
-  // v57 global fallback handlers for Safari
-  function v57PrivateSettings(){
-    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v57')||'{}');}catch(e){return {};}
+  // v58 global fallback handlers for Safari
+  function v58PrivateSettings(){
+    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v58')||'{}');}catch(e){return {};}
   }
-  function v57SavePrivateSettings(s){
-    localStorage.setItem('rexEnglishMaster.private.v57',JSON.stringify(s||{}));
+  function v58SavePrivateSettings(s){
+    localStorage.setItem('rexEnglishMaster.private.v58',JSON.stringify(s||{}));
   }
-  function v57ShowSetup(){
+  function v58ShowSetup(){
     var login=document.getElementById('loginPanel');
     var setup=document.getElementById('setupPanel');
     var lead=document.getElementById('lockLead');
@@ -487,7 +487,7 @@
     if(msg) msg.textContent='';
     setTimeout(function(){ var n=document.getElementById('setupChildName'); if(n) n.focus(); },120);
   }
-  function v57CancelSetup(){
+  function v58CancelSetup(){
     var login=document.getElementById('loginPanel');
     var setup=document.getElementById('setupPanel');
     var lead=document.getElementById('lockLead');
@@ -495,11 +495,11 @@
     if(login) login.classList.remove('hidden');
     if(lead) lead.textContent='パスコードを入れると、レックスに会えるよ。';
   }
-  function v57HideLock(){
+  function v58HideLock(){
     var lock=document.getElementById('appLock');
     if(lock) lock.classList.add('hidden');
   }
-  function v57SaveSetup(){
+  function v58SaveSetup(){
     var name=(document.getElementById('setupChildName')&&document.getElementById('setupChildName').value||'').trim();
     var pin=(document.getElementById('setupAppPin')&&document.getElementById('setupAppPin').value||'').trim();
     var parent=(document.getElementById('setupParentPin')&&document.getElementById('setupParentPin').value||'').trim();
@@ -509,9 +509,9 @@
       return;
     }
     if(!parent || parent.length!==8){ if(msg) msg.textContent='保護者用8桁パスコードを入力してください。'; return; }
-    v57SavePrivateSettings({appPin:String(pin),parentPin:String(parent),childName:String(name||'')});
+    v58SavePrivateSettings({appPin:String(pin),parentPin:String(parent),childName:String(name||'')});
     sessionStorage.setItem('rexEnglishMaster.unlocked','1');
-    v57HideLock();
+    v58HideLock();
     try{
       if(typeof setBubble==='function'){
         if(name) setBubble('Nice to meet you!','これから '+name+' 専用のレックスだよ！');
@@ -520,8 +520,8 @@
       if(typeof showToast==='function') showToast('専用設定を保存しました');
     }catch(e){}
   }
-  function v57Unlock(){
-    var s=v57PrivateSettings();
+  function v58Unlock(){
+    var s=v58PrivateSettings();
     var v=(document.getElementById('appPinInput')&&document.getElementById('appPinInput').value||'').trim();
     var msg=document.getElementById('lockMsg');
     if(!s.appPin){
@@ -530,7 +530,7 @@
     }
     if(v===s.appPin){
       sessionStorage.setItem('rexEnglishMaster.unlocked','1');
-      v57HideLock();
+      v58HideLock();
       try{
         if(typeof setBubble==='function'){
           if(s.childName) setBubble('Welcome back!','おかえり、'+s.childName+'！レックス待ってたよ。');
@@ -541,10 +541,10 @@
       if(msg) msg.textContent='パスコードが違います。';
     }
   }
-  window.RexPrivateShowSetup=v57ShowSetup;
-  window.RexPrivateCancelSetup=v57CancelSetup;
-  window.RexPrivateSaveSetup=v57SaveSetup;
-  window.RexPrivateUnlock=v57Unlock;
+  window.RexPrivateShowSetup=v58ShowSetup;
+  window.RexPrivateCancelSetup=v58CancelSetup;
+  window.RexPrivateSaveSetup=v58SaveSetup;
+  window.RexPrivateUnlock=v58Unlock;
 
   function bind(){
     $('unlockAudioBtn').addEventListener('click',function(){ RexSpeech.unlock().then(function(){ $('status').textContent='音声OK'; }); });

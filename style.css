@@ -38,7 +38,7 @@ select,input,textarea{border:2px solid #ffd7ab;border-radius:18px;padding:11px;b
 @media(max-width:720px){.dinoWorld{grid-template-columns:1fr}.dinoStage{min-height:300px}.statsGrid{grid-template-columns:repeat(4,1fr)}.big{font-size:25px}.footer button{font-size:10px}.heroPanel{margin-top:4px}}
 
 
-/* v57 daily dashboard and evolution map */
+/* v58 daily dashboard and evolution map */
 .dailyGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .dailyBox{background:linear-gradient(180deg,#fff,#fff8ec);border:2px solid #ffd7ab;border-radius:22px;padding:14px;text-align:center;font-weight:1000}
 .dailyBox b{display:block;font-size:28px;color:#8a3ffc}
@@ -64,7 +64,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:.2}}
 
 
-/* v57 update manager */
+/* v58 update manager */
 #updateGuideText{min-height:180px;margin-top:12px}
 .footer{grid-template-columns:repeat(8,1fr)}
 .footer button{font-size:10px}
@@ -72,13 +72,13 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .parentTip{background:#f5fbff;border:1px solid #bae6fd;border-radius:18px;padding:10px;margin:10px 0}
 
 
-/* v57 voice settings */
+/* v58 voice settings */
 .voiceGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:12px}
 .voiceGrid label{font-size:12px;color:var(--muted);font-weight:900}
 .voiceGrid select{width:100%;margin-top:4px}
 
 
-/* v57 OpenAI voice UI */
+/* v58 OpenAI voice UI */
 .openaiVoiceBox{background:linear-gradient(180deg,#fff,#f7fbff);border:2px solid #bae6fd;border-radius:22px;padding:14px;margin-top:14px}
 .openaiVoiceBox h3{margin:0 0 10px;font-size:17px}
 .openaiVoiceBox input[type="text"], .openaiVoiceBox input:not([type]){width:100%}
@@ -86,12 +86,12 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @media(max-width:720px){.footer{grid-template-columns:repeat(9,1fr)}.footer button{font-size:9px}}
 
 
-/* v57 voice engine switch */
+/* v58 voice engine switch */
 .engineSwitch{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
 .engineSwitch .pill{cursor:pointer}
 
 
-/* v57 private lock */
+/* v58 private lock */
 .appLock{position:fixed;inset:0;z-index:999;background:linear-gradient(160deg,#b9eeff,#fff8bf 50%,#bff4ce);display:flex;align-items:center;justify-content:center;padding:18px}
 .appLock.hidden{display:none!important}
 .lockCard{background:rgba(255,255,255,.96);border:3px solid #ffd7ab;border-radius:30px;padding:22px;max-width:390px;width:100%;box-shadow:0 20px 60px rgba(50,50,90,.22);text-align:center}
@@ -102,7 +102,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @media(max-width:720px){.footer{grid-template-columns:repeat(10,1fr)}.footer button{font-size:9px;padding:9px 1px}}
 
 
-/* v57 lock screen fix + cute orange Rex */
+/* v58 lock screen fix + cute orange Rex */
 .lockCard{position:relative;overflow:visible;padding-top:78px}
 .lockRexArt{
   position:absolute;
@@ -131,14 +131,14 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .lockRex{display:none!important}
 
 
-/* v57 Safari lock button reliability */
+/* v58 Safari lock button reliability */
 .lockCard button{position:relative;z-index:1001;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 #loginPanel,#setupPanel{position:relative;z-index:1000}
 #setupPanel.hidden{display:none!important}
 #loginPanel.hidden{display:none!important}
 
 
-/* v57 settings hub + orange Rex map */
+/* v58 settings hub + orange Rex map */
 .footer{grid-template-columns:repeat(6,1fr)!important}
 .footer button{font-size:11px!important}
 .settingsGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
@@ -180,7 +180,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @keyframes rexMapBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 
 
-/* v57: simpler home + settings split */
+/* v58: simpler home + settings split */
 .hero .dinoStage{
   display:none!important;
 }
@@ -241,7 +241,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 #voice.hidden{display:none!important}
 
 
-/* v57: actual image sprite version based on approved 7-stage art */
+/* v58: actual image sprite version based on approved 7-stage art */
 .hero .dinoStage{display:none!important}
 .currentRexRow.imageVersion{
   display:grid;
@@ -270,9 +270,9 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .rexSprite.hero{
   width:146px;
   height:146px;
-  animation:v57Float 2.4s ease-in-out infinite;
+  animation:v58Float 2.4s ease-in-out infinite;
 }
-@keyframes v57Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes v58Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 .rexSprite.stage{
   width:78px;
   height:78px;
@@ -334,7 +334,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 }
 
 
-/* v57 no-assets: embedded image sprites */
+/* v58 no-assets: embedded image sprites */
 .hero .dinoStage{display:none!important}
 .currentRexRow.imageVersion{
   display:grid;
@@ -363,9 +363,9 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .rexSprite.hero{
   width:146px;
   height:146px;
-  animation:v57Float 2.4s ease-in-out infinite;
+  animation:v58Float 2.4s ease-in-out infinite;
 }
-@keyframes v57Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes v58Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 .rexSprite.stage{
   width:78px;
   height:78px;
@@ -427,7 +427,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 }
 
 
-/* v57: remove strange frame around top egg/Rex, match approved look */
+/* v58: remove strange frame around top egg/Rex, match approved look */
 .hero .dinoStage{display:none!important}
 .currentRexRow.imageVersion{
   display:grid!important;
@@ -454,10 +454,10 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   width:245px!important;
   height:245px!important;
   object-fit:contain!important;
-  animation:v57Float 2.4s ease-in-out infinite!important;
+  animation:v58Float 2.4s ease-in-out infinite!important;
   filter:drop-shadow(0 10px 10px rgba(80,60,70,.13));
 }
-@keyframes v57Float{
+@keyframes v58Float{
   0%,100%{transform:translateY(0) scale(1)}
   50%{transform:translateY(-4px) scale(1)}
 }
@@ -550,7 +550,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 }
 
 
-/* v57: root PNG image version to prevent base64 corruption */
+/* v58: root PNG image version to prevent base64 corruption */
 .hero .dinoStage{display:none!important}
 .currentRexRow.imageVersion{
   display:grid!important;
@@ -586,10 +586,10 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   max-width:100%!important;
   max-height:100%!important;
   object-position:center center!important;
-  animation:v57Float 2.4s ease-in-out infinite!important;
+  animation:v58Float 2.4s ease-in-out infinite!important;
   filter:drop-shadow(0 10px 10px rgba(80,60,70,.13));
 }
-@keyframes v57Float{
+@keyframes v58Float{
   0%,100%{transform:translateY(0)}
   50%{transform:translateY(-4px)}
 }
@@ -656,7 +656,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 }
 
 
-/* v57: final balance fix - larger egg, no stretched vertical frame */
+/* v58: final balance fix - larger egg, no stretched vertical frame */
 .currentRexRow.imageVersion{
   display:grid!important;
   grid-template-columns:45% 1fr!important;
@@ -686,10 +686,10 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   object-fit:contain!important;
   object-position:center center!important;
   display:block!important;
-  animation:v57Float 2.4s ease-in-out infinite!important;
+  animation:v58Float 2.4s ease-in-out infinite!important;
   filter:drop-shadow(0 10px 10px rgba(80,60,70,.13));
 }
-@keyframes v57Float{
+@keyframes v58Float{
   0%,100%{transform:translateY(0)}
   50%{transform:translateY(-4px)}
 }
@@ -718,7 +718,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 }
 
 
-/* v57: clean Rex stage sprites. Remove visual artifacts and keep balance. */
+/* v58: clean Rex stage sprites. Remove visual artifacts and keep balance. */
 .rexSprite{
   background:transparent!important;
   border:none!important;
@@ -740,7 +740,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 }
 
 
-/* v57: top egg/Rex centered in the round white glow */
+/* v58: top egg/Rex centered in the round white glow */
 .currentRexRow.imageVersion{
   grid-template-columns:45% 1fr!important;
   align-items:center!important;
@@ -763,7 +763,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   transform:translate(0,0)!important;
 }
 
-/* v57: clean growth Rex images */
+/* v58: clean growth Rex images */
 .growStep .icon{
   overflow:visible!important;
 }
@@ -791,7 +791,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   }
 }
 
-/* v57: user-provided Rex assets normalized to transparent PNG */
+/* v58: user-provided Rex assets normalized to transparent PNG */
 .rexSprite{background:transparent!important;border:none!important;outline:none!important;box-shadow:none!important;object-fit:contain!important}
 .currentRexVisual.imageVersion{display:flex!important;align-items:center!important;justify-content:center!important;overflow:visible!important}
 .currentRexVisual.imageVersion .rexSprite.hero{width:240px!important;height:240px!important;object-position:center center!important}
@@ -802,7 +802,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 }
 
 
-/* v57: layout fixes requested */
+/* v58: layout fixes requested */
 
 /* 1) 学習内容カード：選択枠がカードや周辺要素と干渉しないように内側へ収める */
 .lessonGrid,
@@ -903,7 +903,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 }
 
 
-/* v57: 学習内容フィルターとカード選択枠の干渉を確実に解消 */
+/* v58: 学習内容フィルターとカード選択枠の干渉を確実に解消 */
 .filterRow,
 .lessonFilterRow,
 .deckFilterRow,
@@ -979,4 +979,144 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 #lessonFilters + .lessonGrid,
 #lessonFilters + #lessonGrid{
   margin-top:32px!important;
+}
+
+
+/* v58: 学習内容カードの枠干渉を根本修正 */
+.filterRow,
+.lessonFilterRow,
+.deckFilterRow,
+.courseFilterRow,
+.filterTabs,
+#filterTabs,
+#lessonFilters,
+#deckFilters,
+.tabsRow,
+.filters,
+.tabs{
+  margin-bottom:34px!important;
+  padding-bottom:8px!important;
+  position:relative!important;
+  z-index:10!important;
+}
+
+.lessonGrid,
+#lessonGrid,
+.deckGrid,
+#deckGrid,
+.courseGrid,
+#courseGrid,
+.setGrid,
+#setGrid,
+.grid{
+  margin-top:36px!important;
+  padding-top:10px!important;
+  gap:24px!important;
+  overflow:visible!important;
+  position:relative!important;
+  z-index:1!important;
+}
+
+.lessonCard,
+.deckCard,
+.courseCard,
+.setCard,
+.selectCard,
+.card.lesson,
+.card.deck,
+.card.course,
+[data-deck],
+[data-course],
+button.lessonCard,
+button.deckCard,
+button.courseCard{
+  position:relative!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+  outline:none!important;
+  border:3px solid rgba(255,206,154,.70)!important;
+  box-shadow:none!important;
+  transform:none!important;
+}
+
+.lessonCard.active,
+.deckCard.active,
+.courseCard.active,
+.setCard.active,
+.selectCard.active,
+.card.lesson.active,
+.card.deck.active,
+.card.course.active,
+.lessonCard.selected,
+.deckCard.selected,
+.courseCard.selected,
+.setCard.selected,
+.selectCard.selected,
+.card.lesson.selected,
+.card.deck.selected,
+.card.course.selected,
+[data-deck].active,
+[data-course].active,
+[data-deck].selected,
+[data-course].selected,
+button.lessonCard.active,
+button.deckCard.active,
+button.courseCard.active,
+button.lessonCard.selected,
+button.deckCard.selected,
+button.courseCard.selected{
+  border:3px solid rgba(255,206,154,.70)!important;
+  outline:none!important;
+  box-shadow:none!important;
+  transform:none!important;
+}
+
+.lessonCard.active::after,
+.deckCard.active::after,
+.courseCard.active::after,
+.setCard.active::after,
+.selectCard.active::after,
+.card.lesson.active::after,
+.card.deck.active::after,
+.card.course.active::after,
+.lessonCard.selected::after,
+.deckCard.selected::after,
+.courseCard.selected::after,
+.setCard.selected::after,
+.selectCard.selected::after,
+.card.lesson.selected::after,
+.card.deck.selected::after,
+.card.course.selected::after,
+[data-deck].active::after,
+[data-course].active::after,
+[data-deck].selected::after,
+[data-course].selected::after,
+button.lessonCard.active::after,
+button.deckCard.active::after,
+button.courseCard.active::after,
+button.lessonCard.selected::after,
+button.deckCard.selected::after,
+button.courseCard.selected::after{
+  content:""!important;
+  position:absolute!important;
+  inset:8px!important;
+  border:4px solid #ff9a3e!important;
+  border-radius:24px!important;
+  pointer-events:none!important;
+  box-shadow:none!important;
+  z-index:2!important;
+}
+
+.lessonCard > *,
+.deckCard > *,
+.courseCard > *,
+.setCard > *,
+.selectCard > *,
+.card.lesson > *,
+.card.deck > *,
+.card.course > *,
+[data-deck] > *,
+[data-course] > *{
+  position:relative!important;
+  z-index:3!important;
 }

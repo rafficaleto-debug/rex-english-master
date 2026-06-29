@@ -8,13 +8,13 @@
 
   function readSettings(){
     try{
-      var saved=JSON.parse(localStorage.getItem('rexEnglishMaster.voice.v57')||localStorage.getItem('rexEnglishMaster.voice.v57')||'{}');
+      var saved=JSON.parse(localStorage.getItem('rexEnglishMaster.voice.v58')||localStorage.getItem('rexEnglishMaster.voice.v58')||'{}');
       voiceSettings=Object.assign(voiceSettings,saved||{});
     }catch(e){}
   }
   function saveSettings(next){
     voiceSettings=Object.assign(voiceSettings,next||{});
-    localStorage.setItem('rexEnglishMaster.voice.v57',JSON.stringify(voiceSettings));
+    localStorage.setItem('rexEnglishMaster.voice.v58',JSON.stringify(voiceSettings));
   }
   readSettings();
   if(!voiceSettings.voiceEngine){
@@ -195,7 +195,7 @@
 })();
 
 
-/* v57: sequential speech fix.
+/* v58: sequential speech fix.
    Prevents Japanese from being read for a different English word during continuous playback. */
 (function(){
   var seqToken = 0;
