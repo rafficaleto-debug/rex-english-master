@@ -153,16 +153,32 @@
     if(!deck.length) return;
     if(!RexSpeech.isReady()) await RexSpeech.unlock();
     await wait(160);
-    var x=deck[idx], m=$('mode').value, g=Number($('gap').value||400);
+
+    // v51: 必ずこの時点の単語ペアを固定して読む。
+    // 連続再生中にidxやdeckが変わっても、日本語だけ別単語になる事故を防ぐ。
+    var current = Object.assign({}, deck[idx]);
+    var enText = current.en || current.word || '';
+    var jaText = current.speechJa || current.ja || current.meaning || '';
+    var m=$('mode').value, g=Number($('gap').value||400);
+
     $('status').textContent='読み上げ中';
     if(!keepQueue) RexSpeech.cancel();
+
     if(m==='en-ja-en'){
-      await RexSpeech.speak(x.en,'en-US'); await wait(g); await RexSpeech.speak(x.speechJa||x.ja,'ja-JP'); await wait(g); await RexSpeech.speak(x.en,'en-US');
+      await RexSpeech.speak(enText,'en-US'); await wait(g);
+      await RexSpeech.speak(jaText,'ja-JP'); await wait(g);
+      await RexSpeech.speak(enText,'en-US');
     } else if(m==='en-ja-en-ja'){
-      await RexSpeech.speak(x.en,'en-US'); await wait(g); await RexSpeech.speak(x.speechJa||x.ja,'ja-JP'); await wait(g); await RexSpeech.speak(x.en,'en-US'); await wait(g); await RexSpeech.speak(x.speechJa||x.ja,'ja-JP');
+      await RexSpeech.speak(enText,'en-US'); await wait(g);
+      await RexSpeech.speak(jaText,'ja-JP'); await wait(g);
+      await RexSpeech.speak(enText,'en-US'); await wait(g);
+      await RexSpeech.speak(jaText,'ja-JP');
     } else if(m==='ja-en'){
-      await RexSpeech.speak(x.speechJa||x.ja,'ja-JP'); await wait(g); await RexSpeech.speak(x.en,'en-US');
-    } else await RexSpeech.speak(x.en,'en-US');
+      await RexSpeech.speak(jaText,'ja-JP'); await wait(g);
+      await RexSpeech.speak(enText,'en-US');
+    } else {
+      await RexSpeech.speak(enText,'en-US');
+    }
     $('status').textContent=auto?'連続再生中':'音声OK';
   }
   async function toggleAuto(){
@@ -210,13 +226,13 @@
     if($('dataVersionLabel')) $('dataVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
     if($('sentenceCountLabel')) $('sentenceCountLabel').textContent=(window.REX_SENTENCES||[]).length + (added?added.length:0);
     if($('contentVersionLabel')) $('contentVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
-    if($('appVersionLabel')) $('appVersionLabel').textContent='v50';
+    if($('appVersionLabel')) $('appVersionLabel').textContent='v51';
   }
 
 
   function rexImageHtml(stage, kind){
     var k = kind || 'stage';
-    return '<img class="rexSprite '+k+'" src="'+stage.img+'?v=50" alt="'+stage.name+'">';
+    return '<img class="rexSprite '+k+'" src="'+stage.img+'?v=51" alt="'+stage.name+'">';
   }
 
   function renderDaily(){
@@ -273,7 +289,7 @@
 
   function showUpdateGuide(){
     var txt=[
-      'v50以降のGitHub更新手順',
+      'v51以降のGitHub更新手順',
       '',
       '1. 新しいZIPをダウンロード',
       '2. iPhoneの「ファイル」アプリでZIPをタップして解凍',
@@ -319,10 +335,10 @@
 
 
   function privateSettings(){
-    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v50')||'{}');}catch(e){return {};}
+    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v51')||'{}');}catch(e){return {};}
   }
   function savePrivateSettings(s){
-    localStorage.setItem('rexEnglishMaster.private.v50',JSON.stringify(s||{}));
+    localStorage.setItem('rexEnglishMaster.private.v51',JSON.stringify(s||{}));
   }
   function showLock(){
     var s=privateSettings();
@@ -423,7 +439,7 @@
   function resetPins(){
     if(!requireParentPin()){ showToast('保護者PINが違います'); return; }
     if(confirm('起動パスコードと保護者PINをリセットしますか？')){
-      localStorage.removeItem('rexEnglishMaster.private.v50');
+      localStorage.removeItem('rexEnglishMaster.private.v51');
       sessionStorage.removeItem('rexEnglishMaster.unlocked');
       showToast('PINをリセットしました');
       showLock();
@@ -453,14 +469,14 @@
   function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 
 
-  // v50 global fallback handlers for Safari
-  function v50PrivateSettings(){
-    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v50')||'{}');}catch(e){return {};}
+  // v51 global fallback handlers for Safari
+  function v51PrivateSettings(){
+    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v51')||'{}');}catch(e){return {};}
   }
-  function v50SavePrivateSettings(s){
-    localStorage.setItem('rexEnglishMaster.private.v50',JSON.stringify(s||{}));
+  function v51SavePrivateSettings(s){
+    localStorage.setItem('rexEnglishMaster.private.v51',JSON.stringify(s||{}));
   }
-  function v50ShowSetup(){
+  function v51ShowSetup(){
     var login=document.getElementById('loginPanel');
     var setup=document.getElementById('setupPanel');
     var lead=document.getElementById('lockLead');
@@ -471,7 +487,7 @@
     if(msg) msg.textContent='';
     setTimeout(function(){ var n=document.getElementById('setupChildName'); if(n) n.focus(); },120);
   }
-  function v50CancelSetup(){
+  function v51CancelSetup(){
     var login=document.getElementById('loginPanel');
     var setup=document.getElementById('setupPanel');
     var lead=document.getElementById('lockLead');
@@ -479,11 +495,11 @@
     if(login) login.classList.remove('hidden');
     if(lead) lead.textContent='パスコードを入れると、レックスに会えるよ。';
   }
-  function v50HideLock(){
+  function v51HideLock(){
     var lock=document.getElementById('appLock');
     if(lock) lock.classList.add('hidden');
   }
-  function v50SaveSetup(){
+  function v51SaveSetup(){
     var name=(document.getElementById('setupChildName')&&document.getElementById('setupChildName').value||'').trim();
     var pin=(document.getElementById('setupAppPin')&&document.getElementById('setupAppPin').value||'').trim();
     var parent=(document.getElementById('setupParentPin')&&document.getElementById('setupParentPin').value||'').trim();
@@ -493,9 +509,9 @@
       return;
     }
     if(!parent || parent.length!==8){ if(msg) msg.textContent='保護者用8桁パスコードを入力してください。'; return; }
-    v50SavePrivateSettings({appPin:String(pin),parentPin:String(parent),childName:String(name||'')});
+    v51SavePrivateSettings({appPin:String(pin),parentPin:String(parent),childName:String(name||'')});
     sessionStorage.setItem('rexEnglishMaster.unlocked','1');
-    v50HideLock();
+    v51HideLock();
     try{
       if(typeof setBubble==='function'){
         if(name) setBubble('Nice to meet you!','これから '+name+' 専用のレックスだよ！');
@@ -504,8 +520,8 @@
       if(typeof showToast==='function') showToast('専用設定を保存しました');
     }catch(e){}
   }
-  function v50Unlock(){
-    var s=v50PrivateSettings();
+  function v51Unlock(){
+    var s=v51PrivateSettings();
     var v=(document.getElementById('appPinInput')&&document.getElementById('appPinInput').value||'').trim();
     var msg=document.getElementById('lockMsg');
     if(!s.appPin){
@@ -514,7 +530,7 @@
     }
     if(v===s.appPin){
       sessionStorage.setItem('rexEnglishMaster.unlocked','1');
-      v50HideLock();
+      v51HideLock();
       try{
         if(typeof setBubble==='function'){
           if(s.childName) setBubble('Welcome back!','おかえり、'+s.childName+'！レックス待ってたよ。');
@@ -525,10 +541,10 @@
       if(msg) msg.textContent='パスコードが違います。';
     }
   }
-  window.RexPrivateShowSetup=v50ShowSetup;
-  window.RexPrivateCancelSetup=v50CancelSetup;
-  window.RexPrivateSaveSetup=v50SaveSetup;
-  window.RexPrivateUnlock=v50Unlock;
+  window.RexPrivateShowSetup=v51ShowSetup;
+  window.RexPrivateCancelSetup=v51CancelSetup;
+  window.RexPrivateSaveSetup=v51SaveSetup;
+  window.RexPrivateUnlock=v51Unlock;
 
   function bind(){
     $('unlockAudioBtn').addEventListener('click',function(){ RexSpeech.unlock().then(function(){ $('status').textContent='音声OK'; }); });

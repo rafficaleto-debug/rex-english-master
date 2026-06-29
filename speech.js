@@ -2,7 +2,7 @@
 (function(){
   var ready=false;
   var voiceSettings={
-    enVoiceURI:'',jaVoiceURI:'',enRate:0.92,jaRate:0.92,enPitch:1.12,jaPitch:1.05,
+    enVoiceURI:'',jaVoiceURI:'',enRate:0.92,jaRate:0.82,enPitch:1.08,jaPitch:1.0,
     openAiEnabled:true,voiceEngine:'openai',openAiProxyUrl:'',openAiVoice:'marin'
   };
 
@@ -33,7 +33,7 @@
     var vs=voices();
     var list=vs.filter(function(v){ return lang==='ja-JP' ? isJapaneseVoice(v) : isEnglishVoice(v); });
     var prefs = lang==='ja-JP'
-      ? ['Kyoko','Siri','Otoya','Japanese','Google 日本語','Microsoft Nanami','Microsoft Haruka']
+      ? ['Kyoko','Otoya','Siri','Japanese','Google 日本語','Microsoft Nanami','Microsoft Haruka']
       : ['Samantha','Karen','Tessa','Moira','Ava','Google US English','Microsoft Aria','English'];
     for(var p=0;p<prefs.length;p++){
       for(var j=0;j<list.length;j++){
@@ -46,15 +46,30 @@
   function browserSpeak(text, lang){
     return new Promise(function(resolve){
       if(!text || !('speechSynthesis' in window)){ resolve(); return; }
+      var done=false;
+      function finish(){
+        if(done) return;
+        done=true;
+        resolve();
+      }
       var u = new SpeechSynthesisUtterance(text);
       u.lang=lang;
       u.voice=pickVoice(lang);
-      if(lang==='ja-JP'){ u.pitch=Number(voiceSettings.jaPitch||1.05); u.rate=Number(voiceSettings.jaRate||0.92); }
-      else { u.pitch=Number(voiceSettings.enPitch||1.12); u.rate=Number(voiceSettings.enRate||0.92); }
+      if(lang==='ja-JP'){
+        u.pitch=Number(voiceSettings.jaPitch||1.0);
+        u.rate=Number(voiceSettings.jaRate||0.82);
+      } else {
+        u.pitch=Number(voiceSettings.enPitch||1.08);
+        u.rate=Number(voiceSettings.enRate||0.92);
+      }
       u.volume=1;
-      u.onend=resolve; u.onerror=resolve;
+      u.onend=finish;
+      u.onerror=finish;
       speechSynthesis.speak(u);
-      setTimeout(resolve, Math.max(1650, String(text).length*135));
+
+      // 安全タイマー。短すぎるとズレるので長めにする。
+      var safeMs = Math.max(4500, String(text).length * (lang==='ja-JP' ? 260 : 190));
+      setTimeout(finish, safeMs);
     });
   }
 
@@ -130,6 +145,17 @@
     if(safariRadio) safariRadio.onchange=function(){ if(chk) chk.checked=false; };
   }
 
+
+  function bindVoiceAutoSave(){
+    ['enVoiceSelect','jaVoiceSelect','enRateSelect','jaRateSelect','openAiVoiceEnabled','voiceEngineOpenAI','voiceEngineSafari','openAiProxyUrl','openAiVoiceSelect'].forEach(function(id){
+      var el=document.getElementById(id);
+      if(!el || el.dataset.rexVoiceAutoSave==='1') return;
+      el.dataset.rexVoiceAutoSave='1';
+      var ev = (el.tagName==='INPUT' && el.type==='text') ? 'input' : 'change';
+      el.addEventListener(ev,function(){ saveFromUI(); });
+    });
+  }
+
   function saveFromUI(){
     var enSel=document.getElementById('enVoiceSelect');
     var jaSel=document.getElementById('jaVoiceSelect');
@@ -155,21 +181,21 @@
 
   if('speechSynthesis' in window){
     speechSynthesis.onvoiceschanged=function(){ populateVoiceSelects(); };
-    setTimeout(populateVoiceSelects,300);
-    setTimeout(populateVoiceSelects,1200);
+    setTimeout(function(){ populateVoiceSelects(); bindVoiceAutoSave(); },300);
+    setTimeout(function(){ populateVoiceSelects(); bindVoiceAutoSave(); },1200);
   } else {
-    setTimeout(populateVoiceSelects,300);
+    setTimeout(function(){ populateVoiceSelects(); bindVoiceAutoSave(); },300);
   }
 
   window.RexSpeech={
-    speak:speak, unlock:unlock, cancel:cancel, isReady:isReady,
+    speak:speak, speakText:speak, unlock:unlock, cancel:cancel, isReady:isReady,
     populateVoiceSelects:populateVoiceSelects, saveFromUI:saveFromUI,
     settings:function(){return voiceSettings;}
   };
 })();
 
 
-/* v50: sequential speech fix.
+/* v51: sequential speech fix.
    Prevents Japanese from being read for a different English word during continuous playback. */
 (function(){
   var seqToken = 0;
