@@ -154,7 +154,7 @@
     if(!RexSpeech.isReady()) await RexSpeech.unlock();
     await wait(160);
 
-    // v60: 必ずこの時点の単語ペアを固定して読む。
+    // v61: 必ずこの時点の単語ペアを固定して読む。
     // 連続再生中にidxやdeckが変わっても、日本語だけ別単語になる事故を防ぐ。
     var current = Object.assign({}, deck[idx]);
     var enText = current.en || current.word || '';
@@ -226,13 +226,13 @@
     if($('dataVersionLabel')) $('dataVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
     if($('sentenceCountLabel')) $('sentenceCountLabel').textContent=(window.REX_SENTENCES||[]).length + (added?added.length:0);
     if($('contentVersionLabel')) $('contentVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
-    if($('appVersionLabel')) $('appVersionLabel').textContent='v60';
+    if($('appVersionLabel')) $('appVersionLabel').textContent='v61';
   }
 
 
   function rexImageHtml(stage, kind){
     var k = kind || 'stage';
-    return '<img class="rexSprite '+k+'" src="'+stage.img+'?v=60" alt="'+stage.name+'">';
+    return '<img class="rexSprite '+k+'" src="'+stage.img+'?v=61" alt="'+stage.name+'">';
   }
 
   function renderDaily(){
@@ -289,7 +289,7 @@
 
   function showUpdateGuide(){
     var txt=[
-      'v60以降のGitHub更新手順',
+      'v61以降のGitHub更新手順',
       '',
       '1. 新しいZIPをダウンロード',
       '2. iPhoneの「ファイル」アプリでZIPをタップして解凍',
@@ -335,10 +335,10 @@
 
 
   function privateSettings(){
-    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v60')||'{}');}catch(e){return {};}
+    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v61')||'{}');}catch(e){return {};}
   }
   function savePrivateSettings(s){
-    localStorage.setItem('rexEnglishMaster.private.v60',JSON.stringify(s||{}));
+    localStorage.setItem('rexEnglishMaster.private.v61',JSON.stringify(s||{}));
   }
   function showLock(){
     var s=privateSettings();
@@ -439,7 +439,7 @@
   function resetPins(){
     if(!requireParentPin()){ showToast('保護者PINが違います'); return; }
     if(confirm('起動パスコードと保護者PINをリセットしますか？')){
-      localStorage.removeItem('rexEnglishMaster.private.v60');
+      localStorage.removeItem('rexEnglishMaster.private.v61');
       sessionStorage.removeItem('rexEnglishMaster.unlocked');
       showToast('PINをリセットしました');
       showLock();
@@ -469,14 +469,14 @@
   function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 
 
-  // v60 global fallback handlers for Safari
-  function v60PrivateSettings(){
-    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v60')||'{}');}catch(e){return {};}
+  // v61 global fallback handlers for Safari
+  function v61PrivateSettings(){
+    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v61')||'{}');}catch(e){return {};}
   }
-  function v60SavePrivateSettings(s){
-    localStorage.setItem('rexEnglishMaster.private.v60',JSON.stringify(s||{}));
+  function v61SavePrivateSettings(s){
+    localStorage.setItem('rexEnglishMaster.private.v61',JSON.stringify(s||{}));
   }
-  function v60ShowSetup(){
+  function v61ShowSetup(){
     var login=document.getElementById('loginPanel');
     var setup=document.getElementById('setupPanel');
     var lead=document.getElementById('lockLead');
@@ -487,7 +487,7 @@
     if(msg) msg.textContent='';
     setTimeout(function(){ var n=document.getElementById('setupChildName'); if(n) n.focus(); },120);
   }
-  function v60CancelSetup(){
+  function v61CancelSetup(){
     var login=document.getElementById('loginPanel');
     var setup=document.getElementById('setupPanel');
     var lead=document.getElementById('lockLead');
@@ -495,11 +495,11 @@
     if(login) login.classList.remove('hidden');
     if(lead) lead.textContent='パスコードを入れると、レックスに会えるよ。';
   }
-  function v60HideLock(){
+  function v61HideLock(){
     var lock=document.getElementById('appLock');
     if(lock) lock.classList.add('hidden');
   }
-  function v60SaveSetup(){
+  function v61SaveSetup(){
     var name=(document.getElementById('setupChildName')&&document.getElementById('setupChildName').value||'').trim();
     var pin=(document.getElementById('setupAppPin')&&document.getElementById('setupAppPin').value||'').trim();
     var parent=(document.getElementById('setupParentPin')&&document.getElementById('setupParentPin').value||'').trim();
@@ -509,9 +509,9 @@
       return;
     }
     if(!parent || parent.length!==8){ if(msg) msg.textContent='保護者用8桁パスコードを入力してください。'; return; }
-    v60SavePrivateSettings({appPin:String(pin),parentPin:String(parent),childName:String(name||'')});
+    v61SavePrivateSettings({appPin:String(pin),parentPin:String(parent),childName:String(name||'')});
     sessionStorage.setItem('rexEnglishMaster.unlocked','1');
-    v60HideLock();
+    v61HideLock();
     try{
       if(typeof setBubble==='function'){
         if(name) setBubble('Nice to meet you!','これから '+name+' 専用のレックスだよ！');
@@ -520,8 +520,8 @@
       if(typeof showToast==='function') showToast('専用設定を保存しました');
     }catch(e){}
   }
-  function v60Unlock(){
-    var s=v60PrivateSettings();
+  function v61Unlock(){
+    var s=v61PrivateSettings();
     var v=(document.getElementById('appPinInput')&&document.getElementById('appPinInput').value||'').trim();
     var msg=document.getElementById('lockMsg');
     if(!s.appPin){
@@ -530,7 +530,7 @@
     }
     if(v===s.appPin){
       sessionStorage.setItem('rexEnglishMaster.unlocked','1');
-      v60HideLock();
+      v61HideLock();
       try{
         if(typeof setBubble==='function'){
           if(s.childName) setBubble('Welcome back!','おかえり、'+s.childName+'！レックス待ってたよ。');
@@ -541,10 +541,10 @@
       if(msg) msg.textContent='パスコードが違います。';
     }
   }
-  window.RexPrivateShowSetup=v60ShowSetup;
-  window.RexPrivateCancelSetup=v60CancelSetup;
-  window.RexPrivateSaveSetup=v60SaveSetup;
-  window.RexPrivateUnlock=v60Unlock;
+  window.RexPrivateShowSetup=v61ShowSetup;
+  window.RexPrivateCancelSetup=v61CancelSetup;
+  window.RexPrivateSaveSetup=v61SaveSetup;
+  window.RexPrivateUnlock=v61Unlock;
 
   function bind(){
     $('unlockAudioBtn').addEventListener('click',function(){ RexSpeech.unlock().then(function(){ $('status').textContent='音声OK'; }); });
@@ -571,4 +571,67 @@
 
   try{ init(); }
   catch(e){ var box=$('bootError'); if(box){ box.style.display='block'; box.textContent='起動に失敗しました。\n'+(e.message||e); } console.error(e); }
+})();
+
+
+
+/* v61: safe persistence and voice refresh hooks */
+(function(){
+  try{
+    window.REX_APP_DATA_KEY = 'grade1-2026-06';
+    window.REX_PROFILE_KEY = 'rex_profile_stable';
+    window.REX_LOGIN_KEY = 'rex_login_stable';
+    window.REX_VOICE_KEY = 'rexVoiceSettings';
+  }catch(e){}
+
+  function migrateStableKeys(){
+    try{
+      var pairs=[];
+      for(var i=0;i<localStorage.length;i++){
+        var k=localStorage.key(i);
+        if(!k) continue;
+        var nk=k
+          .replace(/grade1-2026-06-v\d+/g,'grade1-2026-06')
+          .replace(/rex[_-]english[_-]master[_-]?v\d+/ig,'rex_english_master_stable')
+          .replace(/rexProfileV\d+/g,'rex_profile_stable')
+          .replace(/rexLoginV\d+/g,'rex_login_stable');
+        if(nk!==k && !localStorage.getItem(nk)){
+          pairs.push([k,nk]);
+        }
+      }
+      pairs.forEach(function(p){ localStorage.setItem(p[1], localStorage.getItem(p[0])); });
+    }catch(e){}
+  }
+
+  function saveVoiceFromUI(){
+    try{
+      var ids=['enVoiceSelect','jaVoiceSelect','enRateSelect','jaRateSelect','voiceEngineOpenAI','voiceEngineSafari','openAiVoiceEnabled','openAiVoiceSelect','openAiProxyUrl'];
+      var s=JSON.parse(localStorage.getItem('rexVoiceSettings')||'{}');
+      ids.forEach(function(id){
+        var el=document.getElementById(id);
+        if(!el) return;
+        s[id]=(el.type==='checkbox'||el.type==='radio')?el.checked:el.value;
+      });
+      localStorage.setItem('rexVoiceSettings',JSON.stringify(s));
+      if(window.speechSynthesis) speechSynthesis.cancel();
+    }catch(e){}
+  }
+
+  function bindVoiceInputs(){
+    try{
+      ['enVoiceSelect','jaVoiceSelect','enRateSelect','jaRateSelect','voiceEngineOpenAI','voiceEngineSafari','openAiVoiceEnabled','openAiVoiceSelect','openAiProxyUrl'].forEach(function(id){
+        var el=document.getElementById(id);
+        if(!el || el.dataset.v61VoiceBound) return;
+        el.dataset.v61VoiceBound='1';
+        el.addEventListener('change',saveVoiceFromUI);
+        el.addEventListener('input',saveVoiceFromUI);
+      });
+    }catch(e){}
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    migrateStableKeys();
+    bindVoiceInputs();
+  });
+  setInterval(bindVoiceInputs,1200);
 })();

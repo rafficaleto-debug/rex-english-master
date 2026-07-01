@@ -1,7 +1,7 @@
 
 (function(){
-  var APP_VERSION='60.0.0';
-  var STORE_KEY='rexEnglishMaster.profile.v60';
+  var APP_VERSION='61.0.0';
+  var STORE_KEY='rexEnglishMaster.profile.v61';
   var defaultProfile={
     schemaVersion:1, appVersion:APP_VERSION, contentVersion:window.REX_CONTENT_VERSION || 'unknown',
     added:[], weak:[], fav:[], mistakes:[],
@@ -15,12 +15,12 @@
     var p=readJson(STORE_KEY,null);
     if(p && p.schemaVersion){ return p; }
     var migrated=clone(defaultProfile);
-    migrated.added=readJson('added_v60', readJson('added_v60', []));
-    migrated.weak=readJson('weak_v60', readJson('weak_v60', []));
-    migrated.fav=readJson('fav_v60', readJson('fav_v60', []));
-    migrated.mistakes=readJson('mistakes_v60', readJson('mistakes_v60', []));
-    migrated.score=readJson('score_v60', readJson('score_v60', defaultProfile.score));
-    migrated.chats=readJson('chats_v60', []);
+    migrated.added=readJson('added_v61', readJson('added_v61', []));
+    migrated.weak=readJson('weak_v61', readJson('weak_v61', []));
+    migrated.fav=readJson('fav_v61', readJson('fav_v61', []));
+    migrated.mistakes=readJson('mistakes_v61', readJson('mistakes_v61', []));
+    migrated.score=readJson('score_v61', readJson('score_v61', defaultProfile.score));
+    migrated.chats=readJson('chats_v61', []);
     saveProfile(migrated);
     return migrated;
   }
@@ -29,7 +29,7 @@
   window.RexStorage={APP_VERSION:APP_VERSION, STORE_KEY:STORE_KEY, defaultProfile:defaultProfile, loadProfile:loadProfile, saveProfile:saveProfile, exportProfile:exportProfile, restoreProfile:restoreProfile};
 })();
 
-/* v60: migrate old versioned storage keys */
+/* v61: migrate old versioned storage keys */
 (function(){
   try{
     var pairs=[];
@@ -37,6 +37,33 @@
       var k=localStorage.key(i); if(!k) continue;
       var nk=k.replace(/grade1-2026-06-v\d+/g,'grade1-2026-06').replace(/rex[_-]english[_-]master[_-]?v\d+/ig,'rex_english_master_stable');
       if(nk!==k && !localStorage.getItem(nk)) pairs.push([k,nk]);
+    }
+    pairs.forEach(function(p){ localStorage.setItem(p[1], localStorage.getItem(p[0])); });
+  }catch(e){}
+})();
+
+
+
+/* v61: stable storage keys. Do not version user profile/login/progress keys. */
+(function(){
+  try{
+    window.REX_APP_DATA_KEY = 'grade1-2026-06';
+    window.REX_PROFILE_KEY = 'rex_profile_stable';
+    window.REX_LOGIN_KEY = 'rex_login_stable';
+    window.REX_SETTINGS_KEY = 'rex_settings_stable';
+    var pairs=[];
+    for(var i=0;i<localStorage.length;i++){
+      var k=localStorage.key(i);
+      if(!k) continue;
+      var nk=k
+        .replace(/grade1-2026-06-v\d+/g,'grade1-2026-06')
+        .replace(/rex[_-]english[_-]master[_-]?v\d+/ig,'rex_english_master_stable')
+        .replace(/rexProfileV\d+/g,'rex_profile_stable')
+        .replace(/rexLoginV\d+/g,'rex_login_stable')
+        .replace(/rexSettingsV\d+/g,'rex_settings_stable');
+      if(nk!==k && !localStorage.getItem(nk)){
+        pairs.push([k,nk]);
+      }
     }
     pairs.forEach(function(p){ localStorage.setItem(p[1], localStorage.getItem(p[0])); });
   }catch(e){}
