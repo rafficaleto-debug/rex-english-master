@@ -1,12 +1,12 @@
 
 (function(){
-  var APP_VERSION='70.0.0';
+  var APP_VERSION='71.0.0';
   var STORE_KEY='rexEnglishMaster.profile';
   var LEGACY_PROFILE_KEYS=[
-    'rexEnglishMaster.profile.v55','rexEnglishMaster.profile.v56','rexEnglishMaster.profile.v57',
-    'rexEnglishMaster.profile.v58','rexEnglishMaster.profile.v59','rexEnglishMaster.profile.v60',
-    'rexEnglishMaster.profile.v61','rexEnglishMaster.profile.v62','rexEnglishMaster.profile.v63',
-    'rexEnglishMaster.profile.v70'
+    'rexEnglishMaster.profile.v71','rexEnglishMaster.profile.v71','rexEnglishMaster.profile.v71',
+    'rexEnglishMaster.profile.v71','rexEnglishMaster.profile.v71','rexEnglishMaster.profile.v71',
+    'rexEnglishMaster.profile.v71','rexEnglishMaster.profile.v71','rexEnglishMaster.profile.v71',
+    'rexEnglishMaster.profile.v71'
   ];
   var defaultProfile={
     schemaVersion:1, appVersion:APP_VERSION, contentVersion:window.REX_CONTENT_VERSION || 'unknown',
@@ -34,12 +34,12 @@
     return null;
   }
   function migrateOldSmallKeys(profile){
-    profile.added=profile.added && profile.added.length ? profile.added : readJson('added_v55', []);
-    profile.weak=profile.weak && profile.weak.length ? profile.weak : readJson('weak_v55', []);
-    profile.fav=profile.fav && profile.fav.length ? profile.fav : readJson('fav_v55', []);
-    profile.mistakes=profile.mistakes && profile.mistakes.length ? profile.mistakes : readJson('mistakes_v55', []);
-    profile.score=profile.score || readJson('score_v55', defaultProfile.score);
-    profile.chats=profile.chats && profile.chats.length ? profile.chats : readJson('chats_v55', []);
+    profile.added=profile.added && profile.added.length ? profile.added : readJson('added_v71', []);
+    profile.weak=profile.weak && profile.weak.length ? profile.weak : readJson('weak_v71', []);
+    profile.fav=profile.fav && profile.fav.length ? profile.fav : readJson('fav_v71', []);
+    profile.mistakes=profile.mistakes && profile.mistakes.length ? profile.mistakes : readJson('mistakes_v71', []);
+    profile.score=profile.score || readJson('score_v71', defaultProfile.score);
+    profile.chats=profile.chats && profile.chats.length ? profile.chats : readJson('chats_v71', []);
     return profile;
   }
   function saveProfile(p){

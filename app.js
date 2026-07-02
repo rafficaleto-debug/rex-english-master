@@ -13,14 +13,14 @@
   var wait=function(ms){ return new Promise(function(r){ setTimeout(r,ms); }); };
 
 
-/* v70: stable private/login settings migration */
+/* v71: stable private/login settings migration */
 (function(){
   var STABLE_PRIVATE_KEY='rexEnglishMaster.private';
   var legacy=[
-    'rexEnglishMaster.private.v55','rexEnglishMaster.private.v56','rexEnglishMaster.private.v57',
-    'rexEnglishMaster.private.v58','rexEnglishMaster.private.v59','rexEnglishMaster.private.v60',
-    'rexEnglishMaster.private.v61','rexEnglishMaster.private.v62','rexEnglishMaster.private.v63',
-    'rexEnglishMaster.private.v70'
+    'rexEnglishMaster.private.v71','rexEnglishMaster.private.v71','rexEnglishMaster.private.v71',
+    'rexEnglishMaster.private.v71','rexEnglishMaster.private.v71','rexEnglishMaster.private.v71',
+    'rexEnglishMaster.private.v71','rexEnglishMaster.private.v71','rexEnglishMaster.private.v71',
+    'rexEnglishMaster.private.v71'
   ];
   try{
     if(!localStorage.getItem(STABLE_PRIVATE_KEY)){
@@ -124,7 +124,7 @@
     var max=Math.min(RexGame.lines.length,3+currentDino().index*2);
     var line=RexGame.lines[Math.floor(Math.random()*max)];
     setBubble(line[0],line[1]); addChat('rex',line[0],line[1]);
-    if(audio){ RexSpeech.speak(line[0],'en-US').then(function(){ return RexSpeech.speak(line[1],'ja-JP'); }); }
+    if(audio){ RexSpeech.speak(line[0],'en-US','rex').then(function(){ return RexSpeech.speak(line[1],'ja-JP','rex'); }); }
   }
   function feedDino(){
     if((score.coins||0)<=0){ setBubble('No problem!','コインがなくても、ぼくはいつでも応援してるよ！'); return; }
@@ -175,7 +175,7 @@
     if(!RexSpeech.isReady()) await RexSpeech.unlock();
     await wait(160);
 
-    // v70: 必ずこの時点の単語ペアを固定して読む。
+    // v71: 必ずこの時点の単語ペアを固定して読む。
     // 連続再生中にidxやdeckが変わっても、日本語だけ別単語になる事故を防ぐ。
     var current = Object.assign({}, deck[idx]);
     var enText = current.en || current.word || '';
@@ -238,7 +238,7 @@
 
   function addChat(who,en,ja){ profile.chats=profile.chats||[]; profile.chats.push({who:who,en:en,ja:ja}); profile.chats=profile.chats.slice(-20); persist(); renderChat(); }
   function renderChat(){ var chats=profile.chats||[]; if(!chats.length) chats=[{who:'rex',en:'Hi there!',ja:'今日も一緒にがんばろうね！'}]; $('chatBox').innerHTML=chats.map(function(c){ return '<div class="chat '+(c.who==='me'?'me':'')+'"><div class="msg"><b>'+escapeHtml(c.en)+'</b><br><span class="small">'+escapeHtml(c.ja||'')+'</span></div></div>'; }).join(''); $('chatBox').scrollTop=$('chatBox').scrollHeight; }
-  function sendQuick(t){ addChat('me',t,''); var replies={'Hello!':['Hello!','会えてうれしいよ！'],'Thank you!':["You're welcome!",'どういたしまして！'],'I will do my best!':['I believe in you!','ぼくは信じてるよ！'],'See you!':['See you!','また会おうね！']}; var r=replies[t]||['Good job!','いいね！']; setTimeout(function(){ addChat('rex',r[0],r[1]); setBubble(r[0],r[1]); RexSpeech.speak(r[0],'en-US'); },300); }
+  function sendQuick(t){ addChat('me',t,''); var replies={'Hello!':['Hello!','会えてうれしいよ！'],'Thank you!':["You're welcome!",'どういたしまして！'],'I will do my best!':['I believe in you!','ぼくは信じてるよ！'],'See you!':['See you!','また会おうね！']}; var r=replies[t]||['Good job!','いいね！']; setTimeout(function(){ addChat('rex',r[0],r[1]); setBubble(r[0],r[1]); RexSpeech.speak(r[0],'en-US','rex'); },300); }
 
   function renderList(){ all(); var s=($('search').value||'').toLowerCase(); var arr=filteredBase().filter(function(x){return ((x.en||'')+(x.ja||'')+(x.stage||'')+(x.unit||'')).toLowerCase().indexOf(s)>=0;}); $('listbox').innerHTML=arr.map(function(x){ return '<div class="item"><b>'+(fav.has(x.id)?'⭐ ':'')+escapeHtml(x.en)+'</b><br>'+escapeHtml(x.ja)+'<br><span class="small">'+escapeHtml(x.stage||'')+' / '+escapeHtml(x.unit||'')+(weak.has(x.id)?' / 苦手':'')+(mistakes.has(x.id)?' / 間違い':'')+'</span></div>'; }).join('') || '<p class="small">該当なし</p>'; }
   function renderBadges(){ $('badgeGrid').innerHTML=RexGame.badges.map(function(b){ var on=b.need(score,mistakes.size); return '<div class="collectionBadge '+(on?'':'locked')+'"><div style="font-size:34px">'+b.icon+'</div><div>'+b.name+'</div><div class="mini">'+(on?'GET!':'LOCKED')+'</div></div>'; }).join(''); }
@@ -247,13 +247,13 @@
     if($('dataVersionLabel')) $('dataVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
     if($('sentenceCountLabel')) $('sentenceCountLabel').textContent=(window.REX_SENTENCES||[]).length + (added?added.length:0);
     if($('contentVersionLabel')) $('contentVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
-    if($('appVersionLabel')) $('appVersionLabel').textContent='v70';
+    if($('appVersionLabel')) $('appVersionLabel').textContent='v71';
   }
 
 
   function rexImageHtml(stage, kind){
     var k = kind || 'stage';
-    return '<img class="rexSprite '+k+'" src="'+stage.img+'?v=70" alt="'+stage.name+'">';
+    return '<img class="rexSprite '+k+'" src="'+stage.img+'?v=71" alt="'+stage.name+'">';
   }
 
   function renderDaily(){
@@ -310,7 +310,7 @@
 
   function showUpdateGuide(){
     var txt=[
-      'v70以降のGitHub更新手順',
+      'v71以降のGitHub更新手順',
       '',
       '1. 新しいZIPをダウンロード',
       '2. iPhoneの「ファイル」アプリでZIPをタップして解凍',
@@ -490,14 +490,14 @@
   function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 
 
-  // v70 global fallback handlers for Safari
-  function v70PrivateSettings(){
+  // v71 global fallback handlers for Safari
+  function v71PrivateSettings(){
     try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private')||'{}');}catch(e){return {};}
   }
-  function v70SavePrivateSettings(s){
+  function v71SavePrivateSettings(s){
     localStorage.setItem('rexEnglishMaster.private',JSON.stringify(s||{}));
   }
-  function v70ShowSetup(){
+  function v71ShowSetup(){
     var login=document.getElementById('loginPanel');
     var setup=document.getElementById('setupPanel');
     var lead=document.getElementById('lockLead');
@@ -508,7 +508,7 @@
     if(msg) msg.textContent='';
     setTimeout(function(){ var n=document.getElementById('setupChildName'); if(n) n.focus(); },120);
   }
-  function v70CancelSetup(){
+  function v71CancelSetup(){
     var login=document.getElementById('loginPanel');
     var setup=document.getElementById('setupPanel');
     var lead=document.getElementById('lockLead');
@@ -516,11 +516,11 @@
     if(login) login.classList.remove('hidden');
     if(lead) lead.textContent='パスコードを入れると、レックスに会えるよ。';
   }
-  function v70HideLock(){
+  function v71HideLock(){
     var lock=document.getElementById('appLock');
     if(lock) lock.classList.add('hidden');
   }
-  function v70SaveSetup(){
+  function v71SaveSetup(){
     var name=(document.getElementById('setupChildName')&&document.getElementById('setupChildName').value||'').trim();
     var pin=(document.getElementById('setupAppPin')&&document.getElementById('setupAppPin').value||'').trim();
     var parent=(document.getElementById('setupParentPin')&&document.getElementById('setupParentPin').value||'').trim();
@@ -530,9 +530,9 @@
       return;
     }
     if(!parent || parent.length!==8){ if($('lockMsg')) $('lockMsg').textContent='保護者用8桁パスコードを入力してください。'; return; }
-    v70SavePrivateSettings({appPin:String(pin),parentPin:String(parent),childName:String(name||'')});
+    v71SavePrivateSettings({appPin:String(pin),parentPin:String(parent),childName:String(name||'')});
     sessionStorage.setItem('rexEnglishMaster.unlocked','1');
-    v70HideLock();
+    v71HideLock();
     try{
       if(typeof setBubble==='function'){
         if(name) setBubble('Nice to meet you!','これから '+name+' 専用のレックスだよ！');
@@ -541,8 +541,8 @@
       if(typeof showToast==='function') showToast('専用設定を保存しました');
     }catch(e){}
   }
-  function v70Unlock(){
-    var s=v70PrivateSettings();
+  function v71Unlock(){
+    var s=v71PrivateSettings();
     var v=(document.getElementById('appPinInput')&&document.getElementById('appPinInput').value||'').trim();
     var msg=document.getElementById('lockMsg');
     if(!s.appPin){
@@ -551,7 +551,7 @@
     }
     if(v===s.appPin){
       sessionStorage.setItem('rexEnglishMaster.unlocked','1');
-      v70HideLock();
+      v71HideLock();
       try{
         if(typeof setBubble==='function'){
           if(s.childName) setBubble('Welcome back!','おかえり、'+s.childName+'！レックス待ってたよ。');
@@ -562,10 +562,10 @@
       if(msg) msg.textContent='パスコードが違います。';
     }
   }
-  window.RexPrivateShowSetup=v70ShowSetup;
-  window.RexPrivateCancelSetup=v70CancelSetup;
-  window.RexPrivateSaveSetup=v70SaveSetup;
-  window.RexPrivateUnlock=v70Unlock;
+  window.RexPrivateShowSetup=v71ShowSetup;
+  window.RexPrivateCancelSetup=v71CancelSetup;
+  window.RexPrivateSaveSetup=v71SaveSetup;
+  window.RexPrivateUnlock=v71Unlock;
 
   function bind(){
     $('unlockAudioBtn').addEventListener('click',function(){ RexSpeech.unlock().then(function(){ $('status').textContent='音声OK'; }); });
@@ -582,7 +582,7 @@
     $('addBulkBtn').addEventListener('click',addBulkSentences); $('exportCsvBtn').addEventListener('click',exportAdded); $('clearAddedBtn').addEventListener('click',clearAdded);
     
     if($('openAiVoiceSaveBtn')) $('openAiVoiceSaveBtn').addEventListener('click',function(){ RexSpeech.saveFromUI && RexSpeech.saveFromUI(); showToast('音声エンジン設定を保存しました'); });
-    if($('openAiVoiceTestBtn')) $('openAiVoiceTestBtn').addEventListener('click',function(){ RexSpeech.saveFromUI && RexSpeech.saveFromUI(); RexSpeech.speak('Hello! I am Rex. I am always on your side.','en-US').then(function(){ return RexSpeech.speak('こんにちは、レックスだよ。ぼくはいつでも味方だよ。一緒に英語をがんばろう。','ja-JP'); }); });
+    if($('openAiVoiceTestBtn')) $('openAiVoiceTestBtn').addEventListener('click',function(){ RexSpeech.saveFromUI && RexSpeech.saveFromUI(); RexSpeech.speak('Hello! I am Rex. I am always on your side.','en-US','rex').then(function(){ return RexSpeech.speak('こんにちは、レックスだよ。ぼくはいつでも味方だよ。一緒に英語をがんばろう。','ja-JP','rex'); }); });
     if($('rexVoiceGuideBtn')) $('rexVoiceGuideBtn').addEventListener('click',showRexVoiceGuide);
 
     if($('showUpdateGuideBtn')) $('showUpdateGuideBtn').addEventListener('click',showUpdateGuide);
