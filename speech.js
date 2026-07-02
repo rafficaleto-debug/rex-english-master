@@ -8,13 +8,13 @@
 
   function readSettings(){
     try{
-      var saved=JSON.parse(localStorage.getItem('rexEnglishMaster.voice.v61')||localStorage.getItem('rexEnglishMaster.voice.v61')||'{}');
+      var saved=JSON.parse(localStorage.getItem('rexEnglishMaster.voice.v62')||localStorage.getItem('rexEnglishMaster.voice.v62')||'{}');
       voiceSettings=Object.assign(voiceSettings,saved||{});
     }catch(e){}
   }
   function saveSettings(next){
     voiceSettings=Object.assign(voiceSettings,next||{});
-    localStorage.setItem('rexEnglishMaster.voice.v61',JSON.stringify(voiceSettings));
+    localStorage.setItem('rexEnglishMaster.voice.v62',JSON.stringify(voiceSettings));
   }
   readSettings();
   if(!voiceSettings.voiceEngine){
@@ -195,7 +195,7 @@
 })();
 
 
-/* v61: sequential speech fix.
+/* v62: sequential speech fix.
    Prevents Japanese from being read for a different English word during continuous playback. */
 (function(){
   var seqToken = 0;
@@ -276,69 +276,15 @@
   window.playContinuousWordsFixed = window.playWordSequenceV50;
 })();
 
-/* v61: save voice settings when changed */
+/* v62 ROOT FIX: unified voice settings. */
 (function(){
-  function bindVoiceSettings(){
-    try{
-      ['enVoiceSelect','jaVoiceSelect','enRateSelect','jaRateSelect','voiceEngineOpenAI','voiceEngineSafari','openAiVoiceEnabled','openAiVoiceSelect','openAiProxyUrl'].forEach(function(id){
-        var el=document.getElementById(id);
-        if(!el || el.dataset.v61voice) return;
-        el.dataset.v61voice='1';
-        var save=function(){
-          try{
-            var s=JSON.parse(localStorage.getItem('rexVoiceSettings')||'{}');
-            s[id]=(el.type==='checkbox'||el.type==='radio')?el.checked:el.value;
-            localStorage.setItem('rexVoiceSettings',JSON.stringify(s));
-            if(window.speechSynthesis) speechSynthesis.cancel();
-          }catch(e){}
-        };
-        el.addEventListener('change',save);
-        el.addEventListener('input',save);
-      });
-    }catch(e){}
-  }
-  document.addEventListener('DOMContentLoaded',bindVoiceSettings);
-  setInterval(bindVoiceSettings,1000);
-})();
-
-
-
-/* v61: voice settings save/reload reinforcement */
-(function(){
-  function saveVoiceSettings(){
-    try{
-      var ids=['enVoiceSelect','jaVoiceSelect','enRateSelect','jaRateSelect','voiceEngineOpenAI','voiceEngineSafari','openAiVoiceEnabled','openAiVoiceSelect','openAiProxyUrl'];
-      var s=JSON.parse(localStorage.getItem('rexVoiceSettings')||'{}');
-      ids.forEach(function(id){
-        var el=document.getElementById(id);
-        if(!el) return;
-        s[id]=(el.type==='checkbox'||el.type==='radio')?el.checked:el.value;
-      });
-      localStorage.setItem('rexVoiceSettings',JSON.stringify(s));
-      if(window.speechSynthesis) speechSynthesis.cancel();
-    }catch(e){}
-  }
-  function restoreVoiceSettings(){
-    try{
-      var s=JSON.parse(localStorage.getItem('rexVoiceSettings')||'{}');
-      Object.keys(s).forEach(function(id){
-        var el=document.getElementById(id);
-        if(!el) return;
-        if(el.type==='checkbox'||el.type==='radio') el.checked=!!s[id];
-        else if(s[id]!==undefined && s[id]!==null && s[id] !== '') el.value=s[id];
-      });
-    }catch(e){}
-  }
-  function bind(){
-    restoreVoiceSettings();
-    ['enVoiceSelect','jaVoiceSelect','enRateSelect','jaRateSelect','voiceEngineOpenAI','voiceEngineSafari','openAiVoiceEnabled','openAiVoiceSelect','openAiProxyUrl'].forEach(function(id){
-      var el=document.getElementById(id);
-      if(!el || el.dataset.v61Voice) return;
-      el.dataset.v61Voice='1';
-      el.addEventListener('change',saveVoiceSettings);
-      el.addEventListener('input',saveVoiceSettings);
-    });
-  }
-  document.addEventListener('DOMContentLoaded',bind);
-  setInterval(bind,1000);
+  function read(){try{return JSON.parse(localStorage.getItem('rex_voice_settings')||localStorage.getItem('rexVoiceSettings')||'{}');}catch(e){return {};}}
+  function write(s){try{localStorage.setItem('rex_voice_settings',JSON.stringify(s||{})); localStorage.setItem('rexVoiceSettings',JSON.stringify(s||{})); window.REX_CURRENT_VOICE_SETTINGS=s||{};}catch(e){}}
+  function collect(){var s=read(); try{['enVoiceSelect','jaVoiceSelect','enRateSelect','jaRateSelect','voiceEngineOpenAI','voiceEngineSafari','openAiVoiceEnabled','openAiVoiceSelect','openAiProxyUrl','openaiProxyUrl','openaiVoiceSelect','rexVoiceSelect','rexVoice'].forEach(function(id){var el=document.getElementById(id); if(!el)return; s[id]=(el.type==='checkbox'||el.type==='radio')?!!el.checked:el.value;}); var o=document.getElementById('voiceEngineOpenAI'), sf=document.getElementById('voiceEngineSafari'); if(o&&o.checked)s.engine='openai'; if(sf&&sf.checked)s.engine='safari';}catch(e){} write(s); return s;}
+  function restore(){var s=read(); try{Object.keys(s).forEach(function(id){var el=document.getElementById(id); if(!el)return; if(el.type==='checkbox'||el.type==='radio')el.checked=!!s[id]; else if(s[id]!==undefined&&s[id]!==null&&s[id]!=='')el.value=s[id];}); if(s.engine==='openai'&&document.getElementById('voiceEngineOpenAI'))document.getElementById('voiceEngineOpenAI').checked=true; if(s.engine==='safari'&&document.getElementById('voiceEngineSafari'))document.getElementById('voiceEngineSafari').checked=true;}catch(e){} window.REX_CURRENT_VOICE_SETTINGS=s; return s;}
+  function bind(){restore(); ['enVoiceSelect','jaVoiceSelect','enRateSelect','jaRateSelect','voiceEngineOpenAI','voiceEngineSafari','openAiVoiceEnabled','openAiVoiceSelect','openAiProxyUrl','openaiProxyUrl','openaiVoiceSelect','rexVoiceSelect','rexVoice'].forEach(function(id){var el=document.getElementById(id); if(!el||el.dataset.v62Voice)return; el.dataset.v62Voice='1'; el.addEventListener('change',function(){collect(); if(window.speechSynthesis)speechSynthesis.cancel();}); el.addEventListener('input',collect);});}
+  async function openai(text,lang){var s=collect(); var proxy=s.openAiProxyUrl||s.openaiProxyUrl||''; var voice=s.openAiVoiceSelect||s.openaiVoiceSelect||s.rexVoiceSelect||s.rexVoice||'marin'; if(!proxy)throw new Error('OpenAI proxy URL is not set'); var res=await fetch(proxy,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text,lang:lang||'ja-JP',voice:voice})}); if(!res.ok)throw new Error('OpenAI TTS failed'); var blob=await res.blob(); var url=URL.createObjectURL(blob); await new Promise(function(resolve,reject){var a=new Audio(url); a.onended=resolve; a.onerror=reject; a.play().catch(reject);}); URL.revokeObjectURL(url);}
+  function safari(text,lang){return new Promise(function(resolve){try{if(!window.speechSynthesis)return resolve(); var s=collect(); var u=new SpeechSynthesisUtterance(text); u.lang=lang||'en-US'; var rk=(u.lang||'').indexOf('ja')===0?'jaRateSelect':'enRateSelect'; var rate=parseFloat(s[rk]||'1'); if(rate&&!isNaN(rate))u.rate=rate; var voices=speechSynthesis.getVoices?speechSynthesis.getVoices():[]; var vn=(u.lang||'').indexOf('ja')===0?s.jaVoiceSelect:s.enVoiceSelect; if(vn){var v=voices.find(function(x){return x.name===vn||x.voiceURI===vn;}); if(v)u.voice=v;} u.onend=resolve; u.onerror=resolve; speechSynthesis.cancel(); speechSynthesis.speak(u);}catch(e){resolve();}});}
+  window.RexVoiceSpeak=async function(text,lang,force){var s=collect(); var engine=force||s.engine||((s.voiceEngineOpenAI||s.openAiVoiceEnabled)?'openai':'safari'); if(engine==='openai'){try{await openai(text,lang); return;}catch(e){console.warn('OpenAI fallback:',e);}} await safari(text,lang);};
+  document.addEventListener('DOMContentLoaded',bind); setInterval(bind,1000);
 })();

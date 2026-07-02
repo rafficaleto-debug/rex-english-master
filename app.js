@@ -154,7 +154,7 @@
     if(!RexSpeech.isReady()) await RexSpeech.unlock();
     await wait(160);
 
-    // v61: 必ずこの時点の単語ペアを固定して読む。
+    // v62: 必ずこの時点の単語ペアを固定して読む。
     // 連続再生中にidxやdeckが変わっても、日本語だけ別単語になる事故を防ぐ。
     var current = Object.assign({}, deck[idx]);
     var enText = current.en || current.word || '';
@@ -226,13 +226,13 @@
     if($('dataVersionLabel')) $('dataVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
     if($('sentenceCountLabel')) $('sentenceCountLabel').textContent=(window.REX_SENTENCES||[]).length + (added?added.length:0);
     if($('contentVersionLabel')) $('contentVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
-    if($('appVersionLabel')) $('appVersionLabel').textContent='v61';
+    if($('appVersionLabel')) $('appVersionLabel').textContent='v62';
   }
 
 
   function rexImageHtml(stage, kind){
     var k = kind || 'stage';
-    return '<img class="rexSprite '+k+'" src="'+stage.img+'?v=61" alt="'+stage.name+'">';
+    return '<img class="rexSprite '+k+'" src="'+stage.img+'?v=62" alt="'+stage.name+'">';
   }
 
   function renderDaily(){
@@ -289,7 +289,7 @@
 
   function showUpdateGuide(){
     var txt=[
-      'v61以降のGitHub更新手順',
+      'v62以降のGitHub更新手順',
       '',
       '1. 新しいZIPをダウンロード',
       '2. iPhoneの「ファイル」アプリでZIPをタップして解凍',
@@ -335,10 +335,10 @@
 
 
   function privateSettings(){
-    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v61')||'{}');}catch(e){return {};}
+    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v62')||'{}');}catch(e){return {};}
   }
   function savePrivateSettings(s){
-    localStorage.setItem('rexEnglishMaster.private.v61',JSON.stringify(s||{}));
+    localStorage.setItem('rexEnglishMaster.private.v62',JSON.stringify(s||{}));
   }
   function showLock(){
     var s=privateSettings();
@@ -439,7 +439,7 @@
   function resetPins(){
     if(!requireParentPin()){ showToast('保護者PINが違います'); return; }
     if(confirm('起動パスコードと保護者PINをリセットしますか？')){
-      localStorage.removeItem('rexEnglishMaster.private.v61');
+      localStorage.removeItem('rexEnglishMaster.private.v62');
       sessionStorage.removeItem('rexEnglishMaster.unlocked');
       showToast('PINをリセットしました');
       showLock();
@@ -469,14 +469,14 @@
   function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 
 
-  // v61 global fallback handlers for Safari
-  function v61PrivateSettings(){
-    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v61')||'{}');}catch(e){return {};}
+  // v62 global fallback handlers for Safari
+  function v62PrivateSettings(){
+    try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private.v62')||'{}');}catch(e){return {};}
   }
-  function v61SavePrivateSettings(s){
-    localStorage.setItem('rexEnglishMaster.private.v61',JSON.stringify(s||{}));
+  function v62SavePrivateSettings(s){
+    localStorage.setItem('rexEnglishMaster.private.v62',JSON.stringify(s||{}));
   }
-  function v61ShowSetup(){
+  function v62ShowSetup(){
     var login=document.getElementById('loginPanel');
     var setup=document.getElementById('setupPanel');
     var lead=document.getElementById('lockLead');
@@ -487,7 +487,7 @@
     if(msg) msg.textContent='';
     setTimeout(function(){ var n=document.getElementById('setupChildName'); if(n) n.focus(); },120);
   }
-  function v61CancelSetup(){
+  function v62CancelSetup(){
     var login=document.getElementById('loginPanel');
     var setup=document.getElementById('setupPanel');
     var lead=document.getElementById('lockLead');
@@ -495,11 +495,11 @@
     if(login) login.classList.remove('hidden');
     if(lead) lead.textContent='パスコードを入れると、レックスに会えるよ。';
   }
-  function v61HideLock(){
+  function v62HideLock(){
     var lock=document.getElementById('appLock');
     if(lock) lock.classList.add('hidden');
   }
-  function v61SaveSetup(){
+  function v62SaveSetup(){
     var name=(document.getElementById('setupChildName')&&document.getElementById('setupChildName').value||'').trim();
     var pin=(document.getElementById('setupAppPin')&&document.getElementById('setupAppPin').value||'').trim();
     var parent=(document.getElementById('setupParentPin')&&document.getElementById('setupParentPin').value||'').trim();
@@ -509,9 +509,9 @@
       return;
     }
     if(!parent || parent.length!==8){ if(msg) msg.textContent='保護者用8桁パスコードを入力してください。'; return; }
-    v61SavePrivateSettings({appPin:String(pin),parentPin:String(parent),childName:String(name||'')});
+    v62SavePrivateSettings({appPin:String(pin),parentPin:String(parent),childName:String(name||'')});
     sessionStorage.setItem('rexEnglishMaster.unlocked','1');
-    v61HideLock();
+    v62HideLock();
     try{
       if(typeof setBubble==='function'){
         if(name) setBubble('Nice to meet you!','これから '+name+' 専用のレックスだよ！');
@@ -520,8 +520,8 @@
       if(typeof showToast==='function') showToast('専用設定を保存しました');
     }catch(e){}
   }
-  function v61Unlock(){
-    var s=v61PrivateSettings();
+  function v62Unlock(){
+    var s=v62PrivateSettings();
     var v=(document.getElementById('appPinInput')&&document.getElementById('appPinInput').value||'').trim();
     var msg=document.getElementById('lockMsg');
     if(!s.appPin){
@@ -530,7 +530,7 @@
     }
     if(v===s.appPin){
       sessionStorage.setItem('rexEnglishMaster.unlocked','1');
-      v61HideLock();
+      v62HideLock();
       try{
         if(typeof setBubble==='function'){
           if(s.childName) setBubble('Welcome back!','おかえり、'+s.childName+'！レックス待ってたよ。');
@@ -541,10 +541,10 @@
       if(msg) msg.textContent='パスコードが違います。';
     }
   }
-  window.RexPrivateShowSetup=v61ShowSetup;
-  window.RexPrivateCancelSetup=v61CancelSetup;
-  window.RexPrivateSaveSetup=v61SaveSetup;
-  window.RexPrivateUnlock=v61Unlock;
+  window.RexPrivateShowSetup=v62ShowSetup;
+  window.RexPrivateCancelSetup=v62CancelSetup;
+  window.RexPrivateSaveSetup=v62SaveSetup;
+  window.RexPrivateUnlock=v62Unlock;
 
   function bind(){
     $('unlockAudioBtn').addEventListener('click',function(){ RexSpeech.unlock().then(function(){ $('status').textContent='音声OK'; }); });
@@ -575,63 +575,15 @@
 
 
 
-/* v61: safe persistence and voice refresh hooks */
+/* v62 ROOT FIX: stable user data + voice setting bridge. */
 (function(){
-  try{
-    window.REX_APP_DATA_KEY = 'grade1-2026-06';
-    window.REX_PROFILE_KEY = 'rex_profile_stable';
-    window.REX_LOGIN_KEY = 'rex_login_stable';
-    window.REX_VOICE_KEY = 'rexVoiceSettings';
-  }catch(e){}
-
-  function migrateStableKeys(){
-    try{
-      var pairs=[];
-      for(var i=0;i<localStorage.length;i++){
-        var k=localStorage.key(i);
-        if(!k) continue;
-        var nk=k
-          .replace(/grade1-2026-06-v\d+/g,'grade1-2026-06')
-          .replace(/rex[_-]english[_-]master[_-]?v\d+/ig,'rex_english_master_stable')
-          .replace(/rexProfileV\d+/g,'rex_profile_stable')
-          .replace(/rexLoginV\d+/g,'rex_login_stable');
-        if(nk!==k && !localStorage.getItem(nk)){
-          pairs.push([k,nk]);
-        }
-      }
-      pairs.forEach(function(p){ localStorage.setItem(p[1], localStorage.getItem(p[0])); });
-    }catch(e){}
-  }
-
-  function saveVoiceFromUI(){
-    try{
-      var ids=['enVoiceSelect','jaVoiceSelect','enRateSelect','jaRateSelect','voiceEngineOpenAI','voiceEngineSafari','openAiVoiceEnabled','openAiVoiceSelect','openAiProxyUrl'];
-      var s=JSON.parse(localStorage.getItem('rexVoiceSettings')||'{}');
-      ids.forEach(function(id){
-        var el=document.getElementById(id);
-        if(!el) return;
-        s[id]=(el.type==='checkbox'||el.type==='radio')?el.checked:el.value;
-      });
-      localStorage.setItem('rexVoiceSettings',JSON.stringify(s));
-      if(window.speechSynthesis) speechSynthesis.cancel();
-    }catch(e){}
-  }
-
-  function bindVoiceInputs(){
-    try{
-      ['enVoiceSelect','jaVoiceSelect','enRateSelect','jaRateSelect','voiceEngineOpenAI','voiceEngineSafari','openAiVoiceEnabled','openAiVoiceSelect','openAiProxyUrl'].forEach(function(id){
-        var el=document.getElementById(id);
-        if(!el || el.dataset.v61VoiceBound) return;
-        el.dataset.v61VoiceBound='1';
-        el.addEventListener('change',saveVoiceFromUI);
-        el.addEventListener('input',saveVoiceFromUI);
-      });
-    }catch(e){}
-  }
-
-  document.addEventListener('DOMContentLoaded',function(){
-    migrateStableKeys();
-    bindVoiceInputs();
-  });
-  setInterval(bindVoiceInputs,1200);
+  var K={app:'grade1-2026-06',profile:'rex_profile',login:'rex_login',progress:'rex_progress',voice:'rex_voice_settings',legacyVoice:'rexVoiceSettings'};
+  window.REX_KEYS=K;
+  function copy(from,to){try{var v=localStorage.getItem(from); if(v!==null&&localStorage.getItem(to)===null)localStorage.setItem(to,v);}catch(e){}}
+  function migrate(){try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i); if(!k)continue; if(/^grade1-2026-06-v\d+$/.test(k))copy(k,K.app); if(/^rex[_-]?profile/i.test(k))copy(k,K.profile); if(/^rex[_-]?login/i.test(k))copy(k,K.login); if(/^rex[_-]?progress/i.test(k))copy(k,K.progress); if(/^rex.*voice/i.test(k)||k==='voiceSettings'||k==='rexVoiceSettings')copy(k,K.voice);}}catch(e){}}
+  function readVoice(){try{return JSON.parse(localStorage.getItem(K.voice)||localStorage.getItem(K.legacyVoice)||'{}');}catch(e){return {};}}
+  function saveVoice(){try{var s=readVoice(); ['enVoiceSelect','jaVoiceSelect','enRateSelect','jaRateSelect','voiceEngineOpenAI','voiceEngineSafari','openAiVoiceEnabled','openAiVoiceSelect','openAiProxyUrl','openaiProxyUrl','openaiVoiceSelect','rexVoiceSelect','rexVoice'].forEach(function(id){var el=document.getElementById(id); if(!el)return; s[id]=(el.type==='checkbox'||el.type==='radio')?!!el.checked:el.value;}); var o=document.getElementById('voiceEngineOpenAI'), sf=document.getElementById('voiceEngineSafari'); if(o&&o.checked)s.engine='openai'; if(sf&&sf.checked)s.engine='safari'; localStorage.setItem(K.voice,JSON.stringify(s)); localStorage.setItem(K.legacyVoice,JSON.stringify(s)); window.REX_CURRENT_VOICE_SETTINGS=s; if(window.speechSynthesis)speechSynthesis.cancel();}catch(e){}}
+  function restoreVoice(){try{var s=readVoice(); window.REX_CURRENT_VOICE_SETTINGS=s; Object.keys(s).forEach(function(id){var el=document.getElementById(id); if(!el)return; if(el.type==='checkbox'||el.type==='radio')el.checked=!!s[id]; else if(s[id]!==undefined&&s[id]!==null&&s[id]!=='')el.value=s[id];}); if(s.engine==='openai'&&document.getElementById('voiceEngineOpenAI'))document.getElementById('voiceEngineOpenAI').checked=true; if(s.engine==='safari'&&document.getElementById('voiceEngineSafari'))document.getElementById('voiceEngineSafari').checked=true;}catch(e){}}
+  function bind(){['enVoiceSelect','jaVoiceSelect','enRateSelect','jaRateSelect','voiceEngineOpenAI','voiceEngineSafari','openAiVoiceEnabled','openAiVoiceSelect','openAiProxyUrl','openaiProxyUrl','openaiVoiceSelect','rexVoiceSelect','rexVoice'].forEach(function(id){var el=document.getElementById(id); if(!el||el.dataset.v62VoiceBound)return; el.dataset.v62VoiceBound='1'; el.addEventListener('change',saveVoice); el.addEventListener('input',saveVoice);});}
+  document.addEventListener('DOMContentLoaded',function(){migrate();restoreVoice();bind();}); setInterval(bind,1000);
 })();
