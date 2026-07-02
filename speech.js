@@ -8,13 +8,13 @@
 
   function readSettings(){
     try{
-      var saved=JSON.parse(localStorage.getItem('rexEnglishMaster.voice.v62')||localStorage.getItem('rexEnglishMaster.voice.v62')||'{}');
+      var saved=JSON.parse(localStorage.getItem('rexEnglishMaster.voice')||localStorage.getItem('rexEnglishMaster.voice.v55')||localStorage.getItem('rexEnglishMaster.voice.v56')||localStorage.getItem('rexVoiceSettings')||'{}');
       voiceSettings=Object.assign(voiceSettings,saved||{});
     }catch(e){}
   }
   function saveSettings(next){
     voiceSettings=Object.assign(voiceSettings,next||{});
-    localStorage.setItem('rexEnglishMaster.voice.v62',JSON.stringify(voiceSettings));
+    localStorage.setItem('rexEnglishMaster.voice',JSON.stringify(voiceSettings)); localStorage.setItem('rexVoiceSettings',JSON.stringify(voiceSettings));
   }
   readSettings();
   if(!voiceSettings.voiceEngine){
@@ -95,6 +95,7 @@
   }
 
   async function speak(text, lang){
+    readSettings();
     if(voiceSettings.openAiEnabled && voiceSettings.openAiProxyUrl){
       try{ await openAiSpeak(text, lang); return; }
       catch(e){ console.warn(e); }
@@ -195,7 +196,7 @@
 })();
 
 
-/* v62: sequential speech fix.
+/* v70: sequential speech fix.
    Prevents Japanese from being read for a different English word during continuous playback. */
 (function(){
   var seqToken = 0;
@@ -276,15 +277,31 @@
   window.playContinuousWordsFixed = window.playWordSequenceV50;
 })();
 
-/* v62 ROOT FIX: unified voice settings. */
+
+
+/* v70: voice controls reinforcement */
 (function(){
-  function read(){try{return JSON.parse(localStorage.getItem('rex_voice_settings')||localStorage.getItem('rexVoiceSettings')||'{}');}catch(e){return {};}}
-  function write(s){try{localStorage.setItem('rex_voice_settings',JSON.stringify(s||{})); localStorage.setItem('rexVoiceSettings',JSON.stringify(s||{})); window.REX_CURRENT_VOICE_SETTINGS=s||{};}catch(e){}}
-  function collect(){var s=read(); try{['enVoiceSelect','jaVoiceSelect','enRateSelect','jaRateSelect','voiceEngineOpenAI','voiceEngineSafari','openAiVoiceEnabled','openAiVoiceSelect','openAiProxyUrl','openaiProxyUrl','openaiVoiceSelect','rexVoiceSelect','rexVoice'].forEach(function(id){var el=document.getElementById(id); if(!el)return; s[id]=(el.type==='checkbox'||el.type==='radio')?!!el.checked:el.value;}); var o=document.getElementById('voiceEngineOpenAI'), sf=document.getElementById('voiceEngineSafari'); if(o&&o.checked)s.engine='openai'; if(sf&&sf.checked)s.engine='safari';}catch(e){} write(s); return s;}
-  function restore(){var s=read(); try{Object.keys(s).forEach(function(id){var el=document.getElementById(id); if(!el)return; if(el.type==='checkbox'||el.type==='radio')el.checked=!!s[id]; else if(s[id]!==undefined&&s[id]!==null&&s[id]!=='')el.value=s[id];}); if(s.engine==='openai'&&document.getElementById('voiceEngineOpenAI'))document.getElementById('voiceEngineOpenAI').checked=true; if(s.engine==='safari'&&document.getElementById('voiceEngineSafari'))document.getElementById('voiceEngineSafari').checked=true;}catch(e){} window.REX_CURRENT_VOICE_SETTINGS=s; return s;}
-  function bind(){restore(); ['enVoiceSelect','jaVoiceSelect','enRateSelect','jaRateSelect','voiceEngineOpenAI','voiceEngineSafari','openAiVoiceEnabled','openAiVoiceSelect','openAiProxyUrl','openaiProxyUrl','openaiVoiceSelect','rexVoiceSelect','rexVoice'].forEach(function(id){var el=document.getElementById(id); if(!el||el.dataset.v62Voice)return; el.dataset.v62Voice='1'; el.addEventListener('change',function(){collect(); if(window.speechSynthesis)speechSynthesis.cancel();}); el.addEventListener('input',collect);});}
-  async function openai(text,lang){var s=collect(); var proxy=s.openAiProxyUrl||s.openaiProxyUrl||''; var voice=s.openAiVoiceSelect||s.openaiVoiceSelect||s.rexVoiceSelect||s.rexVoice||'marin'; if(!proxy)throw new Error('OpenAI proxy URL is not set'); var res=await fetch(proxy,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text,lang:lang||'ja-JP',voice:voice})}); if(!res.ok)throw new Error('OpenAI TTS failed'); var blob=await res.blob(); var url=URL.createObjectURL(blob); await new Promise(function(resolve,reject){var a=new Audio(url); a.onended=resolve; a.onerror=reject; a.play().catch(reject);}); URL.revokeObjectURL(url);}
-  function safari(text,lang){return new Promise(function(resolve){try{if(!window.speechSynthesis)return resolve(); var s=collect(); var u=new SpeechSynthesisUtterance(text); u.lang=lang||'en-US'; var rk=(u.lang||'').indexOf('ja')===0?'jaRateSelect':'enRateSelect'; var rate=parseFloat(s[rk]||'1'); if(rate&&!isNaN(rate))u.rate=rate; var voices=speechSynthesis.getVoices?speechSynthesis.getVoices():[]; var vn=(u.lang||'').indexOf('ja')===0?s.jaVoiceSelect:s.enVoiceSelect; if(vn){var v=voices.find(function(x){return x.name===vn||x.voiceURI===vn;}); if(v)u.voice=v;} u.onend=resolve; u.onerror=resolve; speechSynthesis.cancel(); speechSynthesis.speak(u);}catch(e){resolve();}});}
-  window.RexVoiceSpeak=async function(text,lang,force){var s=collect(); var engine=force||s.engine||((s.voiceEngineOpenAI||s.openAiVoiceEnabled)?'openai':'safari'); if(engine==='openai'){try{await openai(text,lang); return;}catch(e){console.warn('OpenAI fallback:',e);}} await safari(text,lang);};
-  document.addEventListener('DOMContentLoaded',bind); setInterval(bind,1000);
+  function bindV70VoiceButtons(){
+    try{
+      var save=document.getElementById('openAiVoiceSaveBtn');
+      var test=document.getElementById('openAiVoiceTestBtn');
+      if(save && !save.dataset.v70){
+        save.dataset.v70='1';
+        save.addEventListener('click',function(){
+          if(window.RexSpeech && RexSpeech.saveFromUI) RexSpeech.saveFromUI();
+          if(window.showToast) showToast('OpenAI音声設定を保存しました');
+        });
+      }
+      if(test && !test.dataset.v70){
+        test.dataset.v70='1';
+        test.addEventListener('click',function(){
+          if(window.RexSpeech && RexSpeech.saveFromUI) RexSpeech.saveFromUI();
+          if(window.RexSpeech) RexSpeech.speak('Hi! I am Rex. Let us practice English together.','en-US')
+            .then(function(){ return RexSpeech.speak('こんにちは。レックスだよ。いっしょに英語をがんばろうね。','ja-JP'); });
+        });
+      }
+    }catch(e){}
+  }
+  document.addEventListener('DOMContentLoaded',bindV70VoiceButtons);
+  setInterval(bindV70VoiceButtons,1000);
 })();
