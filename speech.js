@@ -20,23 +20,21 @@
     'rexEnglishMaster.voice',
     'rexEnglishMaster.voice.v70',
     'rexEnglishMaster.voice.v71',
+    'rexEnglishMaster.voice.v72',
     'rexVoiceSettings'
   ];
 
   var voiceSettings=Object.assign({}, DEFAULT_SETTINGS);
 
-  function safeJson(raw){
-    try{ return raw ? JSON.parse(raw) : null; }catch(e){ return null; }
-  }
+  function safeJson(raw){ try{ return raw ? JSON.parse(raw) : null; }catch(e){ return null; } }
 
   function readSettings(){
     var merged=Object.assign({}, DEFAULT_SETTINGS);
-    for(var i=0;i<SETTINGS_KEYS.length;i++){
-      var v=safeJson(localStorage.getItem(SETTINGS_KEYS[i]));
+    SETTINGS_KEYS.forEach(function(k){
+      var v=safeJson(localStorage.getItem(k));
       if(v) merged=Object.assign(merged, v);
-    }
+    });
 
-    // UI values are the source of truth when controls are visible.
     var en=document.getElementById('enVoiceSelect');
     var ja=document.getElementById('jaVoiceSelect');
     var er=document.getElementById('enRateSelect');
@@ -52,12 +50,15 @@
     if(er) merged.enRate=Number(er.value || merged.enRate || 0.92);
     if(jr) merged.jaRate=Number(jr.value || merged.jaRate || 0.82);
     if(proxy) merged.openAiProxyUrl=(proxy.value || '').trim();
+
     if(ovoice){
       merged.openAiVoice=ovoice.value || merged.openAiVoice || 'marin';
       merged.rexVoice=ovoice.value || merged.rexVoice || merged.openAiVoice || 'marin';
     }
+
     if(safariRadio && safariRadio.checked) merged.voiceEngine='safari';
     else if(openRadio && openRadio.checked) merged.voiceEngine='openai';
+
     if(chk) merged.openAiEnabled=!!chk.checked;
     else merged.openAiEnabled=merged.voiceEngine !== 'safari';
 
@@ -77,16 +78,11 @@
     return voiceSettings;
   }
 
-  function voices(){
-    return window.speechSynthesis && speechSynthesis.getVoices ? speechSynthesis.getVoices() : [];
-  }
+  function voices(){ return window.speechSynthesis && speechSynthesis.getVoices ? speechSynthesis.getVoices() : []; }
   function norm(s){ return String(s || '').toLowerCase(); }
-  function isJapaneseVoice(v){
-    return norm(v.lang).indexOf('ja')===0 || /japanese|日本|kyoko|otoya|nanami|haruka/i.test(v.name || '');
-  }
-  function isEnglishVoice(v){
-    return norm(v.lang).indexOf('en')===0 || /english|samantha|karen|tessa|moira|ava|aria/i.test(v.name || '');
-  }
+  function isJapaneseVoice(v){ return norm(v.lang).indexOf('ja')===0 || /japanese|日本|kyoko|otoya|nanami|haruka/i.test(v.name || ''); }
+  function isEnglishVoice(v){ return norm(v.lang).indexOf('en')===0 || /english|samantha|karen|tessa|moira|ava|aria/i.test(v.name || ''); }
+
   function findVoice(value){
     if(!value) return null;
     var vs=voices();
@@ -96,16 +92,13 @@
     return null;
   }
 
-  function pickVoice(lang, role){
+  function pickVoice(lang){
     readSettings();
     var isJa=String(lang || '').toLowerCase().indexOf('ja')===0;
     var selected = isJa ? findVoice(voiceSettings.jaVoiceURI) : findVoice(voiceSettings.enVoiceURI);
     if(selected) return selected;
-
     var list=voices().filter(isJa ? isJapaneseVoice : isEnglishVoice);
-    var prefs=isJa
-      ? ['Kyoko','Otoya','Nanami','Haruka','Siri','Japanese','日本']
-      : ['Samantha','Karen','Tessa','Moira','Ava','Aria','Google US English','English'];
+    var prefs=isJa ? ['Kyoko','Otoya','Nanami','Haruka','Siri','Japanese','日本'] : ['Samantha','Karen','Tessa','Moira','Ava','Aria','Google US English','English'];
     for(var p=0;p<prefs.length;p++){
       for(var j=0;j<list.length;j++){
         if(norm(list[j].name).indexOf(norm(prefs[p]))>=0) return list[j];
@@ -114,18 +107,17 @@
     return list[0] || null;
   }
 
-  function browserSpeak(text, lang, role){
+  function browserSpeak(text, lang){
     return new Promise(function(resolve){
       readSettings();
       text=String(text || '').trim();
       if(!text || !('speechSynthesis' in window)){ resolve(); return; }
       var done=false;
       function finish(){ if(done) return; done=true; resolve(); }
-
       try{ speechSynthesis.cancel(); }catch(e){}
       var u=new SpeechSynthesisUtterance(text);
       u.lang=lang || 'en-US';
-      u.voice=pickVoice(u.lang, role);
+      u.voice=pickVoice(u.lang);
       if(String(u.lang).toLowerCase().indexOf('ja')===0){
         u.pitch=Number(voiceSettings.jaPitch || 1.0);
         u.rate=Number(voiceSettings.jaRate || 0.82);
@@ -137,7 +129,6 @@
       u.onend=finish;
       u.onerror=finish;
       try{ speechSynthesis.speak(u); }catch(e){ finish(); }
-
       var safeMs=Math.max(3500, text.length * (String(u.lang).indexOf('ja')===0 ? 230 : 170));
       setTimeout(finish, safeMs);
     });
@@ -146,24 +137,21 @@
   function normalizeProxyUrl(url){
     url=String(url || '').trim();
     if(!url) return '';
-    // Worker guide says POST /tts. If user entered root URL, add /tts.
-    if(!/\/tts\/?$/.test(url)){
-      url=url.replace(/\/+$/,'') + '/tts';
-    }
+    if(!/\/tts\/?$/.test(url)) url=url.replace(/\/+$/,'') + '/tts';
     return url;
   }
 
   async function openAiSpeak(text, lang, role){
     readSettings();
     var proxy=normalizeProxyUrl(voiceSettings.openAiProxyUrl);
-    if(!voiceSettings.openAiEnabled || !proxy) throw new Error('OpenAI voice not configured');
+    if(!proxy) throw new Error('OpenAI proxy URL is not set');
     text=String(text || '').trim();
     if(!text) return;
 
     var isJa=String(lang || '').toLowerCase().indexOf('ja')===0;
     var voice = role==='rex'
       ? (voiceSettings.rexVoice || voiceSettings.openAiVoice || 'marin')
-      : (voiceSettings.openAiVoice || 'marin');
+      : (voiceSettings.openAiVoice || voiceSettings.rexVoice || 'marin');
 
     var instructions;
     if(role==='rex'){
@@ -171,7 +159,7 @@
         ? '明るく、かわいく、やさしい恐竜レックスの声で自然な日本語で話してください。中学生を前向きに励ます相棒の雰囲気。'
         : 'Speak as Rex, a cute friendly dinosaur buddy. Bright, warm, encouraging, and clear for a junior high school learner.';
     }else if(isJa){
-      instructions = '自然で聞き取りやすい日本語で話してください。中学生向けに、やさしく明るい声。';
+      instructions = '自然で聞き取りやすい日本語で話してください。中学生向けに、やさしく明るい声。合成音っぽくならないように自然に。';
     }else{
       instructions = 'Speak clearly in natural English for a junior high school learner. Friendly and easy to understand.';
     }
@@ -179,7 +167,7 @@
     var res=await fetch(proxy,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({text:text, lang:lang || 'en-US', voice:voice, instructions:instructions, role:role || ''})
+      body:JSON.stringify({text:text, lang:lang || 'ja-JP', voice:voice, instructions:instructions, role:role || ''})
     });
     if(!res.ok) throw new Error('OpenAI voice proxy error: '+res.status);
     var blob=await res.blob();
@@ -195,7 +183,16 @@
   async function speak(text, lang, role){
     readSettings();
     role=role || (String(lang || '').toLowerCase().indexOf('ja')===0 ? 'japanese' : 'english');
-    if(voiceSettings.voiceEngine !== 'safari' && voiceSettings.openAiEnabled && voiceSettings.openAiProxyUrl){
+    var isJa=String(lang || '').toLowerCase().indexOf('ja')===0;
+    var hasProxy=!!normalizeProxyUrl(voiceSettings.openAiProxyUrl);
+
+    var shouldUseOpenAI =
+      hasProxy &&
+      voiceSettings.openAiEnabled &&
+      voiceSettings.voiceEngine !== 'safari' &&
+      (isJa || role === 'rex');
+
+    if(shouldUseOpenAI){
       try{
         await openAiSpeak(text, lang, role);
         return;
@@ -203,16 +200,14 @@
         console.warn('OpenAI voice fallback to Safari:', e);
       }
     }
-    return browserSpeak(text, lang, role);
+    return browserSpeak(text, lang);
   }
 
   function unlock(){
     if('speechSynthesis' in window) try{ speechSynthesis.cancel(); }catch(e){}
     return speak('Ready','en-US','rex').then(function(){ ready=true; return true; });
   }
-  function cancel(){
-    try{ if('speechSynthesis' in window) speechSynthesis.cancel(); }catch(e){}
-  }
+  function cancel(){ try{ if('speechSynthesis' in window) speechSynthesis.cancel(); }catch(e){} }
   function isReady(){ return ready; }
 
   function populateVoiceSelects(){
@@ -220,7 +215,6 @@
     var enSel=document.getElementById('enVoiceSelect');
     var jaSel=document.getElementById('jaVoiceSelect');
     var vs=voices();
-
     function fill(sel, arr, selectedURI, fallbackLabel){
       if(!sel) return;
       var old=sel.value || selectedURI || '';
@@ -258,6 +252,7 @@
     var safariRadio=document.getElementById('voiceEngineSafari');
     var proxy=document.getElementById('openAiProxyUrl');
     var ovoice=document.getElementById('openAiVoiceSelect');
+
     if(openRadio) openRadio.checked=voiceSettings.voiceEngine !== 'safari';
     if(safariRadio) safariRadio.checked=voiceSettings.voiceEngine === 'safari';
     if(chk) chk.checked=voiceSettings.voiceEngine !== 'safari';
@@ -266,7 +261,6 @@
   }
 
   function saveFromUI(){
-    var openRadio=document.getElementById('voiceEngineOpenAI');
     var safariRadio=document.getElementById('voiceEngineSafari');
     var chk=document.getElementById('openAiVoiceEnabled');
     var ovoice=document.getElementById('openAiVoiceSelect');
