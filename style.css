@@ -38,7 +38,7 @@ select,input,textarea{border:2px solid #ffd7ab;border-radius:18px;padding:11px;b
 @media(max-width:720px){.dinoWorld{grid-template-columns:1fr}.dinoStage{min-height:300px}.statsGrid{grid-template-columns:repeat(4,1fr)}.big{font-size:25px}.footer button{font-size:10px}.heroPanel{margin-top:4px}}
 
 
-/* v73 daily dashboard and evolution map */
+/* v74 daily dashboard and evolution map */
 .dailyGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .dailyBox{background:linear-gradient(180deg,#fff,#fff8ec);border:2px solid #ffd7ab;border-radius:22px;padding:14px;text-align:center;font-weight:1000}
 .dailyBox b{display:block;font-size:28px;color:#8a3ffc}
@@ -64,7 +64,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:.2}}
 
 
-/* v73 update manager */
+/* v74 update manager */
 #updateGuideText{min-height:180px;margin-top:12px}
 .footer{grid-template-columns:repeat(8,1fr)}
 .footer button{font-size:10px}
@@ -72,13 +72,13 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .parentTip{background:#f5fbff;border:1px solid #bae6fd;border-radius:18px;padding:10px;margin:10px 0}
 
 
-/* v73 voice settings */
+/* v74 voice settings */
 .voiceGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:12px}
 .voiceGrid label{font-size:12px;color:var(--muted);font-weight:900}
 .voiceGrid select{width:100%;margin-top:4px}
 
 
-/* v73 OpenAI voice UI */
+/* v74 OpenAI voice UI */
 .openaiVoiceBox{background:linear-gradient(180deg,#fff,#f7fbff);border:2px solid #bae6fd;border-radius:22px;padding:14px;margin-top:14px}
 .openaiVoiceBox h3{margin:0 0 10px;font-size:17px}
 .openaiVoiceBox input[type="text"], .openaiVoiceBox input:not([type]){width:100%}
@@ -86,12 +86,12 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @media(max-width:720px){.footer{grid-template-columns:repeat(9,1fr)}.footer button{font-size:9px}}
 
 
-/* v73 voice engine switch */
+/* v74 voice engine switch */
 .engineSwitch{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
 .engineSwitch .pill{cursor:pointer}
 
 
-/* v73 private lock */
+/* v74 private lock */
 .appLock{position:fixed;inset:0;z-index:999;background:linear-gradient(160deg,#b9eeff,#fff8bf 50%,#bff4ce);display:flex;align-items:center;justify-content:center;padding:18px}
 .appLock.hidden{display:none!important}
 .lockCard{background:rgba(255,255,255,.96);border:3px solid #ffd7ab;border-radius:30px;padding:22px;max-width:390px;width:100%;box-shadow:0 20px 60px rgba(50,50,90,.22);text-align:center}
@@ -102,7 +102,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @media(max-width:720px){.footer{grid-template-columns:repeat(10,1fr)}.footer button{font-size:9px;padding:9px 1px}}
 
 
-/* v73 lock screen fix + cute orange Rex */
+/* v74 lock screen fix + cute orange Rex */
 .lockCard{position:relative;overflow:visible;padding-top:78px}
 .lockRexArt{
   position:absolute;
@@ -131,14 +131,14 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .lockRex{display:none!important}
 
 
-/* v73 Safari lock button reliability */
+/* v74 Safari lock button reliability */
 .lockCard button{position:relative;z-index:1001;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 #loginPanel,#setupPanel{position:relative;z-index:1000}
 #setupPanel.hidden{display:none!important}
 #loginPanel.hidden{display:none!important}
 
 
-/* v73 settings hub + orange Rex map */
+/* v74 settings hub + orange Rex map */
 .footer{grid-template-columns:repeat(6,1fr)!important}
 .footer button{font-size:11px!important}
 .settingsGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
@@ -180,7 +180,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 @keyframes rexMapBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 
 
-/* v73: simpler home + settings split */
+/* v74: simpler home + settings split */
 .hero .dinoStage{
   display:none!important;
 }
@@ -241,7 +241,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 #voice.hidden{display:none!important}
 
 
-/* v73: actual image sprite version based on approved 7-stage art */
+/* v74: actual image sprite version based on approved 7-stage art */
 .hero .dinoStage{display:none!important}
 .currentRexRow.imageVersion{
   display:grid;
@@ -270,9 +270,9 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .rexSprite.hero{
   width:146px;
   height:146px;
-  animation:v73Float 2.4s ease-in-out infinite;
+  animation:v74Float 2.4s ease-in-out infinite;
 }
-@keyframes v73Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes v74Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 .rexSprite.stage{
   width:78px;
   height:78px;
@@ -334,7 +334,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 }
 
 
-/* v73 no-assets: embedded image sprites */
+/* v74 no-assets: embedded image sprites */
 .hero .dinoStage{display:none!important}
 .currentRexRow.imageVersion{
   display:grid;
@@ -363,9 +363,9 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .rexSprite.hero{
   width:146px;
   height:146px;
-  animation:v73Float 2.4s ease-in-out infinite;
+  animation:v74Float 2.4s ease-in-out infinite;
 }
-@keyframes v73Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes v74Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 .rexSprite.stage{
   width:78px;
   height:78px;
@@ -427,7 +427,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 }
 
 
-/* v73: remove strange frame around top egg/Rex, match approved look */
+/* v74: remove strange frame around top egg/Rex, match approved look */
 .hero .dinoStage{display:none!important}
 .currentRexRow.imageVersion{
   display:grid!important;
@@ -454,10 +454,10 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   width:245px!important;
   height:245px!important;
   object-fit:contain!important;
-  animation:v73Float 2.4s ease-in-out infinite!important;
+  animation:v74Float 2.4s ease-in-out infinite!important;
   filter:drop-shadow(0 10px 10px rgba(80,60,70,.13));
 }
-@keyframes v73Float{
+@keyframes v74Float{
   0%,100%{transform:translateY(0) scale(1)}
   50%{transform:translateY(-4px) scale(1)}
 }
@@ -550,7 +550,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 }
 
 
-/* v73: root PNG image version to prevent base64 corruption */
+/* v74: root PNG image version to prevent base64 corruption */
 .hero .dinoStage{display:none!important}
 .currentRexRow.imageVersion{
   display:grid!important;
@@ -586,10 +586,10 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   max-width:100%!important;
   max-height:100%!important;
   object-position:center center!important;
-  animation:v73Float 2.4s ease-in-out infinite!important;
+  animation:v74Float 2.4s ease-in-out infinite!important;
   filter:drop-shadow(0 10px 10px rgba(80,60,70,.13));
 }
-@keyframes v73Float{
+@keyframes v74Float{
   0%,100%{transform:translateY(0)}
   50%{transform:translateY(-4px)}
 }
@@ -656,7 +656,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 }
 
 
-/* v73: final balance fix - larger egg, no stretched vertical frame */
+/* v74: final balance fix - larger egg, no stretched vertical frame */
 .currentRexRow.imageVersion{
   display:grid!important;
   grid-template-columns:45% 1fr!important;
@@ -686,10 +686,10 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   object-fit:contain!important;
   object-position:center center!important;
   display:block!important;
-  animation:v73Float 2.4s ease-in-out infinite!important;
+  animation:v74Float 2.4s ease-in-out infinite!important;
   filter:drop-shadow(0 10px 10px rgba(80,60,70,.13));
 }
-@keyframes v73Float{
+@keyframes v74Float{
   0%,100%{transform:translateY(0)}
   50%{transform:translateY(-4px)}
 }
@@ -718,7 +718,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 }
 
 
-/* v73: clean Rex stage sprites. Remove visual artifacts and keep balance. */
+/* v74: clean Rex stage sprites. Remove visual artifacts and keep balance. */
 .rexSprite{
   background:transparent!important;
   border:none!important;
@@ -740,7 +740,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 }
 
 
-/* v73: top egg/Rex centered in the round white glow */
+/* v74: top egg/Rex centered in the round white glow */
 .currentRexRow.imageVersion{
   grid-template-columns:45% 1fr!important;
   align-items:center!important;
@@ -763,7 +763,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   transform:translate(0,0)!important;
 }
 
-/* v73: clean growth Rex images */
+/* v74: clean growth Rex images */
 .growStep .icon{
   overflow:visible!important;
 }
@@ -791,7 +791,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   }
 }
 
-/* v73: user-provided Rex assets normalized to transparent PNG */
+/* v74: user-provided Rex assets normalized to transparent PNG */
 .rexSprite{background:transparent!important;border:none!important;outline:none!important;box-shadow:none!important;object-fit:contain!important}
 .currentRexVisual.imageVersion{display:flex!important;align-items:center!important;justify-content:center!important;overflow:visible!important}
 .currentRexVisual.imageVersion .rexSprite.hero{width:240px!important;height:240px!important;object-position:center center!important}
@@ -804,7 +804,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 
 
 
-/* v73: direct fix for the actual learning selection layout */
+/* v74: direct fix for the actual learning selection layout */
 #stage .modeBtns{
   margin-bottom:30px!important;
   padding-bottom:0!important;
@@ -882,7 +882,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 }
 
 
-/* v73: listening card layout adjustment
+/* v74: listening card layout adjustment
    「Hello.」と単元タグの位置は変えず、日本語だけ少し上に移動 */
 #listen #ja{
   display:block!important;
@@ -890,8 +890,18 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   transform-origin:left top!important;
 }
 
-/* v73: voice diagnostic status */
+/* v74: voice diagnostic status */
 .voiceDiagStatus{margin-top:10px;padding:10px 12px;border-radius:14px;border:2px solid #ffd7ab;background:#fffaf0;color:#7a4a00;font-weight:800;line-height:1.45}
 .voiceDiagStatus.ok{border-color:#9be7bd;background:#f0fff7;color:#087a4f}
 .voiceDiagStatus.error{border-color:#ffb4b4;background:#fff1f1;color:#b42318}
 .voiceDiagStatus.checking{border-color:#b7dcff;background:#f1f8ff;color:#175cd3}
+
+
+/* v74: OpenAI voice diagnostics panel */
+.voiceDiagPanel{margin-top:12px;padding:12px;border:2px dashed #9bdcff;border-radius:18px;background:#f6fbff}
+.voiceDiagTitle{font-weight:900;color:#173b63;margin-bottom:8px}
+.voiceDiagSummary{padding:10px 12px;border-radius:14px;background:#fff;border:2px solid #d7ecff;color:#175cd3;font-weight:900;margin-bottom:10px}
+.voiceDiagSummary.ok{background:#f0fff7;border-color:#9be7bd;color:#087a4f}
+.voiceDiagSummary.error{background:#fff1f1;border-color:#ffb4b4;color:#b42318}
+.voiceDiagSummary.checking{background:#f1f8ff;border-color:#b7dcff;color:#175cd3}
+.voiceDiagLog{white-space:pre-wrap;word-break:break-word;max-height:220px;overflow:auto;background:#182230;color:#e6f0ff;border-radius:12px;padding:10px;font-size:12px;line-height:1.45}

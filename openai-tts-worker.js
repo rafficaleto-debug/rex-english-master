@@ -1,4 +1,4 @@
-// OpenAI TTS Proxy for Rex English Master v30
+// OpenAI TTS Proxy for Rex English Master v74
 // Cloudflare Workers 用
 // Secret variable required: OPENAI_API_KEY
 //
@@ -47,7 +47,7 @@ export default {
           : "Speak in a bright, friendly, encouraging voice like Rex, a cute dinosaur learning buddy."
       );
 
-      const response = await fetch("https://api.openai.com/v1/audio/speech", {
+      const response = await fetch("https://api.openai.com/v74/audio/speech", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${env.OPENAI_API_KEY}`,

@@ -18,9 +18,9 @@
 
   var SETTINGS_KEYS=[
     'rexEnglishMaster.voice',
-    'rexEnglishMaster.voice.v73',
-    'rexEnglishMaster.voice.v73',
-    'rexEnglishMaster.voice.v73',
+    'rexEnglishMaster.voice.v74',
+    'rexEnglishMaster.voice.v74',
+    'rexEnglishMaster.voice.v74',
     'rexVoiceSettings'
   ];
 
@@ -323,7 +323,7 @@
 
 
 
-/* v73: voice diagnostics override */
+/* v74: voice diagnostics override */
 (function(){
   function q(id){return document.getElementById(id);}
   function getSettings(){
@@ -426,17 +426,36 @@
   }
   function bind(){
     ['enVoiceSelect','jaVoiceSelect','enRateSelect','jaRateSelect','voiceEngineOpenAI','voiceEngineSafari','openAiProxyUrl','openAiVoiceSelect'].forEach(function(id){
-      var el=q(id); if(!el||el.dataset.v73diag)return; el.dataset.v73diag='1';
+      var el=q(id); if(!el||el.dataset.v74diag)return; el.dataset.v74diag='1';
       el.addEventListener(id==='openAiProxyUrl'?'input':'change',save);
     });
     var ja=q('jaOpenAiTestBtn');
-    if(ja&&!ja.dataset.v73test){ja.dataset.v73test='1';ja.onclick=function(){openai('こんにちは。これはOpenAIの日本語音声テストです。','ja-JP','japanese').catch(function(e){diag('音声診断：日本語OpenAIテスト失敗。'+(e.message||e),'error');});};}
+    if(ja&&!ja.dataset.v74test){ja.dataset.v74test='1';ja.onclick=function(){openai('こんにちは。これはOpenAIの日本語音声テストです。','ja-JP','japanese').catch(function(e){diag('音声診断：日本語OpenAIテスト失敗。'+(e.message||e),'error');});};}
     var rex=q('rexOpenAiTestBtn');
-    if(rex&&!rex.dataset.v73test){rex.dataset.v73test='1';rex.onclick=function(){openai('こんにちは、レックスだよ。ぼくはいつでも味方だよ。一緒に英語をがんばろう。','ja-JP','rex').catch(function(e){diag('音声診断：レックスOpenAIテスト失敗。'+(e.message||e),'error');});};}
+    if(rex&&!rex.dataset.v74test){rex.dataset.v74test='1';rex.onclick=function(){openai('こんにちは、レックスだよ。ぼくはいつでも味方だよ。一緒に英語をがんばろう。','ja-JP','rex').catch(function(e){diag('音声診断：レックスOpenAIテスト失敗。'+(e.message||e),'error');});};}
   }
   setTimeout(function(){bind();status();},300);
   setTimeout(function(){bind();status();},1200);
   setInterval(function(){bind();},1500);
   window.RexSpeech={speak:speak,speakText:speak,speakRex:function(en,ja){return speak(en,'en-US','rex').then(function(){return ja?speak(ja,'ja-JP','rex'):null;});},unlock:function(){return browser('Ready','en-US');},cancel:function(){try{if(speechSynthesis)speechSynthesis.cancel();}catch(e){}},isReady:function(){return true;},populateVoiceSelects:function(){},saveFromUI:save,settings:getSettings,diagnose:function(){status();},testJapaneseOpenAI:function(){return openai('こんにちは。これはOpenAIの日本語音声テストです。','ja-JP','japanese');},testRexOpenAI:function(){return openai('こんにちは、レックスだよ。ぼくはいつでも味方だよ。一緒に英語をがんばろう。','ja-JP','rex');}};
   window.RexVoiceSpeak=speak;
+})();
+
+
+/* v74: full OpenAI voice diagnostics */
+(function(){
+  function el(id){return document.getElementById(id)}
+  function clearLog(){var b=el('voiceDiagLog'); if(b)b.textContent=''}
+  function log(m){var b=el('voiceDiagLog'); var t=new Date().toLocaleTimeString(); if(b){var c=(b.textContent||'').indexOf('診断ログ')>=0?'':b.textContent; b.textContent=c+'['+t+'] '+m+'\n'; b.scrollTop=b.scrollHeight} console.log('[RexVoiceDiag]',m)}
+  function sum(m,c){var s=el('voiceDiagSummary'); if(s){s.textContent=m;s.className='voiceDiagSummary '+(c||'')} var v=el('voiceDiagStatus'); if(v){v.textContent='音声診断：'+m;v.className='voiceDiagStatus '+(c||'')}}
+  function raw(){try{return JSON.parse(localStorage.getItem('rexEnglishMaster.voice')||localStorage.getItem('rexVoiceSettings')||'{}')||{}}catch(e){return {}}}
+  function settings(){var s=raw(); var p=el('openAiProxyUrl'),v=el('openAiVoiceSelect'),sf=el('voiceEngineSafari'); s.openAiProxyUrl=p?(p.value||'').trim():(s.openAiProxyUrl||''); s.openAiVoice=v?(v.value||s.openAiVoice||'coral'):(s.openAiVoice||'coral'); s.rexVoice=s.openAiVoice; s.voiceEngine=sf&&sf.checked?'safari':'openai'; s.openAiEnabled=s.voiceEngine!=='safari'; return s}
+  function save(){var s=settings(); localStorage.setItem('rexEnglishMaster.voice',JSON.stringify(s)); localStorage.setItem('rexVoiceSettings',JSON.stringify(s)); return s}
+  function url(s){var u=String((s||settings()).openAiProxyUrl||'').trim(); if(!u)return ''; if(!/\/tts\/?$/.test(u))u=u.replace(/\/+$/,'')+'/tts'; return u}
+  async function post(u,payload){var r=await fetch(u,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); var ct=r.headers.get('content-type')||''; var tx=''; if(!r.ok||ct.indexOf('audio')<0){try{tx=await r.text()}catch(e){}} return {ok:r.ok,status:r.status,ct:ct,text:tx,response:r}}
+  async function play(r){var blob=await r.blob(); var u=URL.createObjectURL(blob); await new Promise(function(res,rej){var a=new Audio(u); a.onended=function(){URL.revokeObjectURL(u);res()}; a.onerror=function(){URL.revokeObjectURL(u);rej(new Error('audio playback error'))}; a.play().catch(rej)})}
+  async function diagnose(){clearLog();sum('診断中...','checking'); var s=save(), u=url(s); log('保存済み設定: '+JSON.stringify({voiceEngine:s.voiceEngine,openAiEnabled:s.openAiEnabled,openAiProxyUrl:s.openAiProxyUrl,normalizedUrl:u,openAiVoice:s.openAiVoice,rexVoice:s.rexVoice},null,2)); if(!s.openAiProxyUrl){sum('❌ Worker URLが未入力です','error');log('NG: 音声プロキシURL欄が空です。');return false} log('OK: Worker URL入力あり'); log('実際にPOSTするURL: '+u); if(!/^https:\/\//.test(u)){sum('❌ URL形式エラー','error');log('NG: URLは https:// で始まる必要があります。');return false} var payload={text:'こんにちは。OpenAI音声診断テストです。',lang:'ja-JP',voice:s.openAiVoice||'coral',role:'diagnostic',instructions:'自然で聞き取りやすい日本語で、短く明るく話してください。'}; log('POST payload: '+JSON.stringify(payload,null,2)); var result; try{result=await post(u,payload)}catch(e){sum('❌ Workerへ通信できません','error');log('NG: fetch失敗: '+(e.message||e));return false} log('Worker応答 status='+result.status+' content-type='+result.ct); if(!result.ok){sum('❌ Worker/OpenAIエラー '+result.status,'error');log('Response body: '+(result.text||'(empty)')); if(result.status===401||/api|key|unauthorized|auth/i.test(result.text))log('推定原因: OPENAI_API_KEY が未設定または無効です。'); else if(result.status===404)log('推定原因: Workerが /tts を受け付けていません。'); else if(result.status===429)log('推定原因: OpenAI APIのレート制限またはクォータ不足です。'); else if(result.status>=500)log('推定原因: Worker内部エラーです。'); return false} if((result.ct||'').indexOf('audio')<0){sum('❌ 音声ではない応答です','error');log('content-type='+result.ct);log('Response body: '+(result.text||'(empty)'));return false} log('OK: 音声データを受信。再生テストします。'); try{await play(result.response);sum('✅ OpenAI音声接続OK','ok');log('OK: 音声再生まで成功しました。');return true}catch(e){sum('⚠️ 音声データ受信OK・再生失敗','error');log('audio playback failed: '+(e.message||e));return false}}
+  function exportSettings(){clearLog(); var s=save(); sum('音声設定を表示しました','checking'); log(JSON.stringify({normalizedUrl:url(s),settings:s,localStorageVoice:localStorage.getItem('rexEnglishMaster.voice'),userAgent:navigator.userAgent},null,2))}
+  function bind(){var b=el('openAiFullDiagBtn'); if(b&&!b.dataset.v74){b.dataset.v74='1';b.addEventListener('click',function(){diagnose().catch(function(e){sum('❌ 診断エラー','error');log('Exception: '+(e.stack||e.message||e))})})} var ex=el('exportVoiceSettingsBtn'); if(ex&&!ex.dataset.v74){ex.dataset.v74='1';ex.addEventListener('click',exportSettings)}}
+  setTimeout(bind,300);setTimeout(bind,1200);setInterval(bind,1500); window.RexVoiceDiagnostics={run:diagnose,exportSettings:exportSettings};
 })();
