@@ -13,14 +13,14 @@
   var wait=function(ms){ return new Promise(function(r){ setTimeout(r,ms); }); };
 
 
-/* v72: stable private/login settings migration */
+/* v73: stable private/login settings migration */
 (function(){
   var STABLE_PRIVATE_KEY='rexEnglishMaster.private';
   var legacy=[
-    'rexEnglishMaster.private.v72','rexEnglishMaster.private.v72','rexEnglishMaster.private.v72',
-    'rexEnglishMaster.private.v72','rexEnglishMaster.private.v72','rexEnglishMaster.private.v72',
-    'rexEnglishMaster.private.v72','rexEnglishMaster.private.v72','rexEnglishMaster.private.v72',
-    'rexEnglishMaster.private.v72'
+    'rexEnglishMaster.private.v73','rexEnglishMaster.private.v73','rexEnglishMaster.private.v73',
+    'rexEnglishMaster.private.v73','rexEnglishMaster.private.v73','rexEnglishMaster.private.v73',
+    'rexEnglishMaster.private.v73','rexEnglishMaster.private.v73','rexEnglishMaster.private.v73',
+    'rexEnglishMaster.private.v73'
   ];
   try{
     if(!localStorage.getItem(STABLE_PRIVATE_KEY)){
@@ -175,7 +175,7 @@
     if(!RexSpeech.isReady()) await RexSpeech.unlock();
     await wait(160);
 
-    // v72: 必ずこの時点の単語ペアを固定して読む。
+    // v73: 必ずこの時点の単語ペアを固定して読む。
     // 連続再生中にidxやdeckが変わっても、日本語だけ別単語になる事故を防ぐ。
     var current = Object.assign({}, deck[idx]);
     var enText = current.en || current.word || '';
@@ -247,13 +247,13 @@
     if($('dataVersionLabel')) $('dataVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
     if($('sentenceCountLabel')) $('sentenceCountLabel').textContent=(window.REX_SENTENCES||[]).length + (added?added.length:0);
     if($('contentVersionLabel')) $('contentVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
-    if($('appVersionLabel')) $('appVersionLabel').textContent='v72';
+    if($('appVersionLabel')) $('appVersionLabel').textContent='v73';
   }
 
 
   function rexImageHtml(stage, kind){
     var k = kind || 'stage';
-    return '<img class="rexSprite '+k+'" src="'+stage.img+'?v=72" alt="'+stage.name+'">';
+    return '<img class="rexSprite '+k+'" src="'+stage.img+'?v=73" alt="'+stage.name+'">';
   }
 
   function renderDaily(){
@@ -310,7 +310,7 @@
 
   function showUpdateGuide(){
     var txt=[
-      'v72以降のGitHub更新手順',
+      'v73以降のGitHub更新手順',
       '',
       '1. 新しいZIPをダウンロード',
       '2. iPhoneの「ファイル」アプリでZIPをタップして解凍',
@@ -490,14 +490,14 @@
   function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 
 
-  // v72 global fallback handlers for Safari
-  function v72PrivateSettings(){
+  // v73 global fallback handlers for Safari
+  function v73PrivateSettings(){
     try{return JSON.parse(localStorage.getItem('rexEnglishMaster.private')||'{}');}catch(e){return {};}
   }
-  function v72SavePrivateSettings(s){
+  function v73SavePrivateSettings(s){
     localStorage.setItem('rexEnglishMaster.private',JSON.stringify(s||{}));
   }
-  function v72ShowSetup(){
+  function v73ShowSetup(){
     var login=document.getElementById('loginPanel');
     var setup=document.getElementById('setupPanel');
     var lead=document.getElementById('lockLead');
@@ -508,7 +508,7 @@
     if(msg) msg.textContent='';
     setTimeout(function(){ var n=document.getElementById('setupChildName'); if(n) n.focus(); },120);
   }
-  function v72CancelSetup(){
+  function v73CancelSetup(){
     var login=document.getElementById('loginPanel');
     var setup=document.getElementById('setupPanel');
     var lead=document.getElementById('lockLead');
@@ -516,11 +516,11 @@
     if(login) login.classList.remove('hidden');
     if(lead) lead.textContent='パスコードを入れると、レックスに会えるよ。';
   }
-  function v72HideLock(){
+  function v73HideLock(){
     var lock=document.getElementById('appLock');
     if(lock) lock.classList.add('hidden');
   }
-  function v72SaveSetup(){
+  function v73SaveSetup(){
     var name=(document.getElementById('setupChildName')&&document.getElementById('setupChildName').value||'').trim();
     var pin=(document.getElementById('setupAppPin')&&document.getElementById('setupAppPin').value||'').trim();
     var parent=(document.getElementById('setupParentPin')&&document.getElementById('setupParentPin').value||'').trim();
@@ -530,9 +530,9 @@
       return;
     }
     if(!parent || parent.length!==8){ if($('lockMsg')) $('lockMsg').textContent='保護者用8桁パスコードを入力してください。'; return; }
-    v72SavePrivateSettings({appPin:String(pin),parentPin:String(parent),childName:String(name||'')});
+    v73SavePrivateSettings({appPin:String(pin),parentPin:String(parent),childName:String(name||'')});
     sessionStorage.setItem('rexEnglishMaster.unlocked','1');
-    v72HideLock();
+    v73HideLock();
     try{
       if(typeof setBubble==='function'){
         if(name) setBubble('Nice to meet you!','これから '+name+' 専用のレックスだよ！');
@@ -541,8 +541,8 @@
       if(typeof showToast==='function') showToast('専用設定を保存しました');
     }catch(e){}
   }
-  function v72Unlock(){
-    var s=v72PrivateSettings();
+  function v73Unlock(){
+    var s=v73PrivateSettings();
     var v=(document.getElementById('appPinInput')&&document.getElementById('appPinInput').value||'').trim();
     var msg=document.getElementById('lockMsg');
     if(!s.appPin){
@@ -551,7 +551,7 @@
     }
     if(v===s.appPin){
       sessionStorage.setItem('rexEnglishMaster.unlocked','1');
-      v72HideLock();
+      v73HideLock();
       try{
         if(typeof setBubble==='function'){
           if(s.childName) setBubble('Welcome back!','おかえり、'+s.childName+'！レックス待ってたよ。');
@@ -562,10 +562,10 @@
       if(msg) msg.textContent='パスコードが違います。';
     }
   }
-  window.RexPrivateShowSetup=v72ShowSetup;
-  window.RexPrivateCancelSetup=v72CancelSetup;
-  window.RexPrivateSaveSetup=v72SaveSetup;
-  window.RexPrivateUnlock=v72Unlock;
+  window.RexPrivateShowSetup=v73ShowSetup;
+  window.RexPrivateCancelSetup=v73CancelSetup;
+  window.RexPrivateSaveSetup=v73SaveSetup;
+  window.RexPrivateUnlock=v73Unlock;
 
   function bind(){
     $('unlockAudioBtn').addEventListener('click',function(){ RexSpeech.unlock().then(function(){ $('status').textContent='音声OK'; }); });

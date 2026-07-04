@@ -9,8 +9,8 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./icon-192.png">
-  <title>レックス英語マスター v72</title>
-  <link rel="stylesheet" href="./style.css?v=72">
+  <title>レックス英語マスター v73</title>
+  <link rel="stylesheet" href="./style.css?v=73">
 </head>
 <body>
 
@@ -51,8 +51,8 @@
   <div id="toast" class="toast"></div>
 
   <header>
-    <h1>🧡 レックス英語マスター v72</h1>
-    <div class="sub">v72：日本語/レックス音声OpenAI優先版</div>
+    <h1>🧡 レックス英語マスター v73</h1>
+    <div class="sub">v73：日本語/レックス音声診断版</div>
   </header>
 
   <main>
@@ -143,7 +143,7 @@
         <input type="checkbox" id="openAiVoiceEnabled" checked class="hidden">
         <div class="voiceGrid">
           <label>音声プロキシURL<br><input id="openAiProxyUrl" placeholder="https://xxxxx.workers.dev/tts"></label>
-          <label>日本語・レックスの声<br>
+          <label>日本語・日本語・レックスの声<br>
             <select id="openAiVoiceSelect">
               <option value="marin" selected>marin（おすすめ）</option>
               <option value="cedar">cedar（おすすめ）</option>
@@ -159,10 +159,13 @@
         <div class="row">
           <button id="openAiVoiceSaveBtn">OpenAI音声設定を保存</button>
           <button id="openAiVoiceTestBtn">OpenAI音声テスト</button>
+          <button id="jaOpenAiTestBtn" type="button">日本語OpenAIテスト</button>
+          <button id="rexOpenAiTestBtn" type="button">レックスOpenAIテスト</button>
         </div>
         <p class="small">標準はOpenAI音声です。音声プロキシURLが未設定・失敗時はSafari標準音声へ自動で戻ります。手動でSafari標準音声にも切り替えできます。</p>
       </div>
 
+      <div id="voiceDiagStatus" class="voiceDiagStatus">音声診断：未確認</div>
       <p class="small">ここは娘さんも変更OK。好きな声や読み上げ速度を選べます。</p>
     </section>
 
@@ -289,11 +292,11 @@
       <h2>🔄 アップデート管理</h2>
       <div class="dataBox">
         <b>現在のバージョン</b>
-        <p class="small">App: <span id="appVersionLabel">v72</span><br>Data: <span id="contentVersionLabel">-</span><br>保存キー: rexEnglishMaster.profile.v72</p>
+        <p class="small">App: <span id="appVersionLabel">v73</span><br>Data: <span id="contentVersionLabel">-</span><br>保存キー: rexEnglishMaster.profile.v73</p>
       </div>
       <div class="dataBox">
         <b>GitHubで更新するとき</b>
-        <p class="small">v72以降は、同じGitHubリポジトリへファイルを上書きアップロードするだけで更新できます。URLが同じなら、レックス・XP・コイン・苦手問題は基本的に残ります。</p>
+        <p class="small">v73以降は、同じGitHubリポジトリへファイルを上書きアップロードするだけで更新できます。URLが同じなら、レックス・XP・コイン・苦手問題は基本的に残ります。</p>
       </div>
       <div class="row">
         <button class="primary" id="showUpdateGuideBtn">更新手順を表示</button>
@@ -365,7 +368,7 @@
     <section id="data" class="card hidden">
       <h2>🛡️ データ管理</h2>
       <div class="row">
-        <span class="versionTag">App v72</span>
+        <span class="versionTag">App v73</span>
         <span class="versionTag">Data <span id="dataVersionLabel">-</span></span>
         <span class="versionTag">例文 <span id="sentenceCountLabel">-</span>文</span>
       </div>
@@ -392,10 +395,10 @@
     <button data-tab="settings">設定</button>
   </div>
 
-  <script src="./data.js?v=72"></script>
-  <script src="./storage.js?v=72"></script>
-  <script src="./speech.js?v=72"></script>
-  <script src="./game.js?v=72"></script>
-  <script src="./app.js?v=72"></script>
+  <script src="./data.js?v=73"></script>
+  <script src="./storage.js?v=73"></script>
+  <script src="./speech.js?v=73"></script>
+  <script src="./game.js?v=73"></script>
+  <script src="./app.js?v=73"></script>
 </body>
 </html>
