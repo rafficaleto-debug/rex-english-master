@@ -52,7 +52,7 @@
 
   <header>
     <h1>🧡 レックス英語マスター v74</h1>
-    <div class="sub">v74：OpenAI音声完全診断版</div>
+    <div class="sub">v75：Kokoro音声 完全無料版</div>
   </header>
 
   <main>
@@ -135,42 +135,39 @@
       </div>
 
       <div class="openaiVoiceBox">
-        <h3>🦖 OpenAI高品質音声</h3>
+        <h3>🦖 Kokoro高品質音声（無料）</h3>
         <div class="engineSwitch">
-          <label class="pill"><input type="radio" name="voiceEngine" id="voiceEngineOpenAI" value="openai" checked> OpenAI音声</label>
-          <label class="pill"><input type="radio" name="voiceEngine" id="voiceEngineSafari" value="safari"> Safari標準音声</label>
+          <label class="pill"><input type="radio" name="voiceEngine" id="voiceEngineOpenAI" value="openai" checked> Kokoro音声</label>
+          <label class="pill"><input type="radio" name="voiceEngine" id="voiceEngineSafari" value="safari"> Safari予備音声</label>
         </div>
         <input type="checkbox" id="openAiVoiceEnabled" checked class="hidden">
         <div class="voiceGrid">
-          <label>音声プロキシURL<br><input id="openAiProxyUrl" placeholder="https://xxxxx.workers.dev/tts"></label>
-          <label>日本語・日本語・レックスの声<br>
-            <select id="openAiVoiceSelect">
-              <option value="marin" selected>marin（おすすめ）</option>
-              <option value="cedar">cedar（おすすめ）</option>
-              <option value="coral">coral</option>
-              <option value="nova">nova</option>
-              <option value="shimmer">shimmer</option>
-              <option value="fable">fable</option>
-              <option value="sage">sage</option>
-              <option value="alloy">alloy</option>
-            </select>
+          <label>Kokoro方式<br><input id="openAiProxyUrl" value="URL不要・APIキー不要" readonly></label>
+          <label>英語の声<br>
+            <select id="openAiVoiceSelect"><option value="af_heart" selected>af_heart（おすすめ）</option></select>
+          </label>
+          <label>日本語の声<br>
+            <select id="kokoroJapaneseVoiceSelect"><option value="jf_alpha" selected>jf_alpha（おすすめ）</option></select>
+          </label>
+          <label>レックスの声<br>
+            <select id="kokoroRexVoiceSelect"><option value="af_heart" selected>af_heart（おすすめ）</option></select>
           </label>
         </div>
         <div class="row">
-          <button id="openAiVoiceSaveBtn">OpenAI音声設定を保存</button>
-          <button id="openAiVoiceTestBtn">OpenAI音声テスト</button>
-          <button id="jaOpenAiTestBtn" type="button">日本語OpenAIテスト</button>
-          <button id="rexOpenAiTestBtn" type="button">レックスOpenAIテスト</button>
-          <button id="openAiFullDiagBtn" type="button">OpenAI接続診断</button>
+          <button id="openAiVoiceSaveBtn">Kokoro音声設定を保存</button>
+          <button id="openAiVoiceTestBtn">Kokoro英語テスト</button>
+          <button id="jaOpenAiTestBtn" type="button">日本語Kokoroテスト</button>
+          <button id="rexOpenAiTestBtn" type="button">レックスKokoroテスト</button>
+          <button id="openAiFullDiagBtn" type="button">Kokoro接続診断</button>
           <button id="exportVoiceSettingsBtn" type="button">音声設定を表示</button>
         </div>
 
         <div id="voiceDiagPanel" class="voiceDiagPanel">
-          <div class="voiceDiagTitle">🔍 OpenAI音声診断</div>
+          <div class="voiceDiagTitle">🔍 Kokoro音声診断</div>
           <div id="voiceDiagSummary" class="voiceDiagSummary">未診断</div>
           <pre id="voiceDiagLog" class="voiceDiagLog">診断ログがここに表示されます。</pre>
         </div>
-        <p class="small">標準はOpenAI音声です。音声プロキシURLが未設定・失敗時はSafari標準音声へ自動で戻ります。手動でSafari標準音声にも切り替えできます。</p>
+        <p class="small">標準はKokoro音声です。Cloudflare・OpenAI APIキー・課金は不要です。初回だけモデル読み込みに時間がかかります。失敗時のみSafari予備音声で再生します。</p>
       </div>
 
       <div id="voiceDiagStatus" class="voiceDiagStatus">音声診断：未確認</div>
@@ -283,8 +280,8 @@
     <section id="rexvoice" class="card hidden">
       <h2>🎙️ レックスボイス設定</h2>
       <div class="dataBox">
-        <b>OpenAI高品質音声について</b>
-        <p class="small">OpenAI音声を使うと、英語と日本語を同じレックス風の声で読み上げられます。APIキーはGitHub Pagesには置かず、Cloudflare WorkerのSecretに保存します。</p>
+        <b>Kokoro高品質音声について</b>
+        <p class="small">Kokoro音声を使うと、英語・日本語・レックスの声を無料で読み上げられます。Cloudflare WorkerもOpenAI APIキーも不要です。初回だけモデルを読み込みます。</p>
       </div>
       <div class="dataBox">
         <b>おすすめ設定</b>
@@ -320,7 +317,7 @@
       <p class="small">音声は娘さんも変更OK。保護者メニューは、最初に設定した8桁パスコードで開きます。</p>
       <div class="settingsGrid simpleSettings">
         <button class="settingsTile childOk" data-tab="voice">
-          <span>🔊</span><b>音声設定</b><small>声・速度・OpenAI/Safari</small>
+          <span>🔊</span><b>音声設定</b><small>声・速度・Kokoro</small>
         </button>
         <button class="settingsTile parentOnly" id="openParentMenuBtn" type="button">
           <span>👨‍👧</span><b>保護者メニュー</b><small>保護者8桁で開く</small>
@@ -348,7 +345,7 @@
       <div class="settingsGrid">
         <button class="settingsTile" data-tab="parent"><span>📚</span><b>例文追加</b><small>単語・文章を追加</small></button>
         <button class="settingsTile" data-tab="private"><span>🔐</span><b>専用設定</b><small>呼び名・8桁変更</small></button>
-        <button class="settingsTile" data-tab="rexvoice"><span>🎙️</span><b>OpenAI設定</b><small>Proxy URL等</small></button>
+        <button class="settingsTile" data-tab="rexvoice"><span>🎙️</span><b>Kokoro設定</b><small>無料音声</small></button>
         <button class="settingsTile" data-tab="update"><span>🔄</span><b>アップデート</b><small>更新手順</small></button>
         <button class="settingsTile" data-tab="data"><span>🛡️</span><b>データ管理</b><small>バックアップ・復元</small></button>
       </div>

@@ -289,28 +289,24 @@
 
   function showRexVoiceGuide(){
     var txt=[
-      'OpenAI高品質音声の設定手順',
+      'Kokoro高品質音声の使い方',
       '',
-      '1. Cloudflare Workersで新しいWorkerを作成',
-      '2. このZIPに入っている openai-tts-worker.js の中身を貼り付け',
-      '3. WorkerのSettings → Variables → Secretsで OPENAI_API_KEY を追加',
-      '4. WorkerをDeploy',
-      '5. WorkerのURLの末尾に /tts を付ける',
-      '   例: https://xxxxx.workers.dev/tts',
-      '6. このアプリの「音声準備・声の設定」にURLを入力',
-      '7. 「OpenAI音声を使う」をON',
-      '8. 保存して音声テスト',
+      '1. Cloudflare Workerは不要です',
+      '2. OpenAI APIキーも不要です',
+      '3. 「音声準備・声の設定」で音声スタートを押します',
+      '4. 初回だけKokoroモデルを読み込みます',
+      '5. Kokoro英語テスト / 日本語Kokoroテスト / レックスKokoroテストで確認します',
       '',
       '注意:',
-      'APIキーをGitHubやこのアプリの画面に直接入れないでください。',
-      '音声が失敗した場合は、自動でSafari標準音声に戻ります。'
+      '初回読み込みは通信環境によって数十秒かかる場合があります。',
+      '読み込みや再生に失敗した場合だけSafari予備音声に戻ります。'
     ].join('\\n');
     $('rexVoiceGuideText').value=txt;
   }
 
   function showUpdateGuide(){
     var txt=[
-      'v74以降のGitHub更新手順',
+      'v75以降のGitHub更新手順',
       '',
       '1. 新しいZIPをダウンロード',
       '2. iPhoneの「ファイル」アプリでZIPをタップして解凍',
