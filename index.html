@@ -9,7 +9,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./icon-192.png">
-  <title>レックス英語マスター v77</title>
+  <title>レックス英語マスター v77.1</title>
   <style>
 
 :root{--sky:#dff5ff;--cream:#fff8e8;--leaf:#c9f7d4;--pink:#ff74ad;--orange:#ff9c4a;--purple:#8c70ff;--blue:#50a9ff;--green:#46ca87;--red:#ff6076;--ink:#29405c;--muted:#6a7a90;--line:#ffd8ab}
@@ -972,7 +972,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   <div id="toast" class="toast"></div>
 
   <header>
-    <h1>🧡 レックス英語マスター v77</h1>
+    <h1>🧡 レックス英語マスター v77.1</h1>
     <div class="sub">v77：自然連続再生・ハイライト・演出版</div>
   </header>
 
@@ -1399,7 +1399,7 @@ window.REX_CONTENT_VERSION='grade1-2026-06-v74';
 /* v76.5 Safari-only audio core. No Kokoro/OpenAI. Designed for iPhone Safari. */
 (function(){
   'use strict';
-  var VERSION='v77-safari-natural-singlefile';
+  var VERSION='v77.1-safari-voice-quality-fix';
   var unlocked=false;
   var currentUtterance=null;
   var voices=[];
@@ -1412,23 +1412,36 @@ window.REX_CONTENT_VERSION='grade1-2026-06-v74';
   function isJa(lang,text){ return /^ja/i.test(String(lang||'')) || /[ぁ-んァ-ン一-龯]/.test(String(text||'')); }
   function val(id, fallback){ var e=$(id); if(!e) return fallback; var n=Number(e.value); return Number.isFinite(n)?n:fallback; }
   function rateFor(lang,text){ return isJa(lang,text) ? Math.max(0.65,Math.min(1.25,val('jaRateSelect',0.92))) : Math.max(0.65,Math.min(1.25,val('enRateSelect',0.92))); }
+  function voiceText(v){ return String(((v&&v.name)||'')+' '+((v&&v.lang)||'')+' '+((v&&v.voiceURI)||'')).toLowerCase(); }
+  function isNoveltyVoice(v){
+    // iPhone/Safari has many novelty voices. Some sound raspy/whispery and were being selected/saved accidentally.
+    var s=voiceText(v);
+    return /whisper|fred|zarvox|trinoids|bubbles|boing|bad news|bells|cellos|good news|hysterical|junior|organ|princess|superstar|wobble|bahh|deranged|eddy|flo|grandma|grandpa|reed|rocko|sandy|shelley|novelty/.test(s);
+  }
   function voiceScore(v, ja){
-    var s=((v.name||'')+' '+(v.lang||'')+' '+(v.voiceURI||'')).toLowerCase();
+    var s=voiceText(v);
     var score=0;
+    if(isNoveltyVoice(v)) score-=1000;
     if(ja){
       if(/^ja/i.test(v.lang||'')) score+=100;
-      if(s.indexOf('kyoko')>=0) score+=40;
-      if(s.indexOf('otoya')>=0 || s.indexOf('hattori')>=0) score+=30;
+      if(s.indexOf('kyoko')>=0) score+=80;
+      if(s.indexOf('otoya')>=0 || s.indexOf('hattori')>=0) score+=45;
       if(s.indexOf('compact')>=0) score-=35;
       if(s.indexOf('super-compact')>=0) score-=45;
       if(s.indexOf('premium')>=0 || s.indexOf('enhanced')>=0) score+=25;
     } else {
       if(/^en-us/i.test(v.lang||'')) score+=100;
+      else if(/^en-gb/i.test(v.lang||'')) score+=85;
       else if(/^en/i.test(v.lang||'')) score+=70;
-      if(s.indexOf('samantha')>=0) score+=35;
-      if(s.indexOf('ava')>=0 || s.indexOf('alex')>=0 || s.indexOf('daniel')>=0) score+=25;
-      if(s.indexOf('compact')>=0) score-=30;
-      if(s.indexOf('super-compact')>=0) score-=40;
+      // Stable, clear iOS/macOS English voices. Avoid breathy/character voices.
+      if(s.indexOf('samantha')>=0) score+=90;
+      if(s.indexOf('ava')>=0) score+=80;
+      if(s.indexOf('nicky')>=0) score+=70;
+      if(s.indexOf('allison')>=0 || s.indexOf('susan')>=0) score+=60;
+      if(s.indexOf('alex')>=0) score+=45;
+      if(s.indexOf('daniel')>=0 || s.indexOf('karen')>=0 || s.indexOf('moira')>=0 || s.indexOf('serena')>=0) score+=35;
+      if(s.indexOf('compact')>=0) score-=35;
+      if(s.indexOf('super-compact')>=0) score-=50;
       if(s.indexOf('premium')>=0 || s.indexOf('enhanced')>=0) score+=25;
     }
     return score;
@@ -1437,8 +1450,15 @@ window.REX_CONTENT_VERSION='grade1-2026-06-v74';
     refreshVoices();
     var ja=isJa(lang,text);
     var savedId = ja ? (localStorage.getItem('rexEnglishMaster.jaVoiceURI')||'') : (localStorage.getItem('rexEnglishMaster.enVoiceURI')||'');
-    if(savedId){ for(var a=0;a<voices.length;a++){ if(voices[a].voiceURI===savedId || voices[a].name===savedId) return voices[a]; } }
+    if(savedId){
+      for(var a=0;a<voices.length;a++){
+        if((voices[a].voiceURI===savedId || voices[a].name===savedId) && !isNoveltyVoice(voices[a])) return voices[a];
+      }
+      // Saved voice was a novelty/raspy voice. Ignore it and choose a safe default.
+    }
     var candidates=voices.slice().filter(function(v){ return ja ? /^ja/i.test(v.lang||'') : /^en/i.test(v.lang||''); });
+    candidates=candidates.filter(function(v){ return !isNoveltyVoice(v); });
+    if(!candidates.length) candidates=voices.slice().filter(function(v){ return !isNoveltyVoice(v); });
     if(!candidates.length) candidates=voices.slice();
     candidates.sort(function(a,b){ return voiceScore(b,ja)-voiceScore(a,ja); });
     return candidates[0]||null;
