@@ -9,7 +9,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./icon-192.png">
-  <title>レックス英語マスター v84.0</title>
+  <title>レックス英語マスター v85.0</title>
   <style>
 
 :root{--sky:#dff5ff;--cream:#fff8e8;--leaf:#c9f7d4;--pink:#ff74ad;--orange:#ff9c4a;--purple:#8c70ff;--blue:#50a9ff;--green:#46ca87;--red:#ff6076;--ink:#29405c;--muted:#6a7a90;--line:#ffd8ab}
@@ -972,8 +972,8 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   <div id="toast" class="toast"></div>
 
   <header>
-    <h1>🧡 レックス英語マスター v84.0</h1>
-    <div class="sub">v83：日本語音声はiPhone標準音声を優先・読み補正版</div>
+    <h1>🧡 レックス英語マスター v85.0</h1>
+    <div class="sub">v85：読み補正を音声直前で強制適用・日本語音声安定版</div>
   </header>
 
   <main>
@@ -1402,7 +1402,7 @@ window.REX_CONTENT_VERSION="get-ahead-1-v83.0-iphone-ja-default";
 /* v76.5 Safari-only audio core. No Kokoro/OpenAI. Designed for iPhone Safari. */
 (function(){
   'use strict';
-  var VERSION='v84.0-ja-reading-hotfix';
+  var VERSION='v85.0-final-speech-reading-gate';
   var unlocked=false;
   var currentUtterance=null;
   var voices=[];
@@ -1427,25 +1427,24 @@ window.REX_CONTENT_VERSION="get-ahead-1-v83.0-iphone-ja-default";
   }
   function normalizeJapaneseReading(text){
     var t=String(text||'');
-    // v82: iOS Japanese TTS can misread 数分 as a name like かずふみ. Normalize only for speech.
-    // v84: normalize both kanji text and already-misread cached text before speech.
-    // Some old cached/localStorage lines may contain the intended display text, while iOS may parse it as a name.
+    // v85: 全ての読み上げ直前で必ず通す最終ゲート。
+    // iOS日本語TTSが「数分」を人名のように誤読するため、表示文は変えず音声だけひらがな化する。
     var rules=[
-      [/あと\s*数\s*分\s*だけ/g,'あと すうふんだけ'],
-      [/数\s*分/g,'すうふん'],
-      [/かずふみ/g,'すうふん'],
-      [/カズフミ/g,'すうふん'],
+      [/あと\s*数\s*分\s*だけ/g,'あと すう ふんだけ'],
+      [/数\s*分\s*だけ/g,'すう ふんだけ'],
+      [/あと\s*数\s*分/g,'あと すう ふん'],
+      [/数\s*分/g,'すう ふん'],
+      [/かずふみ/g,'すう ふん'],
+      [/かずふん/g,'すう ふん'],
+      [/カズフミ/g,'すう ふん'],
+      [/カズフン/g,'すう ふん'],
+      [/数\s*秒/g,'すう びょう'],
+      [/数\s*回/g,'すう かい'],
+      [/数\s*日/g,'すう じつ'],
+      [/数\s*十\s*秒/g,'すうじゅう びょう'],
       [/何\s*分/g,'なんぷん'],
-      [/一分/g,'いっぷん'],
-      [/二分/g,'にふん'],
-      [/三分/g,'さんぷん'],
-      [/四分/g,'よんぷん'],
-      [/五分/g,'ごふん'],
-      [/六分/g,'ろっぷん'],
-      [/七分/g,'ななふん'],
-      [/八分/g,'はっぷん'],
-      [/九分/g,'きゅうふん'],
-      [/十分/g,'じゅっぷん']
+      [/一分/g,'いっぷん'],[/二分/g,'にふん'],[/三分/g,'さんぷん'],[/四分/g,'よんぷん'],[/五分/g,'ごふん'],
+      [/六分/g,'ろっぷん'],[/七分/g,'ななふん'],[/八分/g,'はっぷん'],[/九分/g,'きゅうふん'],[/十分/g,'じゅっぷん']
     ];
     rules.forEach(function(r){ t=t.replace(r[0],r[1]); });
     return t;
@@ -1455,16 +1454,42 @@ window.REX_CONTENT_VERSION="get-ahead-1-v83.0-iphone-ja-default";
       var changed=0;
       for(var i=0;i<localStorage.length;i++){
         var k=localStorage.key(i);
-        if(!k || k.indexOf('rexEnglishMaster')<0) continue;
+        if(!k) continue;
         var v=localStorage.getItem(k);
         if(typeof v!=='string') continue;
-        var nv=v.replace(/あと\s*数\s*分\s*だけ/g,'あと すうふんだけ').replace(/数\s*分/g,'すうふん');
+        var nv=normalizeJapaneseReading(v);
         if(nv!==v){ localStorage.setItem(k,nv); changed++; }
       }
       if(changed) log('migrated Japanese reading cache '+changed);
     }catch(e){}
   }
+  function patchSentenceDataForSpeech(){
+    try{
+      var arr=window.REX_SENTENCES||[];
+      arr.forEach(function(q){
+        if(!q) return;
+        if(q.speechJa) q.speechJa=normalizeJapaneseReading(q.speechJa);
+        if(q.ja && !q.speechJa) q.speechJa=normalizeJapaneseReading(q.ja);
+      });
+      log('patched sentence speechJa '+arr.length);
+    }catch(e){}
+  }
+  function installFinalUtteranceGate(){
+    try{
+      if(window.__rexUtteranceGateInstalled || !window.SpeechSynthesisUtterance) return;
+      var Native=window.SpeechSynthesisUtterance;
+      window.SpeechSynthesisUtterance=function(text){
+        var fixed=isJa('',text)?normalizeJapaneseReading(text):String(text||'');
+        return new Native(fixed);
+      };
+      window.SpeechSynthesisUtterance.prototype=Native.prototype;
+      window.__rexUtteranceGateInstalled=true;
+      log('installed final utterance gate');
+    }catch(e){ log('utterance gate failed '+(e.message||e)); }
+  }
+  installFinalUtteranceGate();
   migrateJapaneseReadingCache();
+  patchSentenceDataForSpeech();
   function isNoveltyVoice(v){
     // iPhone/Safari has many novelty voices. Some sound raspy/whispery and were being selected/saved accidentally.
     var s=voiceText(v);
@@ -2302,7 +2327,7 @@ window.REX_CONTENT_VERSION="get-ahead-1-v83.0-iphone-ja-default";
 
   function bind(){
     $('unlockAudioBtn').addEventListener('click',function(){ RexSpeech.unlock().then(function(){ $('status').textContent='音声OK'; }); });
-    $('voiceTestBtn').addEventListener('click',function(){ RexSpeech.cancel(); RexSpeech.saveFromUI && RexSpeech.saveFromUI(); RexSpeech.speak('Great job! Let\'s try one more sentence.','en-US').then(function(){ return RexSpeech.speak('今日もよくがんばったね。あと一文だけ、一緒にやってみよう。','ja-JP'); }).then(function(){ return RexSpeech.speak('Hello! I am Rex. Let us study English together.','en-US','rex'); }); }); if($('voiceSaveBtn')) $('voiceSaveBtn').addEventListener('click',function(){ RexSpeech.saveFromUI && RexSpeech.saveFromUI(); showToast('声の設定を保存しました'); });
+    $('voiceTestBtn').addEventListener('click',function(){ RexSpeech.cancel(); RexSpeech.saveFromUI && RexSpeech.saveFromUI(); RexSpeech.speak('Great job! Let\'s try one more sentence.','en-US').then(function(){ return RexSpeech.speak('今日もよくがんばったね。あと数分だけ、一緒にやってみよう。','ja-JP'); }).then(function(){ return RexSpeech.speak('Hello! I am Rex. Let us study English together.','en-US','rex'); }); }); if($('voiceSaveBtn')) $('voiceSaveBtn').addEventListener('click',function(){ RexSpeech.saveFromUI && RexSpeech.saveFromUI(); showToast('声の設定を保存しました'); });
     $('feedBtn').addEventListener('click',feedDino); $('petBtn').addEventListener('click',petDino); $('talkBtn').addEventListener('click',function(){dinoTalk(true);}); $('renameBtn').addEventListener('click',renameDino);
     document.querySelectorAll('[data-stage-special]').forEach(function(b){ b.addEventListener('click',function(){ selectStage(this.getAttribute('data-stage-special')); }); });
     $('unit').addEventListener('change',resetDeck); $('shuffle').addEventListener('change',resetDeck);
