@@ -1,4 +1,1 @@
-# レックス英語マスター v76.3
-Safari音声確定版。Kokoroは停止。連続再生と英語/日本語の間隔を修正。
-
-アップロード後は `?v=763` で開いてください。
+v76.4 single-file Safari audio build. Upload all files, but only index.html contains CSS/JS. Kokoro/OpenAI removed.
