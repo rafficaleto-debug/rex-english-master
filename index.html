@@ -9,7 +9,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./icon-192.png">
-  <title>レックス英語マスター v83.0</title>
+  <title>レックス英語マスター v84.0</title>
   <style>
 
 :root{--sky:#dff5ff;--cream:#fff8e8;--leaf:#c9f7d4;--pink:#ff74ad;--orange:#ff9c4a;--purple:#8c70ff;--blue:#50a9ff;--green:#46ca87;--red:#ff6076;--ink:#29405c;--muted:#6a7a90;--line:#ffd8ab}
@@ -972,7 +972,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   <div id="toast" class="toast"></div>
 
   <header>
-    <h1>🧡 レックス英語マスター v83.0</h1>
+    <h1>🧡 レックス英語マスター v84.0</h1>
     <div class="sub">v83：日本語音声はiPhone標準音声を優先・読み補正版</div>
   </header>
 
@@ -1402,7 +1402,7 @@ window.REX_CONTENT_VERSION="get-ahead-1-v83.0-iphone-ja-default";
 /* v76.5 Safari-only audio core. No Kokoro/OpenAI. Designed for iPhone Safari. */
 (function(){
   'use strict';
-  var VERSION='v83.0-iphone-ja-default-yomi-fix';
+  var VERSION='v84.0-ja-reading-hotfix';
   var unlocked=false;
   var currentUtterance=null;
   var voices=[];
@@ -1428,10 +1428,14 @@ window.REX_CONTENT_VERSION="get-ahead-1-v83.0-iphone-ja-default";
   function normalizeJapaneseReading(text){
     var t=String(text||'');
     // v82: iOS Japanese TTS can misread 数分 as a name like かずふみ. Normalize only for speech.
+    // v84: normalize both kanji text and already-misread cached text before speech.
+    // Some old cached/localStorage lines may contain the intended display text, while iOS may parse it as a name.
     var rules=[
-      [/あと数分だけ/g,'あと すうふんだけ'],
-      [/数分/g,'すうふん'],
-      [/何分/g,'なんぷん'],
+      [/あと\s*数\s*分\s*だけ/g,'あと すうふんだけ'],
+      [/数\s*分/g,'すうふん'],
+      [/かずふみ/g,'すうふん'],
+      [/カズフミ/g,'すうふん'],
+      [/何\s*分/g,'なんぷん'],
       [/一分/g,'いっぷん'],
       [/二分/g,'にふん'],
       [/三分/g,'さんぷん'],
@@ -1446,6 +1450,21 @@ window.REX_CONTENT_VERSION="get-ahead-1-v83.0-iphone-ja-default";
     rules.forEach(function(r){ t=t.replace(r[0],r[1]); });
     return t;
   }
+  function migrateJapaneseReadingCache(){
+    try{
+      var changed=0;
+      for(var i=0;i<localStorage.length;i++){
+        var k=localStorage.key(i);
+        if(!k || k.indexOf('rexEnglishMaster')<0) continue;
+        var v=localStorage.getItem(k);
+        if(typeof v!=='string') continue;
+        var nv=v.replace(/あと\s*数\s*分\s*だけ/g,'あと すうふんだけ').replace(/数\s*分/g,'すうふん');
+        if(nv!==v){ localStorage.setItem(k,nv); changed++; }
+      }
+      if(changed) log('migrated Japanese reading cache '+changed);
+    }catch(e){}
+  }
+  migrateJapaneseReadingCache();
   function isNoveltyVoice(v){
     // iPhone/Safari has many novelty voices. Some sound raspy/whispery and were being selected/saved accidentally.
     var s=voiceText(v);
