@@ -9,7 +9,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./icon-192.png">
-  <title>レックス英語マスター v76.4</title>
+  <title>レックス英語マスター v76.5</title>
   <style>
 
 :root{--sky:#dff5ff;--cream:#fff8e8;--leaf:#c9f7d4;--pink:#ff74ad;--orange:#ff9c4a;--purple:#8c70ff;--blue:#50a9ff;--green:#46ca87;--red:#ff6076;--ink:#29405c;--muted:#6a7a90;--line:#ffd8ab}
@@ -960,8 +960,8 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   <div id="toast" class="toast"></div>
 
   <header>
-    <h1>🧡 レックス英語マスター v76.4</h1>
-    <div class="sub">v76.4：単一ファイルSafari音声版（連続再生修正）</div>
+    <h1>🧡 レックス英語マスター v76.5</h1>
+    <div class="sub">v76.5：単一ファイルSafari音声版（連続再生修正）</div>
   </header>
 
   <main>
@@ -1310,7 +1310,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   </div>
 
   <script>
-// v76.4: disable old service workers/caches but keep learning data.
+// v76.5: disable old service workers/caches but keep learning data.
 (function(){try{if('serviceWorker' in navigator)navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){r.unregister();});});}catch(e){} try{if(window.caches)caches.keys().then(function(keys){keys.forEach(function(k){if(/rex|english|kokoro|v7/i.test(k))caches.delete(k);});});}catch(e){}})();
   </script>
   <script>
@@ -1384,10 +1384,10 @@ window.REX_CONTENT_VERSION='grade1-2026-06-v74';
 
   </script>
   <script>
-/* v76.4 Safari-only audio core. No Kokoro/OpenAI. Designed for iPhone Safari. */
+/* v76.5 Safari-only audio core. No Kokoro/OpenAI. Designed for iPhone Safari. */
 (function(){
   'use strict';
-  var VERSION='v76.4-safari-only-singlefile';
+  var VERSION='v76.5-safari-only-singlefile';
   var unlocked=false;
   var currentUtterance=null;
   var voices=[];
@@ -1418,9 +1418,12 @@ window.REX_CONTENT_VERSION='grade1-2026-06-v74';
   function estimateMs(text,lang,rate){
     var chars=Array.from(String(text||'')).length;
     var ja=isJa(lang,text);
-    var base=ja?280:260;
-    var per=ja?88:62;
-    return Math.max(450, Math.min(3200, (base + chars*per) / Math.max(0.7,rate||1)));
+    // v76.5: this is ONLY a safety limit, not the normal end timing.
+    // iPhone Safari can speak Japanese much longer than a simple character estimate.
+    // If this limit is too short, the next utterance cancels Japanese mid-sentence.
+    var base=ja?1400:900;
+    var per=ja?210:130;
+    return Math.max(2600, Math.min(15000, (base + chars*per) / Math.max(0.65,rate||1)));
   }
   function cancel(){ try{ if(window.speechSynthesis) speechSynthesis.cancel(); }catch(e){} currentUtterance=null; }
   function speak(text, lang){
@@ -1428,8 +1431,19 @@ window.REX_CONTENT_VERSION='grade1-2026-06-v74';
     if(!text) return Promise.resolve();
     if(!('speechSynthesis' in window)){ status('音声非対応'); return Promise.resolve(); }
     return new Promise(function(resolve){
-      var done=false;
-      function finish(){ if(done) return; done=true; currentUtterance=null; resolve(); }
+      var done=false, started=false, watchdog=null, poller=null;
+      function cleanup(){
+        if(watchdog) clearTimeout(watchdog);
+        if(poller) clearInterval(poller);
+        currentUtterance=null;
+      }
+      function finish(reason){
+        if(done) return;
+        done=true;
+        cleanup();
+        log('finish '+reason+' '+text);
+        resolve();
+      }
       try{ speechSynthesis.cancel(); }catch(e){}
       setTimeout(function(){
         try{
@@ -1439,14 +1453,27 @@ window.REX_CONTENT_VERSION='grade1-2026-06-v74';
           u.pitch=1; u.volume=1;
           var v=pickVoice(u.lang,text); if(v) u.voice=v;
           currentUtterance=u;
-          u.onstart=function(){ unlocked=true; status('読み上げ中'); log('start '+u.lang+' '+text); };
-          u.onend=function(){ log('end '+u.lang+' '+text); finish(); };
-          u.onerror=function(ev){ log('error '+(ev&&ev.error?ev.error:'unknown')); finish(); };
+          u.onstart=function(){ started=true; unlocked=true; status('読み上げ中'); log('start '+u.lang+' '+text); };
+          u.onend=function(){ log('end '+u.lang+' '+text); finish('onend'); };
+          u.onerror=function(ev){ log('error '+(ev&&ev.error?ev.error:'unknown')); finish('error'); };
           speechSynthesis.speak(u);
           lastSpeakAt=Date.now();
-          // Safari sometimes misses onend, but waiting too long breaks 0.4s gaps. Keep timeout short and deterministic.
-          setTimeout(finish, estimateMs(text,u.lang,u.rate));
-        }catch(e){ log('exception '+(e.message||e)); finish(); }
+
+          // v76.5: do NOT resolve by a short estimate. That caused the next phrase to cancel Japanese mid-sentence.
+          // Normal path is onend. If iPhone Safari misses onend, poll until speaking becomes false.
+          var quietCount=0;
+          poller=setInterval(function(){
+            if(done) return;
+            var speaking=false, pending=false;
+            try{ speaking=!!speechSynthesis.speaking; pending=!!speechSynthesis.pending; }catch(e){}
+            if(started && !speaking && !pending){ quietCount++; } else { quietCount=0; }
+            // require two quiet polls to avoid ending during a short internal pause
+            if(quietCount>=2) finish('quiet');
+          },120);
+
+          // Last-resort only. Long enough not to cut normal Japanese, but prevents permanent lock.
+          watchdog=setTimeout(function(){ finish('watchdog'); }, estimateMs(text,u.lang,u.rate));
+        }catch(e){ log('exception '+(e.message||e)); finish('exception'); }
       }, 25);
     });
   }

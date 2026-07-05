@@ -1,1 +1,1 @@
-v76.4 single-file Safari audio build. Upload all files, but only index.html contains CSS/JS. Kokoro/OpenAI removed.
+v76.5 Safari音声安定版。日本語が途中で切れる問題を修正。Kokoro/OpenAIは無効。
