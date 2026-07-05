@@ -9,8 +9,8 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./icon-192.png">
-  <title>レックス英語マスター v76</title>
-  <link rel="stylesheet" href="./style.css?v=76">
+  <title>レックス英語マスター v76.1</title>
+  <link rel="stylesheet" href="./style-v761.css?v=761">
 </head>
 <body>
 
@@ -51,8 +51,8 @@
   <div id="toast" class="toast"></div>
 
   <header>
-    <h1>🧡 レックス英語マスター v76</h1>
-    <div class="sub">v76：Kokoro音声基盤 再構築版（Safari安全フォールバック）</div>
+    <h1>🧡 レックス英語マスター v76.1</h1>
+    <div class="sub">v76.1：音声キャッシュ修正版（Safari安定音声＋Kokoro実験）</div>
   </header>
 
   <main>
@@ -135,10 +135,10 @@
       </div>
 
       <div class="openaiVoiceBox">
-        <h3>🦖 Kokoro高品質音声（無料）</h3>
+        <h3>🦖 音声設定（まず音が出る安定版）</h3>
         <div class="engineSwitch">
-          <label class="pill"><input type="radio" name="voiceEngine" id="voiceEngineOpenAI" value="openai" checked> Kokoro音声</label>
-          <label class="pill"><input type="radio" name="voiceEngine" id="voiceEngineSafari" value="safari"> Safari予備音声</label>
+          <label class="pill"><input type="radio" name="voiceEngine" id="voiceEngineSafari" value="safari" checked> Safari安定音声（推奨）</label>
+          <label class="pill"><input type="radio" name="voiceEngine" id="voiceEngineOpenAI" value="openai"> Kokoro音声（実験）</label>
         </div>
         <input type="checkbox" id="openAiVoiceEnabled" checked class="hidden">
         <div class="voiceGrid">
@@ -167,7 +167,7 @@
           <div id="voiceDiagSummary" class="voiceDiagSummary">未診断</div>
           <pre id="voiceDiagLog" class="voiceDiagLog">診断ログがここに表示されます。</pre>
         </div>
-        <p class="small">英語とレックスはKokoro優先、日本語はiPhoneで安定するSafari日本語音声を安全利用します。Cloudflare・OpenAI APIキー・課金は不要です。Kokoroが重い場合もSafari予備音声で止まらず再生します。</p>
+        <p class="small">標準はSafari安定音声です。KokoroはiPhone Safariで重い／止まる場合があるため実験扱いにしました。Cloudflare・OpenAI APIキー・課金は不要です。まず「音声スタート」→「音声テスト」で音が出ることを確認してください。</p>
       </div>
 
       <div id="voiceDiagStatus" class="voiceDiagStatus">音声診断：未確認</div>
@@ -281,7 +281,7 @@
       <h2>🎙️ レックスボイス設定</h2>
       <div class="dataBox">
         <b>Kokoro高品質音声について</b>
-        <p class="small">Kokoro音声を使うと、英語・日本語・レックスの声を無料で読み上げられます。Cloudflare WorkerもOpenAI APIキーも不要です。初回だけモデルを読み込みます。</p>
+        <p class="small">v76.1では、古いv74/v75のJavaScriptキャッシュを読まないようにファイル名を変更しています。音が出ない場合は、Safariの更新ボタン長押し→再読み込み、または履歴とWebサイトデータ削除を試してください。</p>
       </div>
       <div class="dataBox">
         <b>おすすめ設定</b>
@@ -400,10 +400,17 @@
     <button data-tab="settings">設定</button>
   </div>
 
-  <script src="./data.js?v=74"></script>
-  <script src="./storage.js?v=74"></script>
-  <script src="./speech.js?v=74"></script>
-  <script src="./game.js?v=74"></script>
-  <script src="./app.js?v=74"></script>
+  <script>
+    // v76.1: old PWA/service-worker/cache guard. Keeps learning localStorage, removes only browser caches.
+    (function(){
+      try { if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){r.unregister();});}); } catch(e) {}
+      try { if (window.caches) caches.keys().then(function(keys){keys.forEach(function(k){ if (/rex|english|kokoro|v7/i.test(k)) caches.delete(k); });}); } catch(e) {}
+    })();
+  </script>
+  <script src="./data-v761.js?v=761"></script>
+  <script src="./storage-v761.js?v=761"></script>
+  <script src="./speech-v761.js?v=761"></script>
+  <script src="./game-v761.js?v=761"></script>
+  <script src="./app-v761.js?v=761"></script>
 </body>
 </html>

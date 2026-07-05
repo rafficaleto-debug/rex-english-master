@@ -1,0 +1,907 @@
+
+:root{--sky:#dff5ff;--cream:#fff8e8;--leaf:#c9f7d4;--pink:#ff74ad;--orange:#ff9c4a;--purple:#8c70ff;--blue:#50a9ff;--green:#46ca87;--red:#ff6076;--ink:#29405c;--muted:#6a7a90;--line:#ffd8ab}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 15% 8%,#fff0a8 0 8%,transparent 9%),radial-gradient(circle at 88% 4%,#c9f7ff 0 18%,transparent 19%),linear-gradient(180deg,#e8fbff 0%,#fff8e8 58%,#e9ffe9 100%)}
+header{position:sticky;top:0;z-index:8;background:rgba(255,255,255,.88);backdrop-filter:blur(14px);border-bottom:2px solid rgba(255,156,74,.25);padding:12px 14px}
+h1{font-size:21px;margin:0;font-weight:1000}h2{font-size:19px;margin:0 0 12px;font-weight:1000}.sub{font-size:12px;color:var(--muted);margin-top:3px}
+main{max-width:1120px;margin:auto;padding:12px 12px 112px}.card{background:rgba(255,255,255,.94);border:2px solid rgba(255,216,171,.8);border-radius:26px;padding:16px;margin:12px 0;box-shadow:0 12px 30px rgba(89,95,130,.13)}
+.hero{position:relative;overflow:hidden;border:0;color:#2b3050;min-height:360px;background:radial-gradient(circle at 22% 18%,rgba(255,255,255,.9) 0 10%,transparent 11%),radial-gradient(circle at 80% 8%,rgba(255,255,255,.8) 0 8%,transparent 9%),linear-gradient(160deg,#b9eeff 0%,#fff8bf 46%,#bff4ce 100%)}
+.hero:before{content:"";position:absolute;left:0;right:0;bottom:0;height:44%;background:linear-gradient(180deg,transparent,#81d889);opacity:.7}
+.dinoWorld{display:grid;grid-template-columns:1.08fr .92fr;gap:14px;position:relative;z-index:1}.dinoStage{position:relative;min-height:320px;border-radius:28px;background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(255,255,255,.08));overflow:hidden}
+.sun{position:absolute;right:8%;top:8%;width:82px;height:82px;border-radius:50%;background:rgba(255,255,255,.88);box-shadow:0 0 38px rgba(255,236,140,.9)}
+.cloud{position:absolute;background:white;border-radius:999px;opacity:.75;filter:blur(.2px)}.cloud:before,.cloud:after{content:"";position:absolute;background:white;border-radius:50%}.c1{left:9%;top:19%;width:120px;height:44px}.c1:before{width:62px;height:62px;left:18px;top:-24px}.c1:after{width:54px;height:54px;right:12px;top:-18px}.c2{right:7%;top:34%;width:80px;height:32px}.c2:before{width:42px;height:42px;left:10px;top:-18px}.c2:after{width:38px;height:38px;right:7px;top:-14px}
+.volcano{position:absolute;right:10%;top:28%;width:120px;height:95px;background:linear-gradient(135deg,#8b6040,#5b3b30);clip-path:polygon(50% 0,100% 100%,0 100%);opacity:.7}.volcano:after{content:"";position:absolute;left:42%;top:0;width:20%;height:25%;background:#ff7d4a;border-radius:0 0 12px 12px}
+.trees{position:absolute;left:0;right:0;bottom:20px;height:78px;background:radial-gradient(circle at 10% 40%,#48bd6b 0 22px,transparent 23px),radial-gradient(circle at 22% 35%,#5ed27d 0 26px,transparent 27px),radial-gradient(circle at 78% 42%,#48bd6b 0 24px,transparent 25px),radial-gradient(circle at 92% 32%,#5ed27d 0 27px,transparent 28px)}
+.dinoName{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);background:#fff8d6;border:2px solid #ffcf72;border-radius:999px;padding:8px 16px;font-weight:1000;white-space:nowrap}
+.bubble{background:white;border-radius:28px 28px 28px 6px;padding:16px 18px;box-shadow:0 8px 18px rgba(90,90,130,.12);font-weight:900;line-height:1.55;max-width:390px}.bubble small{display:block;color:var(--muted);font-weight:700;margin-top:4px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}button,select,input,textarea{font:inherit}button{border:0;border-radius:999px;padding:12px 15px;background:#fff;color:#7650d8;font-weight:1000;box-shadow:0 5px 12px rgba(99,81,150,.13)}button.primary{background:linear-gradient(135deg,var(--pink),var(--purple));color:white}button.good{background:#e6fff2;color:#087a4f}button.bad{background:#ffecef;color:#c4203a}button.gray{background:#f4f6fb;color:#344054}button.food{background:#fff2dc;color:#985200}
+select,input,textarea{border:2px solid #ffd7ab;border-radius:18px;padding:11px;background:white;min-height:44px}textarea{width:100%;min-height:120px}.big{font-size:31px;font-weight:1000;line-height:1.25;margin:16px 0}.ja{font-size:18px;color:#374151;line-height:1.5}.small{font-size:13px;color:var(--muted)}.pill{font-size:12px;background:#fff4df;border:1px solid #ffd7ab;border-radius:999px;padding:6px 10px;color:#965c10;font-weight:900}.hidden{display:none!important}
+.progress{height:14px;background:#f1edf8;border-radius:999px;overflow:hidden;margin-top:12px}.bar{height:100%;background:linear-gradient(90deg,#ff7ab6,#ffb84c,#52c7ff);width:0%;transition:.25s}
+.footer{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-top:1px solid #ffd7ab;padding:9px 8px calc(9px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(7,1fr);gap:6px;z-index:10}.footer button{font-size:11px;padding:10px 2px;border-radius:18px;background:#fff3df;color:#9a5b10}
+.statsGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}.stat{background:rgba(255,255,255,.68);border-radius:18px;padding:10px;text-align:center;font-weight:1000}.stat b{font-size:22px;display:block}.rankTitle{font-size:24px;font-weight:1000}.xpbar{height:17px;background:rgba(255,255,255,.7);border-radius:999px;overflow:hidden;margin:8px 0}.xpfill{height:100%;width:0%;background:linear-gradient(90deg,#ff74ad,#ffcf4d,#63d980);border-radius:999px;transition:.4s}.friendbar{height:14px;background:#fff;border-radius:999px;overflow:hidden;margin:8px 0;border:1px solid #ffd1dc}.friendfill{height:100%;width:0%;background:linear-gradient(90deg,#ff9bbb,#ff5b8f);border-radius:999px;transition:.4s}
+.growth{display:flex;gap:6px;align-items:center;overflow:auto;padding:6px 0}.growStep{min-width:92px;text-align:center;background:rgba(255,255,255,.68);border:2px solid transparent;border-radius:18px;padding:8px;font-weight:900;position:relative}.growStep.active{border-color:#ff74ad;background:#fff}.growStep:not(:last-child):after{content:"→";position:absolute;right:-13px;top:32px;color:#ff9c4a;font-weight:1000}
+.mission{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;background:#fff7fc;border:1px solid #ffd4ea;border-radius:18px;padding:10px;margin:8px 0}.done{opacity:.65;text-decoration:line-through}
+.stageGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px}.stageBtn{text-align:left;background:linear-gradient(180deg,#fff,#fff8ec);border:2px solid #ffd7ab;color:var(--ink);min-height:78px;border-radius:22px}.stageBtn.active{border-color:#ff9c4a;box-shadow:0 0 0 4px rgba(255,156,74,.18)}.mini{font-size:11px;color:var(--muted);margin-top:4px}
+.item{border-top:1px dashed #f3c995;padding:12px 0}.correct{border-color:var(--green)!important;background:#f0fff7}.wrong{border-color:var(--red)!important;background:#fff5f5}.result{font-weight:1000;margin-top:8px}.result.ok{color:var(--green)}.result.ng{color:var(--red)}.diff del{color:var(--red)}.diff ins{color:var(--green);text-decoration:none;font-weight:1000}.scoreLine{margin-top:12px}
+.badgeGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}.collectionBadge{background:#fff7fc;border:1px solid #ffd4ea;border-radius:18px;padding:12px;text-align:center;font-weight:900}.locked{filter:grayscale(1);opacity:.45}
+.levelUp{position:fixed;left:50%;top:28%;transform:translate(-50%,-50%) scale(.7);background:linear-gradient(135deg,#ff7ab6,#8b7cff);color:white;border-radius:28px;padding:22px 28px;font-size:24px;font-weight:1000;box-shadow:0 18px 50px rgba(60,50,120,.28);z-index:50;opacity:0;pointer-events:none;transition:.25s;text-align:center}.levelUp.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.toast{position:fixed;left:50%;bottom:104px;transform:translateX(-50%);background:#25304a;color:white;border-radius:999px;padding:10px 16px;font-weight:900;z-index:60;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1}
+.chatBox{max-height:220px;overflow:auto;background:rgba(255,255,255,.72);border-radius:18px;padding:10px;margin:10px 0}.chat{display:flex;gap:8px;margin:8px 0}.chat .msg{background:white;border-radius:16px;padding:9px 12px;box-shadow:0 3px 8px rgba(0,0,0,.06)}.me{justify-content:flex-end}.me .msg{background:#e8f4ff}
+#bootError{display:none;background:#fff0f0;border:2px solid #ff8a8a;color:#8a1f1f;border-radius:18px;padding:12px;margin:12px 0;white-space:pre-wrap;font-size:13px}#bootOk{background:#effff4;border:2px solid #9ee6b8;color:#087a4f;border-radius:18px;padding:10px;margin:12px 0;font-weight:900}.dataBox{background:#fffdf7;border:2px dashed #ffca7a;border-radius:18px;padding:12px;margin-top:10px}.versionTag{font-size:12px;background:#eafff2;color:#087a4f;border:1px solid #abefc6;border-radius:999px;padding:6px 10px;font-weight:900}.restoreOk{color:#087a4f;font-weight:1000}.restoreNg{color:#c4203a;font-weight:1000}
+/* Rex character */
+.rexArt{position:absolute;left:50%;bottom:34px;transform:translateX(-50%);width:210px;height:190px;filter:drop-shadow(0 14px 13px rgba(83,77,92,.22));transition:.35s;animation:rexIdle 2.4s ease-in-out infinite}.rexTail{animation:tailWag 1.8s ease-in-out infinite}.rexEye:before{animation:blink 4.5s infinite}.sparkles{position:absolute;right:8px;top:0;font-size:24px;opacity:0;transition:.2s}.rexArt.happy .sparkles{opacity:1;animation:spark 1s ease}
+@keyframes rexIdle{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-4px)}}@keyframes tailWag{0%,100%{transform:rotate(13deg)}50%{transform:rotate(25deg)}}@keyframes blink{0%,94%,100%{height:22px;top:9px}96%{height:3px;top:20px}}@keyframes spark{0%{transform:scale(.7) rotate(0)}60%{transform:scale(1.3) rotate(15deg)}100%{transform:scale(1) rotate(0)}}@keyframes rexBounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-14px)}}.rexArt.happy{animation:rexBounce .7s ease}
+.rexArt.eggArt{width:170px;height:175px;bottom:52px}.rexArt.eggArt .eggShell{display:block;left:28px;bottom:0;width:106px;height:128px;z-index:3}.eggShell{display:none;position:absolute;background:linear-gradient(145deg,#fff8dd,#ffd891);border:4px solid #f3aa43;border-radius:52% 48% 47% 53%;box-shadow:inset -10px -12px 0 rgba(255,174,74,.18)}.rexArt.eggArt .eggShell:before{content:"";position:absolute;left:18px;top:-7px;width:66px;height:28px;background:#fff4d4;border:4px solid #f3aa43;border-bottom:0;border-radius:50% 50% 0 0;transform:rotate(-7deg)}.rexArt.eggArt .eggShell:after{content:"";position:absolute;left:13px;top:36px;width:74px;height:20px;background:transparent;border-top:5px dashed #f3aa43;transform:rotate(-8deg);opacity:.9}
+.rexBody{position:absolute;left:58px;bottom:22px;width:118px;height:104px;background:linear-gradient(145deg,#ff8a45,#df542d);border-radius:54% 46% 50% 50%;box-shadow:inset -12px -10px 0 rgba(177,45,28,.18)}.rexBelly{position:absolute;left:86px;bottom:30px;width:64px;height:72px;background:#ffd8a5;border-radius:48% 52% 50% 50%;transform:rotate(-6deg)}.rexHead{position:absolute;left:34px;top:16px;width:130px;height:94px;background:linear-gradient(145deg,#ff9252,#ec6037);border-radius:50% 58% 50% 45%;box-shadow:inset -9px -7px 0 rgba(170,49,31,.16)}.rexSnout{position:absolute;left:14px;top:43px;width:88px;height:45px;background:#ff9a5a;border-radius:46% 40% 46% 48%}.rexEye{position:absolute;left:88px;top:20px;width:32px;height:39px;background:#fff;border-radius:50%;box-shadow:0 0 0 3px rgba(97,40,22,.12)}.rexEye:before{content:"";position:absolute;left:9px;top:9px;width:17px;height:22px;background:#241a1a;border-radius:50%}.rexEye:after{content:"";position:absolute;left:14px;top:12px;width:6px;height:8px;background:#fff;border-radius:50%}.rexMouth{position:absolute;left:20px;top:72px;width:72px;height:22px;background:#7d2a1d;border-radius:0 0 35px 35px;overflow:hidden}.rexMouth:before{content:"";position:absolute;left:10px;top:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:12px solid #fff}.rexMouth:after{content:"";position:absolute;left:30px;top:11px;width:34px;height:12px;background:#ff8fab;border-radius:50%}.rexCheek{position:absolute;left:8px;top:55px;width:22px;height:15px;background:#ffb08b;border-radius:50%;opacity:.8}.rexTail{position:absolute;right:6px;bottom:52px;width:92px;height:34px;background:linear-gradient(90deg,#df542d,#ff8a45);border-radius:70% 10% 60% 20%;transform:rotate(18deg);transform-origin:left center}.rexArm{position:absolute;left:63px;bottom:78px;width:34px;height:18px;background:#e85f32;border-radius:16px;transform:rotate(25deg)}.rexArm.right{left:138px;bottom:74px;transform:rotate(-30deg)}.rexLeg{position:absolute;left:83px;bottom:8px;width:30px;height:38px;background:#db4c2b;border-radius:16px 16px 10px 10px}.rexLeg.right{left:133px}.rexLeg:after{content:"";position:absolute;left:-8px;bottom:-2px;width:42px;height:14px;background:#c94126;border-radius:18px}.rexSpot{position:absolute;background:#d44828;border-radius:50%;opacity:.55}.rexSpot.s1{left:83px;top:55px;width:14px;height:10px}.rexSpot.s2{left:129px;top:88px;width:17px;height:12px}.rexSpot.s3{left:151px;top:116px;width:13px;height:10px}
+.rexArt.eggArt .rexHead,.rexArt.eggArt .rexSnout,.rexArt.eggArt .rexEye,.rexArt.eggArt .rexMouth,.rexArt.eggArt .rexCheek{display:block!important}.rexArt.eggArt .rexHead{left:47px;top:8px;width:92px;height:72px;transform:rotate(4deg);z-index:2}.rexArt.eggArt .rexSnout{left:8px;top:33px;width:66px;height:34px}.rexArt.eggArt .rexEye{left:58px;top:13px;width:25px;height:29px}.rexArt.eggArt .rexEye:before{left:7px;top:7px;width:13px;height:17px}.rexArt.eggArt .rexMouth{left:16px;top:55px;width:50px;height:15px}.rexArt.eggArt .rexCheek{left:4px;top:43px;width:16px;height:11px}.rexArt.eggArt .rexBody,.rexArt.eggArt .rexBelly,.rexArt.eggArt .rexTail,.rexArt.eggArt .rexArm,.rexArt.eggArt .rexLeg,.rexArt.eggArt .rexSpot{display:none!important}
+.rexArt.babyArt{width:170px;height:160px}.rexArt.babyArt .rexBody{left:48px;bottom:14px;transform:scale(.82)}.rexArt.babyArt .rexBelly{left:72px;bottom:22px;transform:scale(.78)}.rexArt.babyArt .rexHead{left:24px;top:14px;transform:scale(.86)}.rexArt.babyArt .rexTail{right:12px;bottom:42px;transform:scale(.75) rotate(18deg)}.rexArt.babyArt .rexArm{left:54px;bottom:66px;transform:scale(.75) rotate(25deg)}.rexArt.babyArt .rexArm.right{left:116px;bottom:62px;transform:scale(.75) rotate(-30deg)}.rexArt.babyArt .rexLeg{left:70px;bottom:6px;transform:scale(.82)}.rexArt.babyArt .rexLeg.right{left:112px}.rexArt.kidArt{width:205px;height:185px}.rexArt.teenArt{width:235px;height:215px}.rexArt.adultArt{width:270px;height:235px}
+@media(max-width:720px){.dinoWorld{grid-template-columns:1fr}.dinoStage{min-height:300px}.statsGrid{grid-template-columns:repeat(4,1fr)}.big{font-size:25px}.footer button{font-size:10px}.heroPanel{margin-top:4px}}
+
+
+/* v74 daily dashboard and evolution map */
+.dailyGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.dailyBox{background:linear-gradient(180deg,#fff,#fff8ec);border:2px solid #ffd7ab;border-radius:22px;padding:14px;text-align:center;font-weight:1000}
+.dailyBox b{display:block;font-size:28px;color:#8a3ffc}
+.dailyBox span{font-size:12px;color:var(--muted)}
+.dailyGoal{background:#fffdf8;border:1px solid #ffd7ab;border-radius:20px;padding:12px;margin-top:12px}
+.evoMap{display:flex;gap:10px;overflow:auto;padding:8px 2px}
+.evoNode{min-width:132px;background:#fff7fc;border:2px solid #ffd4ea;border-radius:24px;padding:12px;text-align:center;font-weight:1000;position:relative}
+.evoNode.active{border-color:#ff74ad;box-shadow:0 0 0 4px rgba(255,116,173,.16);background:#fff}
+.evoNode.done{background:#f0fff7;border-color:#9ee6b8}
+.evoNode .icon{font-size:34px}
+.evoNode .need{font-size:11px;color:var(--muted);margin-top:4px}
+.evoNode:not(:last-child):after{content:"➜";position:absolute;right:-18px;top:44px;color:#ff9c4a;font-size:18px;z-index:2}
+body.night{
+  background:linear-gradient(180deg,#18213d 0%,#2f315f 56%,#1c3b3d 100%);
+}
+body.night header, body.night .footer{background:rgba(24,33,61,.9);color:#fff}
+body.night .card{background:rgba(255,255,255,.9)}
+body.night .hero{background:linear-gradient(160deg,#243b73 0%,#6c5ca8 48%,#2f6f63 100%)}
+body.night .sun{background:#fff6c9;box-shadow:0 0 40px rgba(255,246,201,.9)}
+body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-size:45px}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:55;overflow:hidden}
+.confetti span{position:absolute;top:-20px;font-size:20px;animation:fall 1.6s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:.2}}
+
+
+/* v74 update manager */
+#updateGuideText{min-height:180px;margin-top:12px}
+.footer{grid-template-columns:repeat(8,1fr)}
+.footer button{font-size:10px}
+.updateBadge{display:inline-block;background:#eef4ff;color:#3449a8;border:1px solid #b8c7ff;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:900}
+.parentTip{background:#f5fbff;border:1px solid #bae6fd;border-radius:18px;padding:10px;margin:10px 0}
+
+
+/* v74 voice settings */
+.voiceGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:12px}
+.voiceGrid label{font-size:12px;color:var(--muted);font-weight:900}
+.voiceGrid select{width:100%;margin-top:4px}
+
+
+/* v74 OpenAI voice UI */
+.openaiVoiceBox{background:linear-gradient(180deg,#fff,#f7fbff);border:2px solid #bae6fd;border-radius:22px;padding:14px;margin-top:14px}
+.openaiVoiceBox h3{margin:0 0 10px;font-size:17px}
+.openaiVoiceBox input[type="text"], .openaiVoiceBox input:not([type]){width:100%}
+#rexVoiceGuideText{min-height:210px;margin-top:12px}
+@media(max-width:720px){.footer{grid-template-columns:repeat(9,1fr)}.footer button{font-size:9px}}
+
+
+/* v74 voice engine switch */
+.engineSwitch{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
+.engineSwitch .pill{cursor:pointer}
+
+
+/* v74 private lock */
+.appLock{position:fixed;inset:0;z-index:999;background:linear-gradient(160deg,#b9eeff,#fff8bf 50%,#bff4ce);display:flex;align-items:center;justify-content:center;padding:18px}
+.appLock.hidden{display:none!important}
+.lockCard{background:rgba(255,255,255,.96);border:3px solid #ffd7ab;border-radius:30px;padding:22px;max-width:390px;width:100%;box-shadow:0 20px 60px rgba(50,50,90,.22);text-align:center}
+.lockRex{font-size:54px;margin-bottom:8px}
+.lockCard input{width:100%;text-align:center;font-size:22px;letter-spacing:.18em;font-weight:1000}
+.lockBtns{justify-content:center;margin-top:12px}
+.footer{grid-template-columns:repeat(10,1fr)}
+@media(max-width:720px){.footer{grid-template-columns:repeat(10,1fr)}.footer button{font-size:9px;padding:9px 1px}}
+
+
+/* v74 lock screen fix + cute orange Rex */
+.lockCard{position:relative;overflow:visible;padding-top:78px}
+.lockRexArt{
+  position:absolute;
+  left:50%;
+  top:-78px;
+  transform:translateX(-50%);
+  width:165px;
+  height:130px;
+  filter:drop-shadow(0 10px 12px rgba(70,60,90,.18));
+  animation:lockRexFloat 2.2s ease-in-out infinite;
+}
+@keyframes lockRexFloat{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-5px)}}
+.miniRexBody{position:absolute;left:52px;bottom:10px;width:82px;height:66px;background:linear-gradient(145deg,#ff963f,#ef642d);border-radius:52% 48% 48% 52%}
+.miniRexBelly{position:absolute;left:72px;bottom:15px;width:42px;height:48px;background:#ffd8a5;border-radius:50%}
+.miniRexTail{position:absolute;right:5px;bottom:37px;width:70px;height:24px;background:linear-gradient(90deg,#ef642d,#ff963f);border-radius:70% 10% 60% 20%;transform:rotate(20deg);transform-origin:left center;animation:miniTail 1.8s ease-in-out infinite}
+@keyframes miniTail{0%,100%{transform:rotate(15deg)}50%{transform:rotate(28deg)}}
+.miniRexHead{position:absolute;left:18px;top:10px;width:105px;height:78px;background:linear-gradient(145deg,#ff9c4a,#ef642d);border-radius:54% 58% 48% 46%;box-shadow:inset -7px -6px 0 rgba(170,49,31,.14)}
+.miniRexSnout{position:absolute;left:8px;top:36px;width:72px;height:34px;background:#ffa75f;border-radius:46% 40% 46% 48%}
+.miniRexEye{position:absolute;left:72px;top:16px;width:26px;height:32px;background:white;border-radius:50%}
+.miniRexEye:before{content:"";position:absolute;left:8px;top:7px;width:13px;height:18px;background:#241a1a;border-radius:50%}
+.miniRexEye:after{content:"";position:absolute;left:12px;top:10px;width:5px;height:6px;background:white;border-radius:50%}
+.miniRexMouth{position:absolute;left:18px;top:60px;width:54px;height:17px;background:#7d2a1d;border-radius:0 0 26px 26px;overflow:hidden}
+.miniRexMouth:after{content:"";position:absolute;left:23px;top:8px;width:25px;height:8px;background:#ff8fab;border-radius:50%}
+#setupPanel input{margin-top:8px;letter-spacing:normal;font-size:16px;text-align:left;font-weight:800}
+#setupAppPin,#setupParentPin{text-align:center!important;letter-spacing:.18em!important;font-size:20px!important}
+.lockRex{display:none!important}
+
+
+/* v74 Safari lock button reliability */
+.lockCard button{position:relative;z-index:1001;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#loginPanel,#setupPanel{position:relative;z-index:1000}
+#setupPanel.hidden{display:none!important}
+#loginPanel.hidden{display:none!important}
+
+
+/* v74 settings hub + orange Rex map */
+.footer{grid-template-columns:repeat(6,1fr)!important}
+.footer button{font-size:11px!important}
+.settingsGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
+.settingsTile{
+  border:2px solid #ffd7ab;
+  border-radius:22px;
+  background:linear-gradient(180deg,#fff,#fff8ec);
+  color:var(--ink);
+  text-align:center;
+  min-height:112px;
+  padding:12px 8px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+}
+.settingsTile span{font-size:28px}
+.settingsTile b{font-size:15px}
+.settingsTile small{font-size:11px;color:var(--muted)}
+.rexMapIcon{
+  width:54px;
+  height:42px;
+  margin:0 auto 4px;
+  position:relative;
+  filter:drop-shadow(0 5px 5px rgba(80,60,70,.16));
+}
+.rexMapIcon .miBody{position:absolute;left:20px;bottom:2px;width:34px;height:25px;background:linear-gradient(145deg,#ff963f,#ef642d);border-radius:52%}
+.rexMapIcon .miBelly{position:absolute;left:30px;bottom:5px;width:15px;height:17px;background:#ffd8a5;border-radius:50%}
+.rexMapIcon .miHead{position:absolute;left:2px;top:2px;width:37px;height:29px;background:linear-gradient(145deg,#ff9c4a,#ef642d);border-radius:55% 58% 48% 46%}
+.rexMapIcon .miSnout{position:absolute;left:1px;top:15px;width:27px;height:13px;background:#ffa75f;border-radius:46%}
+.rexMapIcon .miEye{position:absolute;left:25px;top:6px;width:10px;height:13px;background:white;border-radius:50%}
+.rexMapIcon .miEye:after{content:"";position:absolute;left:3px;top:3px;width:5px;height:7px;background:#241a1a;border-radius:50%}
+.rexMapIcon .miTail{position:absolute;right:-3px;bottom:12px;width:24px;height:9px;background:#ef642d;border-radius:70% 10% 60% 20%;transform:rotate(18deg)}
+.rexMapIcon.locked{filter:grayscale(.25) opacity(.45)}
+.evoNode .icon{font-size:0!important}
+.evoNode.done .rexMapIcon .miBody,.evoNode.done .rexMapIcon .miHead{filter:saturate(1.15)}
+.evoNode.active .rexMapIcon{animation:rexMapBounce 1.6s ease-in-out infinite}
+@keyframes rexMapBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+
+/* v74: simpler home + settings split */
+.hero .dinoStage{
+  display:none!important;
+}
+.hero .dinoWorld{
+  grid-template-columns:1fr!important;
+}
+.hero .heroPanel{
+  max-width:720px;
+  margin:0 auto;
+}
+.simpleSettings{
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+}
+.settingsTile.childOk{
+  border-color:#9ee6b8;
+  background:linear-gradient(180deg,#f0fff7,#ffffff);
+}
+.settingsTile.parentOnly{
+  border-color:#ffd7ab;
+  background:linear-gradient(180deg,#fff8ec,#ffffff);
+}
+.parentHint{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  background:#fffdf7;
+  border:2px dashed #ffca7a;
+  border-radius:20px;
+  padding:12px;
+  margin-top:12px;
+}
+.miniRexInline{
+  flex:0 0 auto;
+  width:56px;
+  height:46px;
+  position:relative;
+  filter:drop-shadow(0 5px 5px rgba(80,60,70,.16));
+}
+.miniRexInline:before{
+  content:"";
+  position:absolute;
+  left:4px;top:4px;
+  width:38px;height:30px;
+  background:linear-gradient(145deg,#ff9c4a,#ef642d);
+  border-radius:55% 58% 48% 46%;
+}
+.miniRexInline:after{
+  content:"";
+  position:absolute;
+  right:0;bottom:12px;
+  width:28px;height:10px;
+  background:#ef642d;
+  border-radius:70% 10% 60% 20%;
+  transform:rotate(18deg);
+}
+.parentHint b{font-weight:1000}
+.parentHint p{margin:3px 0 0}
+#voice.hidden{display:none!important}
+
+
+/* v74: actual image sprite version based on approved 7-stage art */
+.hero .dinoStage{display:none!important}
+.currentRexRow.imageVersion{
+  display:grid;
+  grid-template-columns:176px 1fr;
+  gap:18px;
+  align-items:center;
+  margin-bottom:18px;
+}
+.currentRexVisual.imageVersion{
+  min-height:156px;
+  border-radius:28px;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 12px 28px rgba(80,80,120,.10);
+  overflow:hidden;
+}
+.rexSprite{
+  display:block;
+  object-fit:contain;
+  user-select:none;
+  -webkit-user-select:none;
+  pointer-events:none;
+}
+.rexSprite.hero{
+  width:146px;
+  height:146px;
+  animation:v74Float 2.4s ease-in-out infinite;
+}
+@keyframes v74Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.rexSprite.stage{
+  width:78px;
+  height:78px;
+}
+.growStep{
+  min-width:92px!important;
+  padding:9px 5px 10px!important;
+  border-radius:18px!important;
+  background:rgba(255,255,255,.72)!important;
+  border:1px solid rgba(255,186,112,.22)!important;
+}
+.growStep.active{
+  border:2px solid #ff62b2!important;
+  box-shadow:0 0 0 5px rgba(255,98,178,.08)!important;
+  background:#fff!important;
+}
+.growStep .icon{
+  height:82px!important;
+  font-size:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.stageBadge{
+  width:27px;
+  height:27px;
+  margin:2px auto 2px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  background:#ff8a00;
+  font-weight:1000;
+  font-size:15px;
+  line-height:1;
+}
+.growStep:nth-child(1) .stageBadge{background:#ff6f97}
+.growStep:nth-child(2) .stageBadge{background:#ffb31c}
+.growStep:nth-child(3) .stageBadge{background:#73c84c}
+.growStep:nth-child(4) .stageBadge{background:#55b7e9}
+.growStep:nth-child(5) .stageBadge{background:#a96ee6}
+.growStep:nth-child(6) .stageBadge{background:#ff8a00}
+.growStep:nth-child(7) .stageBadge{background:#f55773}
+.growStep .stageName{
+  font-size:14px!important;
+  font-weight:1000!important;
+  color:#25304f!important;
+  line-height:1.15!important;
+  white-space:nowrap!important;
+}
+.growStep .mini{
+  font-size:12px!important;
+  font-weight:1000!important;
+}
+#growth{
+  gap:7px!important;
+  padding:4px 1px 8px!important;
+}
+
+
+/* v74 no-assets: embedded image sprites */
+.hero .dinoStage{display:none!important}
+.currentRexRow.imageVersion{
+  display:grid;
+  grid-template-columns:176px 1fr;
+  gap:18px;
+  align-items:center;
+  margin-bottom:18px;
+}
+.currentRexVisual.imageVersion{
+  min-height:156px;
+  border-radius:28px;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 12px 28px rgba(80,80,120,.10);
+  overflow:hidden;
+}
+.rexSprite{
+  display:block;
+  object-fit:contain;
+  user-select:none;
+  -webkit-user-select:none;
+  pointer-events:none;
+}
+.rexSprite.hero{
+  width:146px;
+  height:146px;
+  animation:v74Float 2.4s ease-in-out infinite;
+}
+@keyframes v74Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.rexSprite.stage{
+  width:78px;
+  height:78px;
+}
+.growStep{
+  min-width:92px!important;
+  padding:9px 5px 10px!important;
+  border-radius:18px!important;
+  background:rgba(255,255,255,.72)!important;
+  border:1px solid rgba(255,186,112,.22)!important;
+}
+.growStep.active{
+  border:2px solid #ff62b2!important;
+  box-shadow:0 0 0 5px rgba(255,98,178,.08)!important;
+  background:#fff!important;
+}
+.growStep .icon{
+  height:82px!important;
+  font-size:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.stageBadge{
+  width:27px;
+  height:27px;
+  margin:2px auto 2px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  background:#ff8a00;
+  font-weight:1000;
+  font-size:15px;
+  line-height:1;
+}
+.growStep:nth-child(1) .stageBadge{background:#ff6f97}
+.growStep:nth-child(2) .stageBadge{background:#ffb31c}
+.growStep:nth-child(3) .stageBadge{background:#73c84c}
+.growStep:nth-child(4) .stageBadge{background:#55b7e9}
+.growStep:nth-child(5) .stageBadge{background:#a96ee6}
+.growStep:nth-child(6) .stageBadge{background:#ff8a00}
+.growStep:nth-child(7) .stageBadge{background:#f55773}
+.growStep .stageName{
+  font-size:14px!important;
+  font-weight:1000!important;
+  color:#25304f!important;
+  line-height:1.15!important;
+  white-space:nowrap!important;
+}
+.growStep .mini{
+  font-size:12px!important;
+  font-weight:1000!important;
+}
+#growth{
+  gap:7px!important;
+  padding:4px 1px 8px!important;
+}
+
+
+/* v74: remove strange frame around top egg/Rex, match approved look */
+.hero .dinoStage{display:none!important}
+.currentRexRow.imageVersion{
+  display:grid!important;
+  grid-template-columns:40% 1fr!important;
+  gap:18px!important;
+  align-items:center!important;
+  margin-bottom:18px!important;
+}
+.currentRexVisual.imageVersion{
+  min-height:260px!important;
+  height:260px!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  border:none!important;
+  outline:none!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  overflow:visible!important;
+  padding:0!important;
+}
+.currentRexVisual.imageVersion .rexSprite.hero{
+  width:245px!important;
+  height:245px!important;
+  object-fit:contain!important;
+  animation:v74Float 2.4s ease-in-out infinite!important;
+  filter:drop-shadow(0 10px 10px rgba(80,60,70,.13));
+}
+@keyframes v74Float{
+  0%,100%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-4px) scale(1)}
+}
+.currentRexRow.imageVersion #dinoBubble,
+.currentRexRow.imageVersion .bubble{
+  align-self:center!important;
+  min-height:128px!important;
+}
+
+/* growth stage sprites */
+.rexSprite{
+  display:block;
+  object-fit:contain;
+  user-select:none;
+  -webkit-user-select:none;
+  pointer-events:none;
+}
+.rexSprite.stage{
+  width:82px!important;
+  height:82px!important;
+}
+.growStep{
+  min-width:92px!important;
+  padding:9px 5px 10px!important;
+  border-radius:18px!important;
+  background:rgba(255,255,255,.72)!important;
+  border:1px solid rgba(255,186,112,.22)!important;
+}
+.growStep.active{
+  border:2px solid #ff62b2!important;
+  box-shadow:0 0 0 5px rgba(255,98,178,.08)!important;
+  background:#fff!important;
+}
+.growStep .icon{
+  height:86px!important;
+  font-size:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.stageBadge{
+  width:27px;
+  height:27px;
+  margin:2px auto 2px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  background:#ff8a00;
+  font-weight:1000;
+  font-size:15px;
+  line-height:1;
+}
+.growStep:nth-child(1) .stageBadge{background:#ff6f97}
+.growStep:nth-child(2) .stageBadge{background:#ffb31c}
+.growStep:nth-child(3) .stageBadge{background:#73c84c}
+.growStep:nth-child(4) .stageBadge{background:#55b7e9}
+.growStep:nth-child(5) .stageBadge{background:#a96ee6}
+.growStep:nth-child(6) .stageBadge{background:#ff8a00}
+.growStep:nth-child(7) .stageBadge{background:#f55773}
+.growStep .stageName{
+  font-size:14px!important;
+  font-weight:1000!important;
+  color:#25304f!important;
+  line-height:1.15!important;
+  white-space:nowrap!important;
+}
+.growStep .mini{
+  font-size:12px!important;
+  font-weight:1000!important;
+}
+#growth{
+  gap:7px!important;
+  padding:4px 1px 8px!important;
+}
+@media(max-width:480px){
+  .currentRexRow.imageVersion{
+    grid-template-columns:42% 1fr!important;
+    gap:12px!important;
+  }
+  .currentRexVisual.imageVersion{
+    min-height:230px!important;
+    height:230px!important;
+  }
+  .currentRexVisual.imageVersion .rexSprite.hero{
+    width:220px!important;
+    height:220px!important;
+  }
+}
+
+
+/* v74: root PNG image version to prevent base64 corruption */
+.hero .dinoStage{display:none!important}
+.currentRexRow.imageVersion{
+  display:grid!important;
+  grid-template-columns:40% 1fr!important;
+  gap:18px!important;
+  align-items:center!important;
+  margin-bottom:18px!important;
+}
+.currentRexVisual.imageVersion{
+  min-height:230px!important;
+  height:230px!important;
+  border-radius:28px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  border:none!important;
+  outline:none!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  overflow:visible!important;
+  padding:0!important;
+}
+.rexSprite{
+  display:block!important;
+  object-fit:contain!important;
+  user-select:none;
+  -webkit-user-select:none;
+  pointer-events:none;
+}
+.currentRexVisual.imageVersion .rexSprite.hero{
+  width:190px!important;
+  height:190px!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-position:center center!important;
+  animation:v74Float 2.4s ease-in-out infinite!important;
+  filter:drop-shadow(0 10px 10px rgba(80,60,70,.13));
+}
+@keyframes v74Float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-4px)}
+}
+.rexSprite.stage{
+  width:82px!important;
+  height:82px!important;
+}
+.growStep{
+  min-width:92px!important;
+  padding:9px 5px 10px!important;
+  border-radius:18px!important;
+  background:rgba(255,255,255,.72)!important;
+  border:1px solid rgba(255,186,112,.22)!important;
+}
+.growStep.active{
+  border:2px solid #ff62b2!important;
+  box-shadow:0 0 0 5px rgba(255,98,178,.08)!important;
+  background:#fff!important;
+}
+.growStep .icon{
+  height:86px!important;
+  font-size:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.stageBadge{
+  width:27px;
+  height:27px;
+  margin:2px auto 2px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  background:#ff8a00;
+  font-weight:1000;
+  font-size:15px;
+  line-height:1;
+}
+.growStep:nth-child(1) .stageBadge{background:#ff6f97}
+.growStep:nth-child(2) .stageBadge{background:#ffb31c}
+.growStep:nth-child(3) .stageBadge{background:#73c84c}
+.growStep:nth-child(4) .stageBadge{background:#55b7e9}
+.growStep:nth-child(5) .stageBadge{background:#a96ee6}
+.growStep:nth-child(6) .stageBadge{background:#ff8a00}
+.growStep:nth-child(7) .stageBadge{background:#f55773}
+.growStep .stageName{
+  font-size:14px!important;
+  font-weight:1000!important;
+  color:#25304f!important;
+  line-height:1.15!important;
+  white-space:nowrap!important;
+}
+.growStep .mini{
+  font-size:12px!important;
+  font-weight:1000!important;
+}
+#growth{gap:7px!important;padding:4px 1px 8px!important}
+@media(max-width:480px){
+  .currentRexRow.imageVersion{grid-template-columns:42% 1fr!important;gap:12px!important}
+  .currentRexVisual.imageVersion{min-height:210px!important;height:210px!important}
+  .currentRexVisual.imageVersion .rexSprite.hero{width:180px!important;height:180px!important}
+}
+
+
+/* v74: final balance fix - larger egg, no stretched vertical frame */
+.currentRexRow.imageVersion{
+  display:grid!important;
+  grid-template-columns:45% 1fr!important;
+  gap:18px!important;
+  align-items:center!important;
+  margin-bottom:16px!important;
+}
+.currentRexVisual.imageVersion{
+  min-height:285px!important;
+  height:285px!important;
+  border-radius:26px!important;
+  background:rgba(255,255,255,.08)!important;
+  box-shadow:none!important;
+  border:none!important;
+  outline:none!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  overflow:visible!important;
+  padding:0!important;
+}
+.currentRexVisual.imageVersion .rexSprite.hero{
+  width:260px!important;
+  height:260px!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  display:block!important;
+  animation:v74Float 2.4s ease-in-out infinite!important;
+  filter:drop-shadow(0 10px 10px rgba(80,60,70,.13));
+}
+@keyframes v74Float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-4px)}
+}
+.currentRexRow.imageVersion #dinoBubble,
+.currentRexRow.imageVersion .bubble{
+  align-self:center!important;
+  min-height:134px!important;
+}
+.rexSprite.stage{
+  width:82px!important;
+  height:82px!important;
+}
+@media(max-width:480px){
+  .currentRexRow.imageVersion{
+    grid-template-columns:45% 1fr!important;
+    gap:12px!important;
+  }
+  .currentRexVisual.imageVersion{
+    min-height:260px!important;
+    height:260px!important;
+  }
+  .currentRexVisual.imageVersion .rexSprite.hero{
+    width:240px!important;
+    height:240px!important;
+  }
+}
+
+
+/* v74: clean Rex stage sprites. Remove visual artifacts and keep balance. */
+.rexSprite{
+  background:transparent!important;
+  border:none!important;
+  outline:none!important;
+  box-shadow:none!important;
+}
+.growStep .icon{
+  overflow:visible!important;
+}
+.currentRexVisual.imageVersion .rexSprite.hero{
+  width:260px!important;
+  height:260px!important;
+  object-fit:contain!important;
+}
+.rexSprite.stage{
+  width:82px!important;
+  height:82px!important;
+  object-fit:contain!important;
+}
+
+
+/* v74: top egg/Rex centered in the round white glow */
+.currentRexRow.imageVersion{
+  grid-template-columns:45% 1fr!important;
+  align-items:center!important;
+}
+.currentRexVisual.imageVersion{
+  min-height:300px!important;
+  height:300px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  overflow:visible!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.currentRexVisual.imageVersion .rexSprite.hero{
+  width:230px!important;
+  height:230px!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:translate(0,0)!important;
+}
+
+/* v74: clean growth Rex images */
+.growStep .icon{
+  overflow:visible!important;
+}
+.rexSprite.stage{
+  width:92px!important;
+  height:92px!important;
+  object-fit:contain!important;
+  background:transparent!important;
+  border:none!important;
+  outline:none!important;
+  box-shadow:none!important;
+}
+@media(max-width:480px){
+  .currentRexVisual.imageVersion{
+    min-height:275px!important;
+    height:275px!important;
+  }
+  .currentRexVisual.imageVersion .rexSprite.hero{
+    width:215px!important;
+    height:215px!important;
+  }
+  .rexSprite.stage{
+    width:86px!important;
+    height:86px!important;
+  }
+}
+
+/* v74: user-provided Rex assets normalized to transparent PNG */
+.rexSprite{background:transparent!important;border:none!important;outline:none!important;box-shadow:none!important;object-fit:contain!important}
+.currentRexVisual.imageVersion{display:flex!important;align-items:center!important;justify-content:center!important;overflow:visible!important}
+.currentRexVisual.imageVersion .rexSprite.hero{width:240px!important;height:240px!important;object-position:center center!important}
+.rexSprite.stage{width:98px!important;height:98px!important}
+@media(max-width:480px){
+.currentRexVisual.imageVersion .rexSprite.hero{width:220px!important;height:220px!important}
+.rexSprite.stage{width:90px!important;height:90px!important}
+}
+
+
+
+
+/* v74: direct fix for the actual learning selection layout */
+#stage .modeBtns{
+  margin-bottom:30px!important;
+  padding-bottom:0!important;
+  position:relative!important;
+  z-index:2!important;
+  gap:14px!important;
+}
+#stageGrid.stageGrid,
+#stageGrid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:18px 18px!important;
+  margin-top:26px!important;
+  padding-top:0!important;
+  position:relative!important;
+  z-index:1!important;
+  overflow:visible!important;
+}
+#stageGrid .stageBtn,
+.stageGrid .stageBtn{
+  min-height:92px!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+  position:relative!important;
+  border:2px solid #ffd7ab!important;
+  box-shadow:none!important;
+  transform:none!important;
+}
+#stageGrid .stageBtn.active,
+.stageGrid .stageBtn.active{
+  border:2px solid #ff9c4a!important;
+  box-shadow:inset 0 0 0 3px rgba(255,156,74,.55), 0 6px 14px rgba(255,156,74,.10)!important;
+  transform:none!important;
+  outline:none!important;
+}
+#stageGrid .stageBtn::before,
+#stageGrid .stageBtn::after,
+.stageGrid .stageBtn::before,
+.stageGrid .stageBtn::after{
+  content:none!important;
+  display:none!important;
+}
+@media(max-width:480px){
+  #stage .modeBtns{ margin-bottom:34px!important; }
+  #stageGrid.stageGrid, #stageGrid{
+    margin-top:30px!important;
+    gap:16px!important;
+  }
+}
+.currentRexVisual.imageVersion,
+.currentRexVisual.imageVersion::before,
+.currentRexVisual.imageVersion::after,
+.currentRexRow.imageVersion::before,
+.currentRexRow.imageVersion::after,
+.hero::before,
+.hero::after,
+.dinoArea::before,
+.dinoArea::after{
+  background:transparent!important;
+  box-shadow:none!important;
+  filter:none!important;
+}
+.growStep::after,
+.growStep::before,
+.growthStep::after,
+.growthStep::before,
+.stageStep::after,
+.stageStep::before,
+#growth .arrow,
+#growth .stageArrow,
+.growth .arrow,
+.growth .stageArrow{
+  content:none!important;
+  display:none!important;
+}
+
+
+/* v74: listening card layout adjustment
+   「Hello.」と単元タグの位置は変えず、日本語だけ少し上に移動 */
+#listen #ja{
+  display:block!important;
+  transform:translateY(-14px)!important;
+  transform-origin:left top!important;
+}
+
+/* v74: voice diagnostic status */
+.voiceDiagStatus{margin-top:10px;padding:10px 12px;border-radius:14px;border:2px solid #ffd7ab;background:#fffaf0;color:#7a4a00;font-weight:800;line-height:1.45}
+.voiceDiagStatus.ok{border-color:#9be7bd;background:#f0fff7;color:#087a4f}
+.voiceDiagStatus.error{border-color:#ffb4b4;background:#fff1f1;color:#b42318}
+.voiceDiagStatus.checking{border-color:#b7dcff;background:#f1f8ff;color:#175cd3}
+
+
+/* v74: OpenAI voice diagnostics panel */
+.voiceDiagPanel{margin-top:12px;padding:12px;border:2px dashed #9bdcff;border-radius:18px;background:#f6fbff}
+.voiceDiagTitle{font-weight:900;color:#173b63;margin-bottom:8px}
+.voiceDiagSummary{padding:10px 12px;border-radius:14px;background:#fff;border:2px solid #d7ecff;color:#175cd3;font-weight:900;margin-bottom:10px}
+.voiceDiagSummary.ok{background:#f0fff7;border-color:#9be7bd;color:#087a4f}
+.voiceDiagSummary.error{background:#fff1f1;border-color:#ffb4b4;color:#b42318}
+.voiceDiagSummary.checking{background:#f1f8ff;border-color:#b7dcff;color:#175cd3}
+.voiceDiagLog{white-space:pre-wrap;word-break:break-word;max-height:220px;overflow:auto;background:#182230;color:#e6f0ff;border-radius:12px;padding:10px;font-size:12px;line-height:1.45}
