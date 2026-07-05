@@ -9,7 +9,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./icon-192.png">
-  <title>レックス英語マスター v76.6</title>
+  <title>レックス英語マスター v77</title>
   <style>
 
 :root{--sky:#dff5ff;--cream:#fff8e8;--leaf:#c9f7d4;--pink:#ff74ad;--orange:#ff9c4a;--purple:#8c70ff;--blue:#50a9ff;--green:#46ca87;--red:#ff6076;--ink:#29405c;--muted:#6a7a90;--line:#ffd8ab}
@@ -919,6 +919,18 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .voiceDiagSummary.checking{background:#f1f8ff;border-color:#b7dcff;color:#175cd3}
 .voiceDiagLog{white-space:pre-wrap;word-break:break-word;max-height:220px;overflow:auto;background:#182230;color:#e6f0ff;border-radius:12px;padding:10px;font-size:12px;line-height:1.45}
 
+
+/* v77 learning experience polish */
+.word{display:inline-block;border-radius:8px;padding:0 2px;transition:background .12s ease, color .12s ease, transform .12s ease}
+.word.active{background:linear-gradient(135deg,#fff0a8,#ffd2ef);color:#8b3cf6;transform:translateY(-1px);box-shadow:0 4px 10px rgba(139,60,246,.16)}
+.speakingLine{background:linear-gradient(90deg,rgba(255,240,168,.55),rgba(255,210,239,.35));border-radius:14px;box-shadow:0 0 0 6px rgba(255,232,170,.2)}
+.cardSlide{animation:cardSlide .22s ease both}
+@keyframes cardSlide{from{opacity:.25;transform:translateX(14px) scale(.992)}to{opacity:1;transform:translateX(0) scale(1)}}
+.rexReact{animation:rexReact .45s ease both}
+@keyframes rexReact{0%{transform:scale(1) rotate(0)}35%{transform:scale(1.08) rotate(-2deg)}70%{transform:scale(1.04) rotate(2deg)}100%{transform:scale(1) rotate(0)}}
+.levelBurst{position:fixed;left:50%;top:28%;transform:translate(-50%,-50%);z-index:80;background:linear-gradient(135deg,#fff7ce,#ffd3ea,#d8f7ff);border:3px solid #fff;border-radius:28px;padding:18px 24px;font-size:28px;font-weight:1000;color:#26324d;text-align:center;box-shadow:0 20px 60px rgba(80,60,120,.25);animation:levelBurst .9s ease both;pointer-events:none}
+@keyframes levelBurst{0%{opacity:0;transform:translate(-50%,-50%) scale(.72)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}100%{opacity:0;transform:translate(-50%,-58%) scale(1)}}
+
 </style>
 </head>
 <body>
@@ -960,8 +972,8 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   <div id="toast" class="toast"></div>
 
   <header>
-    <h1>🧡 レックス英語マスター v76.6</h1>
-    <div class="sub">v76.6：Safari音声安定版（UI余白修正）</div>
+    <h1>🧡 レックス英語マスター v77</h1>
+    <div class="sub">v77：自然連続再生・ハイライト・演出版</div>
   </header>
 
   <main>
@@ -1387,7 +1399,7 @@ window.REX_CONTENT_VERSION='grade1-2026-06-v74';
 /* v76.5 Safari-only audio core. No Kokoro/OpenAI. Designed for iPhone Safari. */
 (function(){
   'use strict';
-  var VERSION='v76.5-safari-only-singlefile';
+  var VERSION='v77-safari-natural-singlefile';
   var unlocked=false;
   var currentUtterance=null;
   var voices=[];
@@ -1400,20 +1412,36 @@ window.REX_CONTENT_VERSION='grade1-2026-06-v74';
   function isJa(lang,text){ return /^ja/i.test(String(lang||'')) || /[ぁ-んァ-ン一-龯]/.test(String(text||'')); }
   function val(id, fallback){ var e=$(id); if(!e) return fallback; var n=Number(e.value); return Number.isFinite(n)?n:fallback; }
   function rateFor(lang,text){ return isJa(lang,text) ? Math.max(0.65,Math.min(1.25,val('jaRateSelect',0.92))) : Math.max(0.65,Math.min(1.25,val('enRateSelect',0.92))); }
+  function voiceScore(v, ja){
+    var s=((v.name||'')+' '+(v.lang||'')+' '+(v.voiceURI||'')).toLowerCase();
+    var score=0;
+    if(ja){
+      if(/^ja/i.test(v.lang||'')) score+=100;
+      if(s.indexOf('kyoko')>=0) score+=40;
+      if(s.indexOf('otoya')>=0 || s.indexOf('hattori')>=0) score+=30;
+      if(s.indexOf('compact')>=0) score-=35;
+      if(s.indexOf('super-compact')>=0) score-=45;
+      if(s.indexOf('premium')>=0 || s.indexOf('enhanced')>=0) score+=25;
+    } else {
+      if(/^en-us/i.test(v.lang||'')) score+=100;
+      else if(/^en/i.test(v.lang||'')) score+=70;
+      if(s.indexOf('samantha')>=0) score+=35;
+      if(s.indexOf('ava')>=0 || s.indexOf('alex')>=0 || s.indexOf('daniel')>=0) score+=25;
+      if(s.indexOf('compact')>=0) score-=30;
+      if(s.indexOf('super-compact')>=0) score-=40;
+      if(s.indexOf('premium')>=0 || s.indexOf('enhanced')>=0) score+=25;
+    }
+    return score;
+  }
   function pickVoice(lang,text){
     refreshVoices();
     var ja=isJa(lang,text);
     var savedId = ja ? (localStorage.getItem('rexEnglishMaster.jaVoiceURI')||'') : (localStorage.getItem('rexEnglishMaster.enVoiceURI')||'');
     if(savedId){ for(var a=0;a<voices.length;a++){ if(voices[a].voiceURI===savedId || voices[a].name===savedId) return voices[a]; } }
-    var prefs=ja?['Kyoko','Otoya','Hattori','ja-JP','日本語','Japanese']:['Samantha','Ava','Alex','Daniel','Moira','Tessa','Karen','en-US','English'];
-    for(var p=0;p<prefs.length;p++){
-      for(var i=0;i<voices.length;i++){
-        var v=voices[i]; var s=((v.name||'')+' '+(v.lang||'')+' '+(v.voiceURI||''));
-        if(s.indexOf(prefs[p])>=0) return v;
-      }
-    }
-    for(var j=0;j<voices.length;j++){ var l=voices[j].lang||''; if(ja && /^ja/i.test(l)) return voices[j]; if(!ja && /^en/i.test(l)) return voices[j]; }
-    return null;
+    var candidates=voices.slice().filter(function(v){ return ja ? /^ja/i.test(v.lang||'') : /^en/i.test(v.lang||''); });
+    if(!candidates.length) candidates=voices.slice();
+    candidates.sort(function(a,b){ return voiceScore(b,ja)-voiceScore(a,ja); });
+    return candidates[0]||null;
   }
   function estimateMs(text,lang,rate){
     var chars=Array.from(String(text||'')).length;
@@ -1484,6 +1512,8 @@ window.REX_CONTENT_VERSION='grade1-2026-06-v74';
     function fill(sel, langPrefix, label){
       if(!sel) return;
       var opts=voices.filter(function(v){ return (v.lang||'').toLowerCase().indexOf(langPrefix)===0; });
+      var ja=langPrefix==='ja';
+      opts.sort(function(a,b){ return voiceScore(b,ja)-voiceScore(a,ja); });
       if(!opts.length) opts=voices;
       var html='<option value="">自動選択（おすすめ）</option>'+opts.map(function(v){ return '<option value="'+String(v.voiceURI||v.name).replace(/"/g,'&quot;')+'">'+String(v.name||label)+' / '+String(v.lang||'')+'</option>'; }).join('');
       sel.innerHTML=html;
@@ -1667,11 +1697,13 @@ window.REX_CONTENT_VERSION='grade1-2026-06-v74';
       return '<div class="growStep '+(cur===i?'active':'')+'"><div class="icon">'+rexImageHtml(s,'stage')+'</div><div class="stageBadge">'+(i+1)+'</div><div class="stageName">'+s.name+'</div><div class="mini">Lv.'+(i+1)+'</div></div>';
     }).join('');
   }
-  function rexHappy(){ var d=$('dino'); d.classList.remove('happy'); void d.offsetWidth; d.classList.add('happy'); }
+  function rexHappy(){ var d=$('dino'); d.classList.remove('happy'); void d.offsetWidth; d.classList.add('happy'); var v=document.getElementById('currentRexVisual'); if(v){ v.classList.remove('rexReact'); void v.offsetWidth; v.classList.add('rexReact'); } }
   function showToast(t){ var el=$('toast'); el.textContent=t; el.classList.add('show'); setTimeout(function(){el.classList.remove('show');},1800); }
   function showLevelUp(stage){
     $('levelUp').innerHTML='🎉 成長したよ！<br>'+stage.icon+' '+stage.name;
     $('levelUp').classList.add('show');
+    var b=document.createElement('div'); b.className='levelBurst'; b.innerHTML='🎉 Lv.UP<br><small>'+escapeHtml(stage.name)+'</small>'; document.body.appendChild(b);
+    setTimeout(function(){ try{b.remove();}catch(e){} },950);
     setTimeout(function(){ $('levelUp').classList.remove('show'); },2400);
   }
   function addXp(n,c,f){
@@ -1725,53 +1757,99 @@ window.REX_CONTENT_VERSION='grade1-2026-06-v74';
   function render(){
     if(!deck.length){ $('en').textContent='対象なし'; $('ja').textContent='条件を変えてください'; $('count').textContent='0 / 0'; $('bar').style.width='0%'; return; }
     var x=deck[idx];
-    $('en').textContent=(fav.has(x.id)?'⭐ ':'')+x.en;
-    $('ja').textContent=x.ja;
+    renderTextWords(x);
     $('tag').textContent=(x.stage||'')+' / '+(x.unit||'')+(weak.has(x.id)?' / 苦手':'')+(mistakes.has(x.id)?' / 間違い':'');
     $('count').textContent=(idx+1)+' / '+deck.length;
     $('bar').style.width=((idx+1)/deck.length*100)+'%';
   }
+  function renderTextWords(x){
+    var star=fav.has(x.id)?'⭐ ':'';
+    var words=String(x.en||'').split(/(\s+)/);
+    $('en').innerHTML=star+words.map(function(w){
+      if(/^\s+$/.test(w)) return w;
+      return '<span class="word">'+escapeHtml(w)+'</span>';
+    }).join('');
+    $('ja').textContent=x.ja;
+  }
+  function animateCard(){
+    var card=document.getElementById('listenCard') || $('en').closest('.card');
+    if(card){ card.classList.remove('cardSlide'); void card.offsetWidth; card.classList.add('cardSlide'); }
+  }
+  var hiTimer=null;
+  function clearHighlight(){
+    if(hiTimer){ clearInterval(hiTimer); hiTimer=null; }
+    ['en','ja'].forEach(function(id){ var e=$(id); if(e){ e.classList.remove('speakingLine'); e.querySelectorAll('.word.active').forEach(function(w){w.classList.remove('active');}); } });
+  }
+  function startHighlight(lang,text){
+    clearHighlight();
+    var isJ=/^ja/i.test(lang)||/[ぁ-んァ-ン一-龯]/.test(String(text||''));
+    var line=isJ?$('ja'):$('en');
+    if(!line) return;
+    line.classList.add('speakingLine');
+    if(isJ) return;
+    var ws=Array.from(line.querySelectorAll('.word'));
+    if(!ws.length) return;
+    var i=0;
+    var rate=Number($('enRateSelect')&&$('enRateSelect').value||0.92)||0.92;
+    var total=Math.max(550, String(text||'').length*58/Math.max(.65,rate));
+    var step=Math.max(120,total/ws.length);
+    function mark(){ ws.forEach(function(w){w.classList.remove('active');}); if(ws[i]) ws[i].classList.add('active'); i++; if(i>=ws.length){ clearInterval(hiTimer); hiTimer=null; } }
+    mark(); hiTimer=setInterval(mark,step);
+  }
   async function readNow(keepQueue){
     if(!deck.length) return;
     if(!RexSpeech.isReady()) await RexSpeech.unlock();
-    await wait(160);
+    await wait(40);
 
-    // v74: 必ずこの時点の単語ペアを固定して読む。
-    // 連続再生中にidxやdeckが変わっても、日本語だけ別単語になる事故を防ぐ。
     var current = Object.assign({}, deck[idx]);
     var enText = current.en || current.word || '';
     var jaText = current.speechJa || current.ja || current.meaning || '';
     var m=$('mode').value, g=Number($('gap').value||400);
+    g=Math.max(0, Math.min(2000, g));
 
     $('status').textContent='読み上げ中';
     if(!keepQueue) RexSpeech.cancel();
 
+    async function say(text,lang){
+      startHighlight(lang,text);
+      await RexSpeech.speak(text,lang);
+      clearHighlight();
+    }
     if(m==='en-ja-en'){
-      await RexSpeech.speak(enText,'en-US'); await wait(g);
-      await RexSpeech.speak(jaText,'ja-JP'); await wait(g);
-      await RexSpeech.speak(enText,'en-US');
+      await say(enText,'en-US'); await wait(g);
+      await say(jaText,'ja-JP'); await wait(g);
+      await say(enText,'en-US');
     } else if(m==='en-ja-en-ja'){
-      await RexSpeech.speak(enText,'en-US'); await wait(g);
-      await RexSpeech.speak(jaText,'ja-JP'); await wait(g);
-      await RexSpeech.speak(enText,'en-US'); await wait(g);
-      await RexSpeech.speak(jaText,'ja-JP');
+      await say(enText,'en-US'); await wait(g);
+      await say(jaText,'ja-JP'); await wait(g);
+      await say(enText,'en-US'); await wait(g);
+      await say(jaText,'ja-JP');
     } else if(m==='ja-en'){
-      await RexSpeech.speak(jaText,'ja-JP'); await wait(g);
-      await RexSpeech.speak(enText,'en-US');
+      await say(jaText,'ja-JP'); await wait(g);
+      await say(enText,'en-US');
     } else {
-      await RexSpeech.speak(enText,'en-US');
+      await say(enText,'en-US');
     }
     $('status').textContent=auto?'連続再生中':'音声OK';
   }
   async function toggleAuto(){
     if(auto){ stopAuto(); return; }
     auto=true; $('autoBtn').textContent='停止'; $('status').textContent='連続再生中';
-    while(auto && deck.length){ render(); await readNow(true); await wait(Number($('gap').value||400)); if(!auto) break; idx=(idx+1)%deck.length; }
+    while(auto && deck.length){
+      render();
+      await readNow(true);
+      if(!auto) break;
+      idx=(idx+1)%deck.length;
+      render();
+      animateCard();
+      // 次のカードはすぐ表示。音声開始前だけ短く呼吸を置く。
+      await wait(Math.min(120, Number($('gap').value||400)));
+    }
     $('autoBtn').textContent='連続再生';
   }
   function stopAuto(){ auto=false; RexSpeech.cancel(); $('autoBtn').textContent='連続再生'; $('status').textContent='停止しました'; }
-  function next(){ stopAuto(); if(deck.length) idx=(idx+1)%deck.length; render(); }
-  function prev(){ stopAuto(); if(deck.length) idx=(idx-1+deck.length)%deck.length; render(); }
+  function next(){ stopAuto(); if(deck.length) idx=(idx+1)%deck.length; render(); animateCard(); }
+  function prev(){ stopAuto(); if(deck.length) idx=(idx-1+deck.length)%deck.length; render(); animateCard(); }
   function markWeak(){ if(deck.length){ weak.add(deck[idx].id); persist(); render(); updateStats(); showToast('苦手に追加しました'); } }
   function clearWeak(){ if(deck.length){ weak.delete(deck[idx].id); mistakes.delete(deck[idx].id); persist(); render(); updateStats(); showToast('覚えた！'); } }
   function toggleFav(){ if(deck.length){ var id=deck[idx].id; fav.has(id)?fav.delete(id):fav.add(id); persist(); render(); } }
