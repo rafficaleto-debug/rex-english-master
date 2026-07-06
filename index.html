@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja" data-build="v88.0-growth-chat">
+<html lang="ja" data-build="v88.2-slow-growth">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -7,7 +7,7 @@
   <meta http-equiv="Expires" content="0">
   <script>
   (function(){
-    var BUILD_ID = 'v880-growth-chat-20260706';
+    var BUILD_ID = 'v882-slow-growth-20260706';
     window.REX_BUILD_ID = BUILD_ID;
     try {
       // 初回だけURLへビルドIDを付ける。Safariが古いindexを握り続ける問題を減らす。
@@ -33,7 +33,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./icon-192.png">
-  <title>レックス英語マスター v88.0</title>
+  <title>レックス英語マスター v88.2</title>
   <style>
 
 :root{--sky:#dff5ff;--cream:#fff8e8;--leaf:#c9f7d4;--pink:#ff74ad;--orange:#ff9c4a;--purple:#8c70ff;--blue:#50a9ff;--green:#46ca87;--red:#ff6076;--ink:#29405c;--muted:#6a7a90;--line:#ffd8ab}
@@ -955,6 +955,20 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
 .levelBurst{position:fixed;left:50%;top:28%;transform:translate(-50%,-50%);z-index:80;background:linear-gradient(135deg,#fff7ce,#ffd3ea,#d8f7ff);border:3px solid #fff;border-radius:28px;padding:18px 24px;font-size:28px;font-weight:1000;color:#26324d;text-align:center;box-shadow:0 20px 60px rgba(80,60,120,.25);animation:levelBurst .9s ease both;pointer-events:none}
 @keyframes levelBurst{0%{opacity:0;transform:translate(-50%,-50%) scale(.72)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}100%{opacity:0;transform:translate(-50%,-58%) scale(1)}}
 
+
+
+/* v88.1 UI tuning: test readability and talk button spacing */
+#test #qja{font-size:24px;line-height:1.75;margin:20px 0 22px;font-weight:800;letter-spacing:.02em;color:#374151;}
+#test #ans{width:min(680px,100%);min-height:62px;font-size:20px;padding:16px 20px;border-radius:24px;margin:0 0 16px;}
+#test .row{row-gap:14px;margin-bottom:14px;}
+#test .row button{padding:15px 22px;}
+#talk .row{gap:16px;row-gap:18px;margin-top:18px;margin-bottom:16px;}
+#talk .row button{padding:16px 24px;min-height:58px;}
+#talk .chatInputRow{gap:14px;margin-bottom:18px;}
+#talk #chatInput{min-height:60px;font-size:19px;padding:16px 20px;border-radius:24px;}
+#talk #chatSendBtn{min-height:60px;padding:16px 24px;}
+@media(max-width:720px){#test #qja{font-size:22px;line-height:1.72;margin:18px 0 20px;}#test #ans{min-height:58px;font-size:18px;}#talk .row{gap:12px;row-gap:14px;}#talk .row button{min-height:54px;padding:14px 18px;}}
+
 </style>
 </head>
 <body>
@@ -996,13 +1010,13 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   <div id="toast" class="toast"></div>
 
   <header>
-    <h1>🧡 レックス英語マスター v88.0</h1>
-    <div class="sub">v88：ゆっくり成長・テスト音声・会話強化版</div><div class="pill" style="margin-top:10px;display:inline-block">Unit1〜4重点強化 / レックス成長ゆっくり / 会話練習強化</div>
+    <h1>🧡 レックス英語マスター v88.2</h1>
+    <div class="sub">v88.2：超ゆっくり成長・毎日育成版</div><div class="pill" style="margin-top:10px;display:inline-block">Unit1〜4重点強化 / レックス成長さらにゆっくり / 毎日育成</div>
   </header>
 
   <main>
     <div id="bootError"></div>
-    <div id="bootOk">✅ アプリ読み込み中... <span style="font-size:12px;color:#087a4f">build: v88.0-growth-chat</span></div>
+    <div id="bootOk">✅ アプリ読み込み中... <span style="font-size:12px;color:#087a4f">build: v88.2-slow-growth</span></div>
 
     <section class="card hero">
       <div class="dinoWorld">
@@ -1183,7 +1197,7 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
       <div class="row">
         <button class="primary" id="checkBtn">答え合わせ</button>
         <button id="showAnsBtn">お手本を見る</button>
-        <button class="good" id="manualOkBtn">○ わかった！</button>
+        <button class="good" id="manualOkBtn">わかった！</button>
         <button class="bad" id="manualNgBtn">苦手に追加</button>
       </div>
       <div class="small scoreLine">スコア：<span id="ok">0</span> / <span id="total">0</span>　間違い：<span id="mistakeCount">0</span>問</div>
@@ -1447,7 +1461,7 @@ window.REX_CONTENT_VERSION="get-ahead-1-v83.0-iphone-ja-default";
 /* v76.5 Safari-only audio core. No Kokoro/OpenAI. Designed for iPhone Safari. */
 (function(){
   'use strict';
-  var VERSION='v88.0-growth-chat-20260706';
+  var VERSION='v88.2-slow-growth-20260706';
   var unlocked=false;
   var currentUtterance=null;
   var voices=[];
@@ -1720,14 +1734,16 @@ window.REX_CONTENT_VERSION="get-ahead-1-v83.0-iphone-ja-default";
   <script>
 
 (function(){
+  // v88.2: Rex grows much more slowly. Evolution now needs both XP and consecutive study days.
+  // This keeps the "raising Rex" feeling for months instead of finishing in a few days.
   var dinoStages=[
-    {name:'たまご',icon:'🥚',xp:0,cls:'stage1',img:'rex-stage-1.png'},
-    {name:'ひび',icon:'🥚',xp:120,cls:'stage2',img:'rex-stage-2.png'},
-    {name:'顔を出す',icon:'🐣',xp:320,cls:'stage3',img:'rex-stage-3.png'},
-    {name:'赤ちゃん',icon:'🧡',xp:650,cls:'stage4',img:'rex-stage-4.png'},
-    {name:'子ども',icon:'🧡',xp:1100,cls:'stage5',img:'rex-stage-5.png'},
-    {name:'青年',icon:'🧡',xp:1750,cls:'stage6',img:'rex-stage-6.png'},
-    {name:'大人',icon:'🧡',xp:2600,cls:'stage7',img:'rex-stage-7.png'}
+    {name:'たまご',icon:'🥚',xp:0,days:0,cls:'stage1',img:'rex-stage-1.png'},
+    {name:'ひび',icon:'🥚',xp:200,days:3,cls:'stage2',img:'rex-stage-2.png'},
+    {name:'顔を出す',icon:'🐣',xp:500,days:7,cls:'stage3',img:'rex-stage-3.png'},
+    {name:'赤ちゃん',icon:'🧡',xp:1000,days:14,cls:'stage4',img:'rex-stage-4.png'},
+    {name:'子ども',icon:'🧡',xp:1800,days:30,cls:'stage5',img:'rex-stage-5.png'},
+    {name:'青年',icon:'🧡',xp:3000,days:60,cls:'stage6',img:'rex-stage-6.png'},
+    {name:'大人',icon:'🧡',xp:5000,days:120,cls:'stage7',img:'rex-stage-7.png'}
   ];
   var lines=[
     ['Hi!','やあ！'],['Good job!','すごい！よくがんばったね！'],['You can do it!','きみならできるよ！'],
@@ -1735,21 +1751,24 @@ window.REX_CONTENT_VERSION="get-ahead-1-v83.0-iphone-ja-default";
     ['You are getting better every day!','毎日うまくなってるよ！'],['Welcome back!','おかえり！'],
     ['I missed you.','会いたかったよ。'],['I am always on your side.','ぼくはいつでも味方だよ。'],
     ['No worries!','間違えてもだいじょうぶ！一緒にやろう！'],['You are my best friend!','きみはぼくの大切な友だちだよ！'],
-    ['Thank you for studying with me.','一緒に勉強してくれてありがとう。'],['I am proud of you!','ぼくはきみを誇りに思うよ！'],['Small steps every day!','毎日少しずつで大丈夫！'],['You made me smile!','きみのおかげで笑顔になったよ！'],['One more sentence?','あと1文だけ、一緒にやってみる？'],['Your effort is treasure!','がんばった時間は宝物だよ！'],["Let's roar in English!",'英語でガオーって成長しよう！'],['Excellent!','完ぺき！かっこいい！'],['Nice answer!','いい答えだね！'],['You did it!','できたね！すばらしい！'],['Great pronunciation!','発音もいい感じ！'],['Keep going!','その調子で続けよう！'],['Fantastic!','すごくいいよ！'],['You are improving!','どんどん上手になってる！'],['That was quick!','今の早かったね！'],['Beautiful English!','きれいな英語だね！'],['Rex is cheering for you!','レックスは全力で応援中！']
+    ['Thank you for studying with me.','一緒に勉強してくれてありがとう。'],['I am proud of you!','ぼくはきみを誇りに思うよ！'],['Small steps every day!','毎日少しずつで大丈夫！'],['You made me smile!','きみのおかげで笑顔になったよ！'],['One more sentence?','あと1文だけ、一緒にやってみる？'],['Your effort is treasure!','がんばった時間は宝物だよ！'],["Let's roar in English!",'英語でガオーって成長しよう！'],['Excellent!','完ぺき！かっこいい！'],['Nice answer!','いい答えだね！'],['You did it!','できたね！すばらしい！'],['Great pronunciation!','発音もいい感じ！'],['Keep going!','その調子で続けよう！'],['Fantastic!','すごくいいよ！'],['You are improving!','どんどん上手になってる！'],['That was quick!','今の早かったね！'],['Beautiful English!','きれいな英語だね！'],['Rex is cheering for you!','レックスは全力で応援中！'],
+    ['I grow slowly with you.','ぼくはゆっくり、きみと一緒に成長するよ。'],['See you tomorrow!','明日も会えたらうれしいな。'],['Today is another step!','今日の一歩もちゃんと力になってるよ。'],['Little by little!','少しずつでいいよ。続けることがすごいんだ！']
   ];
   var badges=[
     {id:'b1',name:'初正解',icon:'🎯',need:function(s,m){return s.ok>=1;}},
-    {id:'b2',name:'赤ちゃん誕生',icon:'🦖',need:function(s,m){return s.xp>=320;}},
+    {id:'b2',name:'ひび発見',icon:'🥚',need:function(s,m){return (s.xp||0)>=200 && (s.streak||0)>=3;}},
     {id:'b3',name:'なかよし',icon:'💗',need:function(s,m){return s.friend>=30;}},
     {id:'b4',name:'10問挑戦',icon:'🔥',need:function(s,m){return s.total>=10;}},
     {id:'b5',name:'100問挑戦',icon:'🏅',need:function(s,m){return s.total>=100;}},
-    {id:'b6',name:'おとな恐竜',icon:'👑',need:function(s,m){return s.xp>=2600;}},
+    {id:'b6',name:'おとな恐竜',icon:'👑',need:function(s,m){return (s.xp||0)>=5000 && (s.streak||0)>=120;}},
     {id:'b7',name:'復習クリア',icon:'🛡️',need:function(s,m){return m===0 && s.total>=10;}},
-    {id:'b8',name:'伝説の相棒',icon:'🌈',need:function(s,m){return s.xp>=3200;}}
+    {id:'b8',name:'伝説の相棒',icon:'🌈',need:function(s,m){return (s.xp||0)>=6000 && (s.streak||0)>=150;}}
   ];
   function currentStage(score){
-    var xp=score.xp||0, idx=0;
-    for(var i=0;i<dinoStages.length;i++){ if(xp>=dinoStages[i].xp) idx=i; }
+    var xp=score.xp||0, days=score.streak||0, idx=0;
+    for(var i=0;i<dinoStages.length;i++){
+      if(xp>=dinoStages[i].xp && days>=dinoStages[i].days) idx=i;
+    }
     return {index:idx, stage:dinoStages[idx], next:dinoStages[Math.min(idx+1,dinoStages.length-1)]};
   }
   window.RexGame={dinoStages:dinoStages, lines:lines, badges:badges, currentStage:currentStage};
@@ -1823,8 +1842,14 @@ window.REX_CONTENT_VERSION="get-ahead-1-v83.0-iphone-ja-default";
   function ensureDay(){
     var t=todayStr();
     if(score.lastDay!==t){
-      score.today=0; score.lastDay=t; score.streak=(score.streak||0)+1; score.coins=(score.coins||0)+20; persist();
-      var ps=privateSettings(); setBubble('Welcome back!', ps.childName ? 'おかえり、'+ps.childName+'！また会えてうれしいよ。' : 'おかえり！また会えてうれしいよ。');
+      var prev=score.lastDay ? new Date(score.lastDay+'T00:00:00') : null;
+      var now=new Date(t+'T00:00:00');
+      var gap=prev ? Math.round((now-prev)/86400000) : 1;
+      score.today=0; score.lastDay=t; score.streak = gap===1 ? (score.streak||0)+1 : 1;
+      score.coins=(score.coins||0)+20; persist();
+      var ps=privateSettings();
+      var daily=['今日も会えてうれしいよ。','少しずつ一緒に育とうね。','毎日来てくれるの、すごくうれしい！','今日はどの英語から始める？'];
+      setBubble('Welcome back!', ps.childName ? 'おかえり、'+ps.childName+'！'+daily[(new Date()).getDate()%daily.length] : 'おかえり！'+daily[(new Date()).getDate()%daily.length]);
     }
   }
   function currentDino(){ return RexGame.currentStage(score); }
@@ -1856,13 +1881,18 @@ window.REX_CONTENT_VERSION="get-ahead-1-v83.0-iphone-ja-default";
     $('friendText').textContent=Math.min(100,score.friend||0);
     $('friendfill').style.width=Math.min(100,score.friend||0)+'%';
     if(info.index===RexGame.dinoStages.length-1){ $('nextXp').textContent='MAX'; $('xpfill').style.width='100%'; }
-    else { $('nextXp').textContent=next.xp-xp; $('xpfill').style.width=Math.max(3,Math.min(100,(xp-s.xp)/(next.xp-s.xp)*100))+'%'; }
+    else {
+      var needXp=Math.max(0,next.xp-xp);
+      var needDays=Math.max(0,(next.days||0)-(score.streak||0));
+      $('nextXp').textContent=needXp + (needDays>0 ? ' XP / あと'+needDays+'日' : ' XP');
+      $('xpfill').style.width=Math.max(3,Math.min(100,(xp-s.xp)/(next.xp-s.xp)*100))+'%';
+    }
     renderGrowth();
   }
   function renderGrowth(){
     var cur=currentDino().index;
     $('growth').innerHTML=RexGame.dinoStages.map(function(s,i){
-      return '<div class="growStep '+(cur===i?'active':'')+'"><div class="icon">'+rexImageHtml(s,'stage')+'</div><div class="stageBadge">'+(i+1)+'</div><div class="stageName">'+s.name+'</div><div class="mini">Lv.'+(i+1)+'</div></div>';
+      return '<div class="growStep '+(cur===i?'active':'')+'"><div class="icon">'+rexImageHtml(s,'stage')+'</div><div class="stageBadge">'+(i+1)+'</div><div class="stageName">'+s.name+'</div><div class="mini">Lv.'+(i+1)+' / '+(s.days||0)+'日</div></div>';
     }).join('');
   }
   function rexHappy(){ var d=$('dino'); d.classList.remove('happy'); void d.offsetWidth; d.classList.add('happy'); var v=document.getElementById('currentRexVisual'); if(v){ v.classList.remove('rexReact'); void v.offsetWidth; v.classList.add('rexReact'); } }
@@ -1876,9 +1906,16 @@ window.REX_CONTENT_VERSION="get-ahead-1-v83.0-iphone-ja-default";
   }
   function addXp(n,c,f){
     var before=currentDino().index;
-    score.xp=(score.xp||0)+n; score.coins=(score.coins||0)+(c||0); score.friend=Math.min(100,(score.friend||0)+(f||0)); score.today=(score.today||0)+1;
+    // v88.2: XP is intentionally very small. Correct answers usually +1XP.
+    // Large values from older button calls are compressed so Rex grows slowly.
+    var gain = n>=5 ? 1 : (n>=2 ? 0 : Math.max(0,n||0));
+    if(n>=9) gain=2; // clearing a previous mistake gets a tiny bonus
+    score.xp=(score.xp||0)+gain;
+    score.coins=(score.coins||0)+(c||0);
+    score.friend=Math.min(100,(score.friend||0)+Math.min(2,(f||0)));
+    score.today=(score.today||0)+1;
     var after=currentDino().index;
-    if(after>before){ showLevelUp(RexGame.dinoStages[after]); setBubble('I grew up!','やった！少し成長したよ！'); rexHappy(); confetti(); }
+    if(after>before){ showLevelUp(RexGame.dinoStages[after]); setBubble('I grew up!','やった！毎日のがんばりで少し成長したよ！'); rexHappy(); confetti(); }
   }
   function setBubble(en,ja){ $('dinoBubble').innerHTML=en+'<br><small>'+ja+'</small>'; }
   function dinoTalk(audio){
@@ -2071,7 +2108,7 @@ window.REX_CONTENT_VERSION="get-ahead-1-v83.0-iphone-ja-default";
     if($('dataVersionLabel')) $('dataVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
     if($('sentenceCountLabel')) $('sentenceCountLabel').textContent=(window.REX_SENTENCES||[]).length + (added?added.length:0);
     if($('contentVersionLabel')) $('contentVersionLabel').textContent=window.REX_CONTENT_VERSION || '-';
-    if($('appVersionLabel')) $('appVersionLabel').textContent='v88.0';
+    if($('appVersionLabel')) $('appVersionLabel').textContent='v88.2';
   }
 
 
