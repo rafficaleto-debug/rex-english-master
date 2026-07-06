@@ -9,7 +9,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./icon-192.png">
-  <title>レックス英語マスター v86.0</title>
+  <title>レックス英語マスター v87.0</title>
   <style>
 
 :root{--sky:#dff5ff;--cream:#fff8e8;--leaf:#c9f7d4;--pink:#ff74ad;--orange:#ff9c4a;--purple:#8c70ff;--blue:#50a9ff;--green:#46ca87;--red:#ff6076;--ink:#29405c;--muted:#6a7a90;--line:#ffd8ab}
@@ -972,8 +972,8 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   <div id="toast" class="toast"></div>
 
   <header>
-    <h1>🧡 レックス英語マスター v86.0</h1>
-    <div class="sub">v86：Get Ahead Unit1〜4教材拡充・1学期テスト対策版</div><div class="pill" style="margin-top:10px;display:inline-block">Unit1〜4を重点強化 / 全763問</div>
+    <h1>🧡 レックス英語マスター v87.0</h1>
+    <div class="sub">v87：ボタン文言やさしく改善・Get Ahead Unit1〜4教材拡充版</div><div class="pill" style="margin-top:10px;display:inline-block">Unit1〜4を重点強化 / 全763問</div>
   </header>
 
   <main>
@@ -1147,8 +1147,8 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
     <section id="test" class="card hidden">
       <h2>📝 日本語→英語テスト</h2>
       <div class="row">
-        <button id="newQBtn">出題</button>
-        <button id="speakQBtn">英文を聞く</button>
+        <button id="newQBtn">次の問題</button>
+        <button id="speakQBtn">英語を聞く 🔊</button>
         <button class="bad" id="mistakeModeBtn">間違い復習へ</button>
       </div>
       <div class="ja" id="qja"></div>
@@ -1157,10 +1157,10 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
       <div id="diff" class="small diff"></div>
       <div id="qen" class="big hidden"></div>
       <div class="row">
-        <button class="primary" id="checkBtn">正誤判定</button>
-        <button id="showAnsBtn">答えを見る</button>
-        <button class="good" id="manualOkBtn">できた</button>
-        <button class="bad" id="manualNgBtn">間違いに追加</button>
+        <button class="primary" id="checkBtn">答え合わせ</button>
+        <button id="showAnsBtn">お手本を見る</button>
+        <button class="good" id="manualOkBtn">○ わかった！</button>
+        <button class="bad" id="manualNgBtn">苦手に追加</button>
       </div>
       <div class="small scoreLine">スコア：<span id="ok">0</span> / <span id="total">0</span>　間違い：<span id="mistakeCount">0</span>問</div>
     </section>
@@ -1402,7 +1402,7 @@ window.REX_CONTENT_VERSION="get-ahead-1-v83.0-iphone-ja-default";
 /* v76.5 Safari-only audio core. No Kokoro/OpenAI. Designed for iPhone Safari. */
 (function(){
   'use strict';
-  var VERSION='v86.0-content-expanded-unit1-4';
+  var VERSION='v87.0-button-wording-friendly';
   var unlocked=false;
   var currentUtterance=null;
   var voices=[];
