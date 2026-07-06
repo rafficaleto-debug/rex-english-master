@@ -1,15 +1,39 @@
 <!doctype html>
-<html lang="ja" data-build="v87.1-fixed-upload">
+<html lang="ja" data-build="v87.2-cache-safe">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <script>
+  (function(){
+    var BUILD_ID = 'v872-cache-safe-20260706';
+    window.REX_BUILD_ID = BUILD_ID;
+    try {
+      // 初回だけURLへビルドIDを付ける。Safariが古いindexを握り続ける問題を減らす。
+      var params = new URLSearchParams(location.search);
+      if (params.get('build') !== BUILD_ID && !params.get('v')) {
+        params.set('build', BUILD_ID);
+        location.replace(location.pathname + '?' + params.toString() + location.hash);
+        return;
+      }
+      // 古いService Worker / Cache Storageを削除。学習データ(localStorage)は消さない。
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(regs){ regs.forEach(function(r){ r.unregister(); }); });
+      }
+      if (window.caches && caches.keys) {
+        caches.keys().then(function(keys){ keys.forEach(function(k){ caches.delete(k); }); });
+      }
+    } catch(e) {}
+  })();
+  </script>
   <meta name="theme-color" content="#ff8ab7">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="レックス英語">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./icon-192.png">
-  <title>レックス英語マスター v87.1</title>
+  <title>レックス英語マスター v87.2</title>
   <style>
 
 :root{--sky:#dff5ff;--cream:#fff8e8;--leaf:#c9f7d4;--pink:#ff74ad;--orange:#ff9c4a;--purple:#8c70ff;--blue:#50a9ff;--green:#46ca87;--red:#ff6076;--ink:#29405c;--muted:#6a7a90;--line:#ffd8ab}
@@ -972,13 +996,13 @@ body.night .sun:after{content:"🌙";position:absolute;left:14px;top:10px;font-s
   <div id="toast" class="toast"></div>
 
   <header>
-    <h1>🧡 レックス英語マスター v87.1</h1>
-    <div class="sub">v87.1：教材データ品質改善・略語正式表記・ボタン文言改善版</div><div class="pill" style="margin-top:10px;display:inline-block">Unit1〜4を重点強化 / 全763問 / physical education→physical education修正</div>
+    <h1>🧡 レックス英語マスター v87.2</h1>
+    <div class="sub">v87.2：キャッシュ対策強化・教材データ品質改善版</div><div class="pill" style="margin-top:10px;display:inline-block">Unit1〜4を重点強化 / 全763問 / Safariキャッシュ対策強化</div>
   </header>
 
   <main>
     <div id="bootError"></div>
-    <div id="bootOk">✅ アプリ読み込み中...</div>
+    <div id="bootOk">✅ アプリ読み込み中... <span style="font-size:12px;color:#087a4f">build: v87.2-cache-safe</span></div>
 
     <section class="card hero">
       <div class="dinoWorld">
@@ -1417,7 +1441,7 @@ window.REX_CONTENT_VERSION="get-ahead-1-v83.0-iphone-ja-default";
 /* v76.5 Safari-only audio core. No Kokoro/OpenAI. Designed for iPhone Safari. */
 (function(){
   'use strict';
-  var VERSION='v87.1-data-quality-pe-fix-20260706';
+  var VERSION='v87.2-cache-safe-20260706';
   var unlocked=false;
   var currentUtterance=null;
   var voices=[];

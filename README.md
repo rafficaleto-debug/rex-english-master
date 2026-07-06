@@ -1,20 +1,18 @@
-# レックス英語マスター v87.1
+# レックス英語マスター v87.2
 
-GitHub Pagesへ丸ごとアップロードできる v87.1 修正版です。
+v87.2は、v87.1をベースにした **Safari / GitHub Pages キャッシュ対策強化版** です。
 
-## 反映内容
-- 画面表示を v87.1 に更新
-- ボタン文言改善
-  - 出題 → 次の問題
-  - 英文を聞く → 英語を聞く 🔊
-  - 正誤判定 → 答え合わせ
-  - 答えを見る → お手本を見る
-  - できた → ○ わかった！
-  - 間違いに追加 → 苦手に追加
-- `PE` / `P.E.` を `physical education` に統一
-- 旧キャッシュ対策を強化
-- GitHub Pages用に `.nojekyll` を追加
+## 変更点
+
+- 画面表示を v87.2 に更新
+- URLに自動で `?build=v872-cache-safe-20260706` を付ける仕組みを追加
+- 古い Service Worker / Cache Storage を自動削除
+- `Cache-Control / Pragma / Expires` の no-cache 指定を追加
+- GitHub Pages用に `.nojekyll` と `manifest.webmanifest` を追加
+- 学習データは消さない設計
 
 ## アップロード方法
-このZIPを解凍し、解凍後フォルダの中身をすべてGitHubのリポジトリ直下へ上書きアップロードしてください。
-`index.html` がリポジトリ直下に見えている状態が正解です。
+
+ZIPを解凍し、中身のファイルをすべて GitHub リポジトリ直下へ上書きアップロードしてください。
+
+フォルダごとではなく、`index.html` がリポジトリ直下にある状態にしてください。
